@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE student PUBLIC "-//Portland State University//DTD CS410J Grade Book//EN" "http://www.cs.pdx.edu/~whitlock/dtds/gradebook.dtd">
+<student enrolled-section="undergraduate">
+<id>bena2</id>
+<firstName>Ben</firstName>
+<lastName>Austin</lastName>
+<email>bena2@pdx.edu</email>
+<major>Computer Science and Accounting </major>
+<notes>
+<note>Ben Austin would like to learn As much as possible, I do not have much experience with Java so hoping to get a ton from the course materials. </note>
+<note>Ben Austin has these comments: NA</note>
+</notes>
+</student>

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 /**                                                                                 
  * This class is represents a <code>Student</code>.                                 
  */                                                                                 
-public class Student extends Human {                                                
+public class Student extends Human {
                                                                                     
   /**                                                                               
    * Creates a new <code>Student</code>                                             
@@ -21,9 +21,17 @@ public class Student extends Human {
    *        The student's grade point average                                       
    * @param gender                                                                  
    *        The student's gender ("male", "female", or "other", case insensitive)
-   */                                                                               
-  public Student(String name, ArrayList<String> classes, double gpa, String gender) {
+   */
+  protected double gpa;
+  protected String gender;
+  protected  ArrayList<String> classes;
+
+  public Student(String name, ArrayList<String> classes, double gpa, String gender)
+  {
     super(name);
+    this.gpa = gpa;
+    this.classes = classes;
+    this.gender = gender;
   }
 
   /**                                                                               

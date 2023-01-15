@@ -3,28 +3,51 @@ package edu.pdx.cs410J.bena2;
 import edu.pdx.cs410J.AbstractFlight;
 
 public class Flight extends AbstractFlight {
+
+  protected int flightNumber;
+  protected String source;
+  protected String destination;
+  protected String departureDate;
+  protected String departureTime;
+  protected String arrivalDate;
+  protected String arrivalTime;
+
+  public Flight()
+  {
+
+  }
+
+  public Flight(String source, String destination, String departureDate, String departureTime, String arrivalDate, String arrivalTime)
+  {
+    this.source = source;
+    this.destination = destination;
+    this.departureDate = departureDate;
+    this.departureTime = departureTime;
+    this.arrivalDate = arrivalDate;
+    this.arrivalTime = arrivalTime;
+  }
   @Override
   public int getNumber() {
-    return 42;
+    return flightNumber;
   }
 
   @Override
   public String getSource() {
-    throw new UnsupportedOperationException("This method is not implemented yet");
+    return source;
   }
 
   @Override
   public String getDepartureString() {
-    throw new UnsupportedOperationException("This method is not implemented yet");
+    return departureDate + " " + departureTime;
   }
 
   @Override
   public String getDestination() {
-    throw new UnsupportedOperationException("This method is not implemented yet");
+    return destination;
   }
 
   @Override
   public String getArrivalString() {
-    throw new UnsupportedOperationException("This method is not implemented yet");
+    return arrivalDate + " " + arrivalTime;
   }
 }

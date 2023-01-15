@@ -18,9 +18,12 @@ public class FlightTest {
    * your project.
    */
   @Test
-  void getArrivalStringNeedsToBeImplemented() {
-    Flight flight = new Flight();
-    assertThrows(UnsupportedOperationException.class, flight::getArrivalString);
+  void intializeFlight()
+  {
+    Flight test = new Flight("source", "destination","departureDate",
+            "departureTime,","arrivalDate", "arrivalTime");
+
+    assertThat("destination",equalTo(test.getDestination()));
   }
 
   /**

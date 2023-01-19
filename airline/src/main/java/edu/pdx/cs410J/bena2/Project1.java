@@ -23,7 +23,8 @@ public class Project1 {
     //number of args is 0, 1, or >=9
 
     if(args.length == 0 || args[0].equals("-README")){
-      //print readme
+      System.err.println("Missing command line arguments");
+      return;
     }
 
     if(!args[0].equals("-printme") || args.length != 9){
@@ -31,13 +32,14 @@ public class Project1 {
       //exit
     }
 
-   try{
+   /*try{
        test.createAirlineAndFlight(args);
        test.printAirlineAndFlight();
    }
    catch(IllegalArgumentException ex){
         System.out.println(ex);
-   }
+
+   }*/
 
   }
   public void createAirlineAndFlight(String [] args) throws IllegalArgumentException {

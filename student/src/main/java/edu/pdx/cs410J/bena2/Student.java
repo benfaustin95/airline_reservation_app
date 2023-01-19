@@ -22,6 +22,7 @@ public class Student extends Human {
    * @param gender                                                                  
    *        The student's gender ("male", "female", or "other", case insensitive)
    */
+
   protected double gpa;
   protected String gender;
   protected  ArrayList<String> classes;

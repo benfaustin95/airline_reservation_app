@@ -1,30 +1,48 @@
 package edu.pdx.cs410J.bena2;
 
 import edu.pdx.cs410J.AbstractFlight;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
+import java.util.Date;
 
 public class Flight extends AbstractFlight {
 
   protected int flightNumber;
   protected String source;
   protected String destination;
-  protected String departureDate;
-  protected String departureTime;
-  protected String arrivalDate;
-  protected String arrivalTime;
+  protected Date departure;
+  protected Date arrival;
 
   public Flight()
   {
 
   }
 
-  public Flight(String source, String destination, String departureDate, String departureTime, String arrivalDate, String arrivalTime)
+  public Flight(int flightNumber, String source, String destination, String departureDate,
+                String departureTime, String arrivalDate, String arrivalTime)
+                throws ParseException
   {
+    DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+
+    this.flightNumber = flightNumber;
     this.source = source;
     this.destination = destination;
-    this.departureDate = departureDate;
-    this.departureTime = departureTime;
-    this.arrivalDate = arrivalDate;
-    this.arrivalTime = arrivalTime;
+    this.departure = dateFormat.parse(departureDate+" "+departureTime);
+    this.arrival = dateFormat.parse(arrivalDate+" "+arrivalTime);
+
+  }
+
+  public Flight(int flightNumber, String source, String destination, Date departureDate,
+                Date arrivalDate)
+  {
+
+    this.flightNumber = flightNumber;
+    this.source = source;
+    this.destination = destination;
+    this.departure = new Date(departureDate.getTime());
+    this.arrival = new Date(arrivalDate.getTime());
+
   }
   @Override
   public int getNumber() {
@@ -37,17 +55,33 @@ public class Flight extends AbstractFlight {
   }
 
   @Override
-  public String getDepartureString() {
-    return departureDate + " " + departureTime;
-  }
-
-  @Override
   public String getDestination() {
     return destination;
   }
 
   @Override
-  public String getArrivalString() {
-    return arrivalDate + " " + arrivalTime;
+  public Date getDeparture() {
+    return this.departure;
+  }
+
+  @Override
+  public Date getArrival() {
+    return this.arrival;
+  }
+
+  @Override
+  public String getArrivalString(){
+
+    DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+
+    return dateFormat.format(arrival);
+  }
+
+  @Override
+  public String getDepartureString(){
+
+    DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+
+    return dateFormat.format(departure);
   }
 }

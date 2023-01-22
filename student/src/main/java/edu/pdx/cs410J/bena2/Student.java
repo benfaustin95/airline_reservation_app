@@ -11,16 +11,7 @@ public class Student extends Human {
                                                                                     
   /**                                                                               
    * Creates a new <code>Student</code>                                             
-   *                                                                                
-   * @param name                                                                    
-   *        The student's name                                                      
-   * @param classes                                                                 
-   *        The names of the classes the student is taking.  A student              
-   *        may take zero or more classes.                                          
-   * @param gpa                                                                     
-   *        The student's grade point average                                       
-   * @param gender                                                                  
-   *        The student's gender ("male", "female", or "other", case insensitive)
+   *
    */
 
   protected double gpa;

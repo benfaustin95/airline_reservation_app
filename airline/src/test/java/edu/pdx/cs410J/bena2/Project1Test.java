@@ -1,16 +1,14 @@
 package edu.pdx.cs410J.bena2;
 
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.text.ParseException;
-import java.util.Date;
-import java.text.SimpleDateFormat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.fail;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -30,7 +28,36 @@ class Project1Test {
       assertThat(readme, not(nullValue()));
       BufferedReader reader = new BufferedReader(new InputStreamReader(readme));
       String line = reader.readLine();
-      assertThat(line, containsString("This is a README file!"));
+      assertThat(line, containsString("#################################################################################"));
     }
   }
+
+  @Test
+  void createAirlineAndFlight()
+  {
+    Project1 test = new Project1();
+    ArrayList<String> arguments= getInvalidFlightData();
+
+
+    assertThrows(IllegalArgumentException.class,() -> test.createAirlineAndFlight(arguments));
+  }
+
+  ArrayList<String> getInvalidFlightData()
+  {
+    ArrayList<String> test = new ArrayList<>();
+    String toAdd[] = {"1","src","1/1/2023","10:39","dsw", "1/2/2023","12:23"};
+
+    Collections.addAll(test, toAdd);
+
+    return test;
+  }
+  @Test
+  void testNullAirline()
+  {
+    Project1 test = new Project1();
+
+    assertThrows(IllegalArgumentException.class, ()->test.printFlight());
+  }
+
+
 }

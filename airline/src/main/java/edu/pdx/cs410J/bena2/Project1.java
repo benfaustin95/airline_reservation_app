@@ -1,6 +1,11 @@
 package edu.pdx.cs410J.bena2;
 
 import com.google.common.annotations.VisibleForTesting;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
@@ -11,66 +16,158 @@ import java.util.*;
  */
 public class Project1 {
 
+    //Standard Error message  for missing arguments
+    public static final String missingArguments = "Missing command line arguments, please see following README "
+            + " for further instruction on valid command line arguments.";
+    //Standard Error message  for to few arguments
+    public static final String fewArguments = "To few arguments to create a flight, please see README " +
+            "for further instruction on valid command line arguments.";
+    //Standard Error message  for to many arguments
+    public static final String manyArguments = "To many arguments to create a flight, please see README " +
+            "for further instruction on valid command line arguments.";
+    // references the airline created by the user
     protected Airline airline;
-  @VisibleForTesting static boolean isValidDateAndTime(String dateAndTime) {
-    return true;
-  }
 
+    /**
+     * Main method for  CS410J Project 1, parses the command line for airline/flight data
+     * and program options. All errors cause the program to exit and an error message to be printed
+     * to standard error.
+     * @param args an Array of Strings hold user supplied input from the command line
+     */
   public static void main(String[] args) {
+      // Holds airline and will be used to create and print the airline
       Project1 test = new Project1();
-      String operations[] = {"-README", "-printme"};
-      List<String> args_list = Arrays.asList(args);
+      // Valid command line operations
+      String[] operations = {"-README", "-print"};
+      // Will signal to print the flight if flipped to true
+      boolean print = false;
+      // Will hold the argument list (args)
+      ArrayList<String> args_list = new ArrayList<>();
 
+
+      Collections.addAll(args_list,args);
+
+      // If no arguments on command line through exception and print readme to standard error
       if(args_list.isEmpty()){
-          System.err.println("Missing command line arguments");
-          //print read me
+          System.err.println(missingArguments);
+          try {
+              test.printREADME(1);
+          }
+          catch(IOException ex)
+          {
+              System.err.println(ex.getMessage());
+          }
           return;
       }
 
-      if(!args_list.contains(operations[0]) && !args_list.contains(operations[1]))
-      {
-          System.err.println("Missing command line options, please see README for instructions");
-          //print README
-          return;
-      }
-
+      // If argument list contains -README then readme is printed via standard out and program is
+      // exited
       if(args_list.contains(operations[0])){
-          System.out.println("WILL PRINT README");
+
+          args_list.remove(operations[0]);
+          try {
+              test.printREADME(0);
+          }
+          catch(IOException ex)
+          {
+              System.err.println(ex.getMessage());
+          }
           return;
       }
 
-      if(args.length != 9)
-      {
-          System.err.println("Number of Command line arguments = " +
-                  args.length + " is incorrect");
-          return;
+      // If argument list contains -print print is flipped to true and the argument is removed from
+      // the list
+      if(args_list.contains(operations[1])) {
+          print = true;
+          args_list.remove(operations[1]);
       }
 
-
+      // createAirline and Flight is called and at this point the arg_list should contain only
+      // airline and flight information. If the airline/flight is successfully instantiated then
+      // and print is fliped on print flight is called.
       try{
-          test.createAirlineAndFlight(Arrays.copyOfRange(args, 1, args.length));
-          test.printFlight();
+          test.createAirlineAndFlight(args_list);
+          if(print)
+            test.printFlight();
       }
       catch(IllegalArgumentException ex){
-          System.out.println(ex);
+          System.err.println(ex.getMessage());
       }
-
-  }
-  public void createAirlineAndFlight(String [] flightData) throws IllegalArgumentException {
-
-        airline = new Airline(flightData[0], new Flight(flightData[1], flightData[2], flightData[5],flightData[3],
-                flightData[4],flightData[6], flightData[7]));
   }
 
-  public void printFlight()
+    /**
+     * createAirlineAndFlight instantiates a new airline object and adds a new flight to the airline.
+     * Both the flight and airline are created using data passed in via an ArrayList of strings.
+     * @param flightData An ArrayList of Strings that holds the data needed to instantiate the flight
+     *                   and airline objects.
+     * @throws IllegalArgumentException Throws an IllegalArgumentException if the number  of arguments
+     *                                  does not match the required number. An IllegalArgumentException
+     *                                  can also be thrown by the Airline or Flight constructor.
+     */
+  public void createAirlineAndFlight(ArrayList<String> flightData) throws IllegalArgumentException {
+
+      if(flightData.size() < 8)
+          throw new IllegalArgumentException(fewArguments);
+
+      if(flightData.size() > 8)
+          throw new IllegalArgumentException(manyArguments);
+
+      airline = new Airline(flightData.get(0), new Flight(flightData.get(1), flightData.get(2), flightData.get(5), flightData.get(3),
+              flightData.get(4), flightData.get(6), flightData.get(7)));
+  }
+
+
+    /**
+     * printFlight prints the flight information of the (only) flight stored in the airlines roster.
+     * @throws IllegalArgumentException Throws an IllegalArgumentException if hte airline is empty,
+     *                                  airline roster is empty, or the flight s null.
+     */
+    public void printFlight() throws IllegalArgumentException
   {
-      Collection<Flight> temp= airline.getFlights();
+      if(airline == null)
+          throw new IllegalArgumentException("No Airline has been create");
 
-      if(temp.isEmpty())
-          throw new IllegalArgumentException("Airline Roster = Empty must create a flight in order to print information");
+      Collection<Flight> temp= airline.getFlights();
 
       if(temp.iterator().hasNext())
         System.out.println(temp.iterator().next().toString());
+  }
+
+    /**
+     * printREADME prints out the README stored in the resources folder.
+     * @param output Signals whether the README should be printed to standard error (1) or standard out (!=1)
+     * @throws IOException Throws an IOException if the README file is not an available resource.
+     */
+  protected void printREADME(int output) throws IOException
+  {
+      String line;
+
+      try (InputStream readme = Project1.class.getResourceAsStream("README.txt")) {
+          if (readme == null)
+              throw new IOException("README not available");
+          BufferedReader reader = new BufferedReader(new InputStreamReader(readme));
+          while((line=reader.readLine()) != null)
+          {
+              if(output == 1)
+                  System.err.println(line);
+              else
+                System.out.println(line);
+          }
+      }
+      catch(IOException ex)
+      {
+          throw new IOException("README not available");
+      }
+
+  }
+
+    /**
+     * Project1 serves as the default constructor for the Project1 class, sets the airline field to
+     * null.
+     */
+  public Project1()
+  {
+    airline = null;
   }
 
 }

@@ -63,6 +63,9 @@ public class FlightTest {
 
         assertThrows(IllegalArgumentException.class, () -> new Flight("f",
                 "src", "dsn", "1/1/2023", "10:39", "1/2/2023", "2:50"));
+
+        assertThrows(IllegalArgumentException.class, () -> new Flight(null,
+                "src", "dsn", "1/1/2023", "10:39", "1/2/2023", "2:50"));
     }
 
     @Test
@@ -104,6 +107,7 @@ public class FlightTest {
         assertThrows(IllegalArgumentException.class, () -> new Flight("123",
                 "src", "dsnbad", "1/1/2023", "10:39", "1/2/2023", "2:50"));
     }
+
     @Test
     void testDepartureString()
     {
@@ -166,6 +170,8 @@ public class FlightTest {
                 "src", "dsn", "1/1/2f23", "10:39", "1/2/2023", "2:50"));
         assertThrows(IllegalArgumentException.class, () -> new Flight("123",
                 "src", "dsn", "1/1/0000", "10:39", "1/2/2023", "2:50"));
+        assertThrows(IllegalArgumentException.class, () -> new Flight("123",
+                "src", "dsn", "1/1/23", "10:39", "1/2/2023", "2:50"));
     }
 
     @Test
@@ -196,6 +202,8 @@ public class FlightTest {
                 "src", "dsn", "12/123/2023", "10:39", "1/2/2023", "2:50"));
         assertThrows(IllegalArgumentException.class, () -> new Flight("123",
                 "src", "dsn", "2/31/2023", "10:39", "1/2/2023", "2:50"));
+        assertThrows(IllegalArgumentException.class, () -> new Flight("123",
+                "src", "dsn", null, "10:39", "1/2/2023", "2:50"));
     }
 
     @Test
@@ -210,6 +218,8 @@ public class FlightTest {
                 "src", "dsn", "12/12/2023", ":39", "1/2/2023", "2:50"));
         assertThrows(IllegalArgumentException.class, () -> new Flight("123",
                 "src", "dsn", "12/12/2023", "99:39", "1/2/2023", "2:50"));
+        assertThrows(IllegalArgumentException.class, () -> new Flight("123",
+                "src", "dsn", "12/12/2023", null, "1/2/2023", "2:50"));
     }
 
     @Test

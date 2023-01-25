@@ -49,6 +49,7 @@ Command Line Execution: java -jar target/airline-2023.0.0.jar [options] <argumen
                        leading zeros may be omitted for month, day,
                        and hour
                        time must be in 24-hour format
+                       must occur after departure 
                        example: 2/13/2023 01:09 or 02/13/2023 1:09
 
 

@@ -236,6 +236,16 @@ public class FlightTest {
                 "src", "dsn", "12/12/2023", "12:", "1/2/2023", "2:50"));
     }
 
+    @Test
+    void testArrivalBeforeDeparture()
+    {
+        assertThrows(IllegalArgumentException.class, () -> new Flight("123", "src",
+                "dsn", "12/12/2023", "12:13", "12/11/2023", "12:13"));
+
+        assertThrows(IllegalArgumentException.class, () -> new Flight("123", "src",
+                "dsn", "12/11/2023", "12:14", "12/11/2023", "12:13"));
+    }
+
 
     protected static Flight getValidFlight() {
         Flight test = null;

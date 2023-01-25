@@ -58,7 +58,7 @@ public class Flight extends AbstractFlight {
     this.destination = validateLocation(destination);
     this.departure = validateDateAndTime(departureDate,departureTime);
     this.arrival = validateDateAndTime(arrivalDate, arrivalTime);
-
+    validateOrder(departure,arrival);
   }
 
   /**
@@ -79,6 +79,7 @@ public class Flight extends AbstractFlight {
     this.flightNumber = validateNumber(flightNumber);
     this.source = validateLocation(source);
     this.destination = validateLocation(destination);
+    validateOrder(departureDate,arrivalDate);
     this.departure = new Date(departureDate.getTime());
     this.arrival = new Date(arrivalDate.getTime());
 
@@ -246,4 +247,18 @@ public class Flight extends AbstractFlight {
 
     return rdate;
   }
+
+  /**
+   * validateOrder ensures that the departure date occurs before the arrival date.
+   * @param departure the Date representation of departure
+   * @param arrival the Date representation of arrival
+   * @throws IllegalArgumentException Thrown if arrival occurs on or before departure.
+   */
+  public static void validateOrder(Date departure, Date arrival) throws IllegalArgumentException
+  {
+    if(!departure.before(arrival))
+      throw new IllegalArgumentException("Please make sure that the Departure Date occurs before " +
+              "the Arrival Date");
+  }
+
 }

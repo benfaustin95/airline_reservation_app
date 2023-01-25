@@ -190,7 +190,7 @@ class Project1IT extends InvokeMainTestCase {
     @Test
     void testPrintMeInvalidName()
     {
-        MainMethodResult result = invokeMain("-print", " ", "1", "src", "1/31/2023", "10:39", "dsw","1/1/2023","14:23");
+        MainMethodResult result = invokeMain("-print", " ", "1", "src", "1/31/2023", "10:39", "dsw","1/31/2023","14:23");
         assertThat(result.getTextWrittenToStandardError(),containsString("Airline name   is invalid, must not be empty."));
     }
 

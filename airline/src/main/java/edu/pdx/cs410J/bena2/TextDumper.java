@@ -5,6 +5,7 @@ import edu.pdx.cs410J.AirlineDumper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.util.*;
 
 /**
  * A skeletal implementation of the <code>TextDumper</code> class for Project 2.
@@ -18,12 +19,24 @@ public class TextDumper implements AirlineDumper<Airline> {
 
   @Override
   public void dump(Airline airline) {
+
+    if(airline == null)
+        throw new IllegalArgumentException("No airline");
+
+    Iterator<Flight> toDump = airline.getFlights().iterator();
+    String name = airline.getName();
+
     try (
       PrintWriter pw = new PrintWriter(this.writer)
       ) {
-      pw.println(airline.getName());
 
-      pw.flush();
+      while(toDump.hasNext())
+      {
+        pw.println(name+","+toDump.next().getDump());
+      }
     }
   }
+
 }
+
+

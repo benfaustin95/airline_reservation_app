@@ -19,7 +19,7 @@ import java.util.Date;
  *     <li> Arrival: The Date and Time the flight lands </li>
  * </ul>
  */
-public class Flight extends AbstractFlight {
+public class Flight extends AbstractFlight implements Cloneable{
 
   protected int flightNumber;
   protected String source;
@@ -261,4 +261,36 @@ public class Flight extends AbstractFlight {
               "the Arrival Date");
   }
 
+
+  public String getDump()
+  {
+    StringBuilder toReturn = new StringBuilder();
+    toReturn.append(getNumber()).append(",");
+    toReturn.append(getSource()).append(',');
+    toReturn.append(getDepartureString()).append(',');
+    toReturn.append(getDestination()).append(",");
+    toReturn.append(getArrivalString());
+
+    return toReturn.toString();
+  }
+
+  @Override
+  protected Flight clone() throws CloneNotSupportedException
+  {
+      return new Flight(this);
+  }
+
+  @Override
+  public boolean equals(Object toCompare)
+  {
+    if(toCompare == null)
+       return false;
+    if(this == toCompare)
+      return true;
+    if(this.getClass() != toCompare.getClass())
+      return false;
+    if(flightNumber != ((Flight)toCompare).flightNumber)
+      return false;
+    return true;
+  }
 }

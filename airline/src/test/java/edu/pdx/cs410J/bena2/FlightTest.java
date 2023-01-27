@@ -246,7 +246,13 @@ public class FlightTest {
                 "dsn", "12/11/2023", "12:14", "12/11/2023", "12:13"));
     }
 
+    @Test
+    void testDump()
+    {
+        Flight test = getValidFlight();
 
+        assertThat(test.getDump(), equalTo("1,src,01/01/2023 10:39,dsn,01/02/2023 02:50"));
+    }
     protected static Flight getValidFlight() {
         Flight test = null;
         try {

@@ -1,10 +1,12 @@
 package edu.pdx.cs410J.bena2;
 
 import edu.pdx.cs410J.AbstractAirline;
+import org.checkerframework.framework.qual.LiteralKind;
 
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * The Airline class holds the data related to an airline instance, including the airline name and
@@ -16,7 +18,7 @@ import java.util.Collection;
  *     <li> Roster: A collection of Flight instances related to the airline</li>
  * </ul>
  */
-public class Airline extends AbstractAirline<Flight> {
+public class Airline extends AbstractAirline<Flight> implements Cloneable{
     // The name of the airline
     private String name;
     // The roster of flights belonging to the airline
@@ -44,6 +46,14 @@ public class Airline extends AbstractAirline<Flight> {
     public Airline(String name) throws IllegalArgumentException{
         this();
         this.name = validateName(name);
+    }
+
+    public Airline(Airline airline) throws CloneNotSupportedException {
+        this(airline.name);
+
+        for (Flight flight : airline.roster) {
+            this.roster.add(flight.clone());
+        }
     }
 
     /**
@@ -101,5 +111,41 @@ public class Airline extends AbstractAirline<Flight> {
         if(name == null || name.isEmpty() || name.isBlank())
             throw new IllegalArgumentException("Airline name " +name + " is invalid, must not be empty.");
         return name;
+    }
+
+    @Override
+    protected Airline clone() throws CloneNotSupportedException
+    {
+            return new Airline(this);
+    }
+
+    @Override
+    public boolean equals(Object object)
+    {
+        if(object == null)
+            return false;
+        if(this == object)
+            return true;
+        if(this.getClass() != object.getClass())
+            return false;
+        if(this.name.equals(((Airline)object).name))
+            return true;
+        return false;
+    }
+
+    public boolean equals(String toCompare)
+    {
+        if(toCompare.equals(name))
+            return true;
+        return false;
+    }
+
+
+    public boolean removeFlight(Flight flight)
+    {
+        if(flight == null)
+            return false;
+
+        return roster.remove(flight);
     }
 }

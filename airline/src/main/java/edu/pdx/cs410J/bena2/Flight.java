@@ -262,19 +262,35 @@ public class Flight extends AbstractFlight implements Cloneable{
   }
 
 
+  /**
+   * getDump returns a representation of the Flight instance as a String in the required file output
+   * format
+   * @return a String representation of the Flight object ready for output to a file.
+   */
   public String getDump()
   {
     return getNumber() + "," +
             getSource() + ',' +
-            DateDump(getDepartureString()) + ',' +
+            dateDump(getDepartureString()) + ',' +
             getDestination() + "," +
-            DateDump(getArrivalString());
+            dateDump(getArrivalString());
   }
 
-  protected  String DateDump(String date)
+  /**
+   *  dateDump creates a new string that deliminates date and time with a comma rather than a space.
+   * @param date the Date string representation to be modified.
+   * @return a reference to the new string holding the modified date.
+   */
+  protected  static String dateDump(String date)
   {
     return date.replace(' ', ',');
   }
+
+  /**
+   * clone overrides the clone method present in the Object super class. The implementation
+   * calls the clone method of the object class, then makes a deep copy of mutable objects.
+   * @return a Flight that is a deep copy of the current Flight instance.
+   */
   @Override
   protected Flight clone()
   {
@@ -292,6 +308,14 @@ public class Flight extends AbstractFlight implements Cloneable{
     return clone;
   }
 
+  /**
+   * equals overrides the equals method present in the object super class. The implementation calls
+   * the clone method to determine if both references reference the same object. If the clone method
+   * returns false the implementation then compares the class type, if both references are of the
+   * same class type then the flight number is compared to determine absolute equality.
+   * @param toCompare a Object reference to be compared to the current flight instance.
+   * @return true or false depending on the equality.
+   */
   @Override
   public boolean equals(Object toCompare)
   {

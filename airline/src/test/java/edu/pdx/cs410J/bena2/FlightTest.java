@@ -1,7 +1,9 @@
 package edu.pdx.cs410J.bena2;
 
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit tests for the {@link Flight} class.
- *
  * You'll need to update these unit tests as you build out you program.
  */
 public class FlightTest {
@@ -252,6 +253,57 @@ public class FlightTest {
         Flight test = getValidFlight();
 
         assertThat(test.getDump(), equalTo("1,src,01/01/2023,10:39,dsn,01/02/2023,02:50"));
+    }
+
+    @Test
+    void testDateDump()
+    {
+        String test = getValidFlight().getDepartureString();
+
+        assertThat(Flight.dateDump(test), equalTo("01/01/2023,10:39"));
+    }
+
+    @Test
+    void testCloneSameData()
+    {
+       Flight test = getValidFlight();
+       Flight clone = test.clone();
+
+       assertTrue(clone.equals(test));
+        assertNotSame(clone.getDeparture(), test.getDeparture());
+    }
+
+    @Test
+    void testEqualsSameObject()
+    {
+        Flight test = getValidFlight();
+
+        assertTrue(test.equals(test));
+    }
+
+    @Test
+    void testEqualsSameState()
+    {
+        Flight test = getValidFlight();
+        Flight test2 = getValidFlight();
+        assertTrue(test.equals(test2));
+    }
+
+    @Test
+    void testEqualsFailure()
+    {
+        Flight test = new Flight("32", "srd","dsn", "1/1/2023", "10:23","1/2/2023","2:54");
+        Flight test2 = getValidFlight();
+
+        assertFalse(test.equals(test2));
+    }
+
+    @Test
+    void testEqualsDifferentClass()
+    {
+        Flight test = getValidFlight();
+
+        assertFalse(test.equals(" "));
     }
     protected static Flight getValidFlight() {
         Flight test = null;

@@ -7,7 +7,7 @@ public class Airport {
     protected Collection<Airline> airlines;
     protected String name;
 
-    public Airport()
+    protected Airport()
     {
         name = "";
         airlines = new LinkedList<>();
@@ -19,7 +19,7 @@ public class Airport {
         this.name = name;
     }
 
-    public Airport(String name, Airline airline) throws CloneNotSupportedException {
+    public Airport(String name, Airline airline) {
         this(name);
         addAirline(airline);
     }
@@ -44,20 +44,18 @@ public class Airport {
         return this.airlines;
     }
 
-    public void addAirline(Airline airline) throws CloneNotSupportedException {
-        airlines.add(new Airline(airline));
+    public void addAirline(Airline airline) {
+        airlines.add(airline.clone());
     }
 
     @Override
     public boolean equals(Object object)
     {
-        if(this == object)
+        if(super.equals(object))
             return true;
-        if(this.getClass() != object.getClass())
+        if(!(object instanceof Airport))
             return false;
-        if(this.name.equals(((Airport)object).name))
-            return true;
-        return false;
+        return this.name.equals(((Airport) object).name);
     }
 
     public boolean removeAirline(Airline airline)

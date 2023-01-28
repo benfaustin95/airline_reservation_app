@@ -21,19 +21,30 @@ public class TextDumper implements AirlineDumper<Airline> {
   public void dump(Airline airline) {
 
     if(airline == null)
-        throw new IllegalArgumentException("No airline");
+      throw new IllegalArgumentException("No airline");
 
     Iterator<Flight> toDump = airline.getFlights().iterator();
     String name = airline.getName();
 
     try (
-      PrintWriter pw = new PrintWriter(this.writer)
-      ) {
+            PrintWriter pw = new PrintWriter(this.writer)
+    ) {
 
       while(toDump.hasNext())
       {
         pw.println(name+","+toDump.next().getDump());
       }
+    }
+  }
+
+  public void dumpAirport(Airport airport) throws IllegalArgumentException
+  {
+    if(airport == null)
+      throw new IllegalArgumentException("Null Airport can not be written to file");
+
+    for(Airline airline: airport.getAirlines())
+    {
+      dump(airline);
     }
   }
 

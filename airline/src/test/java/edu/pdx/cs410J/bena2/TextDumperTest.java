@@ -63,18 +63,22 @@ public class TextDumperTest {
   @Test
   void canParseIntoAirline()
   {
-    Airline test = null;
-
+    Airport test = new Airport("temp_name");
     try(FileReader file = new FileReader("test.txt")) {
 
       TextParser parser = new TextParser(file);
-      test = parser.parse();
+      test = parser.parseAirport();
     }
     catch(IOException |ParserException ex)
     {
         fail(ex.getMessage());
     }
 
-    assertThat(test.getFlights().size(), equalTo(6));
+    assertThat(test.getAirlines().size(), equalTo(1));
+    Airline temp = test.getAirline("name");
+    for(Flight flight: temp.getFlights())
+    {
+      System.out.println(flight.toString());
+    }
   }
 }

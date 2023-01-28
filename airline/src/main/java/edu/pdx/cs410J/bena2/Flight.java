@@ -264,33 +264,41 @@ public class Flight extends AbstractFlight implements Cloneable{
 
   public String getDump()
   {
-    StringBuilder toReturn = new StringBuilder();
-    toReturn.append(getNumber()).append(",");
-    toReturn.append(getSource()).append(',');
-    toReturn.append(getDepartureString()).append(',');
-    toReturn.append(getDestination()).append(",");
-    toReturn.append(getArrivalString());
-
-    return toReturn.toString();
+    return getNumber() + "," +
+            getSource() + ',' +
+            DateDump(getDepartureString()) + ',' +
+            getDestination() + "," +
+            DateDump(getArrivalString());
   }
 
-  @Override
-  protected Flight clone() throws CloneNotSupportedException
+  protected  String DateDump(String date)
   {
-      return new Flight(this);
+    return date.replace(' ', ',');
+  }
+  @Override
+  protected Flight clone()
+  {
+    Flight clone = null;
+
+    try {
+      clone = (Flight) super.clone();
+      clone.departure = new Date(departure.getTime());
+      clone.arrival = new Date(arrival.getTime());
+    }
+    catch (CloneNotSupportedException ex)
+    {
+      ex.printStackTrace();
+    }
+    return clone;
   }
 
   @Override
   public boolean equals(Object toCompare)
   {
-    if(toCompare == null)
-       return false;
-    if(this == toCompare)
+    if(super.equals(toCompare))
       return true;
-    if(this.getClass() != toCompare.getClass())
+    if(!(toCompare instanceof Flight))
       return false;
-    if(flightNumber != ((Flight)toCompare).flightNumber)
-      return false;
-    return true;
+    return flightNumber == ((Flight)toCompare).flightNumber;
   }
 }

@@ -21,10 +21,65 @@ public class TextParser implements AirlineParser<Airline> {
     this.reader = reader;
   }
 
+  public Airport parseAirport() throws ParserException, IllegalArgumentException {
+    Airport toReturn = new Airport("temp_name");
+    int counter = 0;
+
+    try (BufferedReader br = new BufferedReader(this.reader)) {
+      String line;
+      ArrayList<String> field_list = null;
+      Airline toAdd = null;
+
+      while ((line = br.readLine()) != null) {
+        field_list = splitLine(line);
+        ++counter;
+
+        if(toAdd != null && toAdd.equals(field_list.get(0)))
+          toAdd.addFlight(parseFlight(field_list));
+        else if((toAdd = toReturn.getAirline(field_list.get(0))) == null)
+          toReturn.addAirline(parseAirline(field_list));
+        else
+          toAdd.addFlight(parseFlight(field_list));
+
+      }
+    } catch (IOException | IllegalArgumentException ex) {
+          throw new ParserException("Failure line "+counter,ex);
+    }
+
+    return toReturn;
+  }
+
+  protected Airline parseAirline(ArrayList<String> arg_list) throws IllegalArgumentException
+  {
+    return new Airline(arg_list.get(0),new Flight(arg_list.get(1),arg_list.get(2),
+            arg_list.get(5),arg_list.get(3),arg_list.get(4),arg_list.get(6),arg_list.get(7)));
+  }
+
+
+  protected Flight parseFlight(ArrayList<String> arg_list) throws IllegalArgumentException
+  {
+      return new Flight(arg_list.get(1),arg_list.get(2),arg_list.get(5),arg_list.get(3),
+              arg_list.get(4),arg_list.get(6),arg_list.get(7));
+  }
+
+  private static ArrayList<String> splitLine(String line) throws IllegalArgumentException{
+
+    StringTokenizer temp = new StringTokenizer(line, ",");
+    ArrayList<String> arg_list = new ArrayList<>(8);
+
+    while(temp.hasMoreTokens())
+    {
+      arg_list.add(temp.nextToken());
+    }
+
+    if(arg_list.size()!=8)
+      throw new IllegalArgumentException("bad arguments");
+    return arg_list;
+  }
   @Override
   public Airline parse() throws ParserException {
 
-    String line;
+    /*String line;
     Airline airline = null;
     int counter = 0;
 
@@ -46,7 +101,8 @@ public class TextParser implements AirlineParser<Airline> {
    {
      return airline;
    }
-    return airline;
+    return airline;*/
+    return null;
   }
 
   /*
@@ -56,55 +112,4 @@ public class TextParser implements AirlineParser<Airline> {
     else create airline and instantiate with flight
     loop until line is null
    */
-
-  public Airport parseAirport() throws ParserException, CloneNotSupportedException {
-    Airport toReturn = new Airport("temp_name");
-    String line;
-    ArrayList<String> field_list = null;
-    Airline toAdd = null;
-
-    try(BufferedReader br = new BufferedReader(this.reader))
-    {
-        while((line = br.readLine()) != null)
-        {
-            field_list = splitLine(line);
-
-            if((toAdd = toReturn.getAirline(field_list.get(0))) == null)
-                toReturn.addAirline(parseAirline(field_list));
-            else
-              toAdd.addFlight(parseFlight(field_list));
-        }
-    }
-    catch(IOException ex)
-    {
-
-    }
-  }
-
-  protected Airline parseAirline(ArrayList<String> arg_list) throws ParserException, IllegalArgumentException
-  {
-    return new Airline(arg_list.get(0),new Flight(arg_list.get(1),arg_list.get(2),
-            arg_list.get(5),arg_list.get(3),arg_list.get(4),arg_list.get(6),arg_list.get(7)));
-  }
-
-  private static ArrayList<String> splitLine(String line) throws IllegalArgumentException{
-
-    StringTokenizer temp = new StringTokenizer(line, ", ");
-    ArrayList<String> arg_list = new ArrayList<>();
-
-    while(temp.hasMoreTokens())
-    {
-        arg_list.add(temp.nextToken());
-    }
-
-    if(arg_list.size()!=8)
-      throw new IllegalArgumentException("cnasfsadg");
-    return arg_list;
-  }
-
-  protected Flight parseFlight(ArrayList<String> arg_list) throws ParserException, IllegalArgumentException
-  {
-      return new Flight(arg_list.get(1),arg_list.get(2),arg_list.get(5),arg_list.get(3),
-              arg_list.get(4),arg_list.get(6),arg_list.get(7));
-  }
 }

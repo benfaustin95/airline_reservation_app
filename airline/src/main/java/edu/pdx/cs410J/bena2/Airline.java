@@ -1,6 +1,7 @@
 package edu.pdx.cs410J.bena2;
 
 import edu.pdx.cs410J.AbstractAirline;
+import org.checkerframework.checker.units.qual.A;
 import org.checkerframework.framework.qual.LiteralKind;
 
 
@@ -114,30 +115,39 @@ public class Airline extends AbstractAirline<Flight> implements Cloneable{
     }
 
     @Override
-    protected Airline clone() throws CloneNotSupportedException
+    protected Airline clone()
     {
-            return new Airline(this);
+        Airline clone = null;
+
+        try {
+            clone = (Airline) super.clone();
+            clone.roster = new ArrayList<>();
+            for(Flight flight: roster)
+            {
+                clone.roster.add(flight.clone());
+            }
+        }
+        catch (CloneNotSupportedException ex)
+        {
+            ex.printStackTrace();
+        }
+
+        return clone;
     }
 
     @Override
     public boolean equals(Object object)
     {
-        if(object == null)
-            return false;
-        if(this == object)
+        if(super.equals(object))
             return true;
-        if(this.getClass() != object.getClass())
+        if(!(object instanceof Airline))
             return false;
-        if(this.name.equals(((Airline)object).name))
-            return true;
-        return false;
+        return this.name.equals(((Airline)object).name);
     }
 
     public boolean equals(String toCompare)
     {
-        if(toCompare.equals(name))
-            return true;
-        return false;
+        return toCompare.equals(name);
     }
 
 

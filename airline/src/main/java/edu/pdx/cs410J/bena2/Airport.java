@@ -39,6 +39,11 @@ public class Airport {
         return this.name;
     }
 
+    public String toString()
+    {
+        return "Airport " + getName()+" has " + getAirlines().size() + "airlines";
+    }
+
     public Collection<Airline> getAirlines()
     {
         return this.airlines;

@@ -17,30 +17,32 @@ public class TextDumperTest {
 
   @Test
   void airlineNameIsDumpedInTextFormat() {
-    String airlineName = "Test Airline";
-    Airline airline = new Airline(airlineName,FlightTest.getValidFlight());
+    Airport test = getValidAirport();
+    String text = null;
 
-    StringWriter sw = new StringWriter();
-    TextDumper dumper = new TextDumper(sw);
-    dumper.dump(airline);
-
-    String text = sw.toString();
-    assertThat(text, containsString(airlineName));
+    try (StringWriter sw = new StringWriter())
+    {
+      TextDumper dumper = new TextDumper(sw);
+      dumper.dumpAirport(test);
+      text = sw.toString();
+    } catch (IOException | IllegalArgumentException e) {
+      fail(e.getMessage());
+    }
+    assertThat(text, containsString("name,1,src"));
   }
 
 
   @Test
-  void canParseTextWrittenByTextDumper(@TempDir File tempDir) throws IOException, ParserException {
-    String airlineName = "Test Airline";
-    Airline airline = new Airline(airlineName,FlightTest.getValidFlight());
+  void canParseTextWrittenByTextDumper() throws IOException, ParserException {
+    Airport test = getValidAirport();
 
-    File textFile = new File(tempDir, "airline.txt");
+    File textFile = new File("airline.txt");
     TextDumper dumper = new TextDumper(new FileWriter(textFile));
-    dumper.dump(airline);
+    dumper.dumpAirport(test);
 
-    TextParser parser = new TextParser(new FileReader(textFile));
-    Airline read = parser.parse();
-    assertThat(read.getName(), equalTo(airlineName));
+   TextParser parser = new TextParser(new FileReader(textFile));
+    Airport test2 = parser.parseAirport();
+    assertThat(test.toString(), equalTo(test2.toString()));
   }
 
   @Test
@@ -60,25 +62,11 @@ public class TextDumperTest {
     assertTrue(true);
   }
 
-  @Test
-  void canParseIntoAirline()
+  public static Airport getValidAirport()
   {
-    Airport test = new Airport("temp_name");
-    try(FileReader file = new FileReader("test.txt")) {
-
-      TextParser parser = new TextParser(file);
-      test = parser.parseAirport();
-    }
-    catch(IOException |ParserException ex)
-    {
-        fail(ex.getMessage());
-    }
-
-    assertThat(test.getAirlines().size(), equalTo(1));
-    Airline temp = test.getAirline("name");
-    for(Flight flight: temp.getFlights())
-    {
-      System.out.println(flight.toString());
-    }
+      Airport test = new Airport("temp_name", AirlineTest.getValidAirline());
+      test.addAirline(new Airline("name2", FlightTest.getValidFlight()));
+      return test;
   }
+
 }

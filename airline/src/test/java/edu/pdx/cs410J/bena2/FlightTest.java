@@ -251,7 +251,7 @@ public class FlightTest {
     {
         Flight test = getValidFlight();
 
-        assertThat(test.getDump(), equalTo("1,src,01/01/2023 10:39,dsn,01/02/2023 02:50"));
+        assertThat(test.getDump(), equalTo("1,src,01/01/2023,10:39,dsn,01/02/2023,02:50"));
     }
     protected static Flight getValidFlight() {
         Flight test = null;

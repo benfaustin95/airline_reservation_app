@@ -46,11 +46,19 @@ public class Airline extends AbstractAirline<Flight> implements Cloneable{
         this.name = validateName(name);
     }
 
-    public Airline(Airline airline) throws CloneNotSupportedException {
+    /**
+     * Airline serves as the copy constructor for the Airline class, the implementation
+     * creates a deep copy of the Airline object passed in.
+     * @param airline the Airline object to be copied.
+     * @throws IllegalArgumentException Not thrown within the constructor but rather by methods
+     *                                  invoked within the constructor and not caught as the error
+     *                                  should be passed to the calling routine.
+     */
+    public Airline(Airline airline) throws IllegalArgumentException{
         this(airline.name);
 
         for (Flight flight : airline.roster) {
-            this.roster.add(flight.clone());
+            this.roster.add(new Flight(flight));
         }
     }
 
@@ -107,7 +115,7 @@ public class Airline extends AbstractAirline<Flight> implements Cloneable{
      */
     public static String validateName(String name) throws IllegalArgumentException{
         if(name == null || name.isEmpty() || name.isBlank())
-            throw new IllegalArgumentException("Airline name " +name + " is invalid, must not be empty.");
+            throw new IllegalArgumentException("Name " +name + " is invalid, must not be empty.");
         return name;
     }
 

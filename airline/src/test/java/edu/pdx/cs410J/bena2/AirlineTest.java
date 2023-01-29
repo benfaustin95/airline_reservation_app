@@ -121,6 +121,105 @@ public class AirlineTest{
     {
        assertThat(new Airline("name").getFlights().size(), equalTo(0));
     }
+
+    @Test
+    public void testCloneSameDate()
+    {
+        Airline test = getValidAirline();
+        Airline clone = test.clone();
+
+        assertTrue(test.equals(clone));
+        assertTrue(test.getFlights() != clone.getFlights());
+        assertFalse(test == clone);
+    }
+
+    @Test
+    public void testCloneChangeData()
+    {
+        Airline test = getValidAirline();
+        Airline clone = test.clone();
+
+        clone.addFlight(FlightTest.getValidFlight());
+
+        assertTrue(test.equals(clone));
+        assertFalse(test.getFlights().size() == clone.getFlights().size());
+        assertFalse(test.getFlights() == clone.getFlights());
+    }
+
+    @Test
+    public void testEqualsSameReferenceEquality()
+    {
+        Airline test = getValidAirline();
+
+        assertTrue(test.equals(test));
+        assertTrue(test == test);
+    }
+
+    @Test
+    public void testEqualsLogicalEquivalence()
+    {
+       Airline test = getValidAirline();
+       Airline clone = getValidAirline();
+
+       assertTrue(test.equals(clone));
+       assertFalse(test == clone);
+    }
+
+    @Test
+    public void testEqualsNotEquivalent()
+    {
+        Airline test = getValidAirline();
+        Airline clone = new Airline("name2");
+
+        assertFalse(test == clone);
+        assertFalse(test.equals(clone));
+    }
+
+
+    @Test
+    public void testEqualsDifferentClass()
+    {
+        Airline test = getValidAirline();
+
+        assertFalse(test.equals(" "));
+    }
+
+    @Test
+    public void testEqualsNameEqual()
+    {
+        Airline test = getValidAirline();
+
+        assertTrue(test.equals("name"));
+    }
+
+    @Test
+    public void testEqualsNameNotEqual()
+    {
+        Airline test = getValidAirline();
+
+        assertFalse(test.equals("name2"));
+    }
+
+    @Test
+    public void testRemoveFlight()
+    {
+        Airline test = getValidAirline();
+        Flight flight = FlightTest.getValidFlight();
+
+        assertTrue(test.removeFlight(flight));
+        assertTrue(test.getFlights().isEmpty());
+    }
+
+    @Test
+    public void testRemoveFlightThatDoesNotExist()
+    {
+        Airline test = getValidAirline();
+        Flight flight = new Flight("2","src","dsw","1/1/2023", "10:39","1/2/2023","2:40");
+
+        assertFalse(test.removeFlight(flight));
+    }
+
+
     public static Airline getValidAirline()
     {
        Airline test = null;
@@ -134,5 +233,6 @@ public class AirlineTest{
        }
        return test;
     }
+
 
 }

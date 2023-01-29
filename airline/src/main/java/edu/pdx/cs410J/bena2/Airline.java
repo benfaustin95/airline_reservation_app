@@ -1,13 +1,10 @@
 package edu.pdx.cs410J.bena2;
 
 import edu.pdx.cs410J.AbstractAirline;
-import org.checkerframework.checker.units.qual.A;
-import org.checkerframework.framework.qual.LiteralKind;
 
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 
 /**
  * The Airline class holds the data related to an airline instance, including the airline name and
@@ -114,6 +111,12 @@ public class Airline extends AbstractAirline<Flight> implements Cloneable{
         return name;
     }
 
+
+    /**
+     * clone overrides the clone method present in the Object super class. The implementation
+     * calls the clone method of the object class, then makes a deep copy of mutable objects.
+     * @return an Airline that is a deep copy of the current Airline instance.
+     */
     @Override
     protected Airline clone()
     {
@@ -135,6 +138,14 @@ public class Airline extends AbstractAirline<Flight> implements Cloneable{
         return clone;
     }
 
+    /**
+     * equals overrides the equals method present in the object super class. The implementation calls
+     * the equals method of the super class to determine whether the references reference the same
+     * identity. If the super class method returns false the implementation then compares the class
+     * type then the airline name is compared to determine absolute equality.
+     * @param object the Object whose equality is to be compared.
+     * @return true if the objects are logically equivalent and false if not.
+     */
     @Override
     public boolean equals(Object object)
     {
@@ -145,12 +156,22 @@ public class Airline extends AbstractAirline<Flight> implements Cloneable{
         return this.name.equals(((Airline)object).name);
     }
 
+    /**
+     * equals overloads the equals method to take a String to determine equality based on the unique
+     * airline name.
+     * @param toCompare the String representation of the name to compare.
+     * @return true if the airline name matches the supplied argument and false if not.
+     */
     public boolean equals(String toCompare)
     {
         return toCompare.equals(name);
     }
 
-
+    /**
+     * removeFlight removes a flight from the airlines roster
+     * @param flight the flight object to be removed
+     * @return true if the object exists and was removed and false if the object does not exist.
+     */
     public boolean removeFlight(Flight flight)
     {
         if(flight == null)

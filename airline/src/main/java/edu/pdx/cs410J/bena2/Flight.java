@@ -313,7 +313,7 @@ public class Flight extends AbstractFlight implements Cloneable{
    * the clone method to determine if both references reference the same object. If the clone method
    * returns false the implementation then compares the class type, if both references are of the
    * same class type then the flight number is compared to determine absolute equality.
-   * @param toCompare a Object reference to be compared to the current flight instance.
+   * @param toCompare an Object reference to be compared to the current flight instance.
    * @return true or false depending on the equality.
    */
   @Override

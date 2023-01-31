@@ -235,6 +235,17 @@ public class AirlineTest{
         assertTrue(test.equals(copy));
     }
 
+    @Test
+    public void testGetLastFlight()
+    {
+        Airline test = getValidAirline();
+        test.addFlight(new Flight("2","srx","dsn","1/1/2023","10:20","1/1/2023","19:48"));
+        assertTrue(test.getLastFlight().getNumber()==2);
+
+        Airline test2 = new Airline("name");
+        assertThrows(NullPointerException.class, test2::getLastFlight);
+    }
+
     public static Airline getValidAirline()
     {
        Airline test = null;

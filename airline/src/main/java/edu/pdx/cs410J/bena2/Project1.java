@@ -60,15 +60,17 @@ public class Project1 {
      *                                  airline roster is empty, or the flight s null.
      */
     public void printFlight() throws IllegalArgumentException
-  {
-      if(airline == null)
-          throw new IllegalArgumentException("No Airline has been created");
-
-      Collection<Flight> temp= airline.getFlights();
-
-      if(temp.iterator().hasNext())
-        System.out.println(temp.iterator().next().toString());
-  }
+    {
+        if(airline == null)
+            throw new IllegalArgumentException("No Airline has been created");
+        try {
+            System.out.println(airline.getLastFlight().toString());
+        }
+        catch (NullPointerException ex)
+        {
+            return;
+        }
+    }
 
     /**
      * printREADME prints out the README stored in the resources folder.
@@ -111,14 +113,20 @@ public class Project1 {
   {
      StringBuilder error = new StringBuilder();
      int size = args.size();
-
+     error.append("Arguments Provided - ");
+     for(int i =0; i<size; ++i)
+     {
+         error.append(ARG_TYPE[i]).append(" ").append(args.get(i)).append(" ");
+         if(i != size-1)
+             error.append(",");
+     }
+     error.append("\n Arguments Missing - ");
      for(int i =size; i<8; ++i)
      {
-         error.append("Missing ").append(ARG_TYPE[i]);
+         error.append(ARG_TYPE[i]).append(" ");
          if(i!=7)
              error.append(",");
      }
-
      return error.toString();
   }
 

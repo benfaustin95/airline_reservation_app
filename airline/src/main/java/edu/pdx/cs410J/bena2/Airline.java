@@ -189,4 +189,11 @@ public class Airline extends AbstractAirline<Flight> implements Cloneable{
 
         return roster.remove(flight);
     }
+
+    public Flight getLastFlight() throws NullPointerException
+    {
+        if(roster.isEmpty())
+            throw new NullPointerException();
+        return ((ArrayList<Flight>)roster).get(roster.size()-1);
+    }
 }

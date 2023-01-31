@@ -55,10 +55,10 @@ public class Flight extends AbstractFlight implements Cloneable{
   {
     this();
     this.flightNumber = validateNumber(flightNumber);
-    this.source = validateLocation(source);
-    this.destination = validateLocation(destination);
-    this.departure = validateDateAndTime(departureDate,departureTime);
-    this.arrival = validateDateAndTime(arrivalDate, arrivalTime);
+    this.source = validateLocation(source,0);
+    this.destination = validateLocation(destination,1);
+    this.departure = validateDateAndTime(departureDate,departureTime,0);
+    this.arrival = validateDateAndTime(arrivalDate, arrivalTime,1);
     validateOrder(departure,arrival);
   }
 
@@ -78,8 +78,8 @@ public class Flight extends AbstractFlight implements Cloneable{
   {
 
     this.flightNumber = validateNumber(flightNumber);
-    this.source = validateLocation(source);
-    this.destination = validateLocation(destination);
+    this.source = validateLocation(source,0);
+    this.destination = validateLocation(destination,1);
     validateOrder(departureDate,arrivalDate);
     this.departure = new Date(departureDate.getTime());
     this.arrival = new Date(arrivalDate.getTime());
@@ -210,14 +210,15 @@ public class Flight extends AbstractFlight implements Cloneable{
    * @return A reference to the validated location String.
    * @throws IllegalArgumentException Thrown if the string supplied is not a valid location.
    */
-  public static String validateLocation(String location) throws IllegalArgumentException {
+  public static String validateLocation(String location, int type) throws IllegalArgumentException {
     if(location == null)
       throw new IllegalArgumentException("Location can not be null");
 
     location = location.trim();
 
     if(location.length()!= 3 || !location.matches("[A-za-z]{3}"))
-      throw new IllegalArgumentException("Location " + location + " is invalid, format must be three alphabetic letters.");
+      throw new IllegalArgumentException((type == 0 ? "Source ": "Destination ")+"Location " +
+              location + " is invalid, format must be three alphabetic letters.");
     return location;
   }
 
@@ -230,7 +231,7 @@ public class Flight extends AbstractFlight implements Cloneable{
    * @return A reference to a Date object containing the valid date and time.
    * @throws IllegalArgumentException Thrown if either the date or time passed in is not valid.
    */
-  public static Date validateDateAndTime(String date, String time) throws IllegalArgumentException
+  public static Date validateDateAndTime(String date, String time, int type) throws IllegalArgumentException
   {
     DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm");
     df.setLenient(false);
@@ -243,17 +244,19 @@ public class Flight extends AbstractFlight implements Cloneable{
     time = time.trim();
 
     if(!date.matches("(0?[1-9]|1[0-2])\\/(0?[1-9]|1[0-9]|2[0-9]|3[01])\\/\\d{4}"))
-      throw new IllegalArgumentException("Date "+date+" is invalid, date must be in format mm/dd/yyyy");
+      throw new IllegalArgumentException((type == 0 ? "Departure ": "Arrival ")+"date "+date+" " +
+              "is invalid, date must be in format mm/dd/yyyy");
     if(!time.matches("([01]?[0-9]|2[0-4]):[0-5][0-9]"))
-      throw new IllegalArgumentException("Time "+time
+      throw new IllegalArgumentException((type == 0 ? "Departure ": "Arrival ")+"time "+time
               +" is invalid, time must be in format hh:mm (24 hour time)");
     try {
       rdate = df.parse(date + " " + time);
     }
     catch (ParseException ex)
     {
-      throw new IllegalArgumentException("Date "+ date + " " + time +
-              " is invalid, date must be in format MM/dd/yyyy hh:mm (24 hour time) and exist");
+      throw new IllegalArgumentException((type == 0 ? "Departure ": "Arrival ") +"date and time "+
+              date + " " + time + " is invalid, date must be in format MM/dd/yyyy hh:mm (24 hour time) " +
+              "and exist");
     }
 
     return rdate;
@@ -267,9 +270,10 @@ public class Flight extends AbstractFlight implements Cloneable{
    */
   public static void validateOrder(Date departure, Date arrival) throws IllegalArgumentException
   {
+    SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm");
     if(!departure.before(arrival))
-      throw new IllegalArgumentException("Please make sure that the Departure Date occurs before " +
-              "the Arrival Date");
+      throw new IllegalArgumentException("Arrival ("+df.format(arrival)+") can not occur before or" +
+              "in conjunction with Departure ("+df.format(arrival)+")");
   }
 
 
@@ -336,4 +340,5 @@ public class Flight extends AbstractFlight implements Cloneable{
       return false;
     return flightNumber == ((Flight)toCompare).flightNumber;
   }
+
 }

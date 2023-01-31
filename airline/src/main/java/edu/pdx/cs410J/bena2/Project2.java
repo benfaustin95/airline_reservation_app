@@ -29,7 +29,15 @@ public class Project2 extends Project1 {
       File file = null;
 
 
-      fName = splitOptionsAndArgs(args, args_list, options_list);
+      try{
+          fName = splitOptionsAndArgs(args, args_list, options_list);
+      }
+      catch(IllegalArgumentException ex)
+      {
+          System.err.println("Command Line: " + ex.getMessage());
+          System.err.println("Please see README for further instructions");
+          return;
+      }
 
       // If no arguments on command line through exception and print readme to standard error
       if(args_list.isEmpty() && options_list.isEmpty()){
@@ -149,7 +157,7 @@ public class Project2 extends Project1 {
       {
           if(args[i].equals("-textFile") && toReturn == null)
           {
-              if(i+1 < args.length) {
+              if(i+1 < args.length && !args[i+1].startsWith("-")) {
                   optionsList.add(args[i++]);
                   toReturn = args[i];
                   continue;

@@ -91,13 +91,20 @@ public class TextDumperTest {
     }
   }
 
-
-
-  public static Airport getValidAirport()
+  @Test
+  void testPrintingAirlineNoFlights(@TempDir File dir)
   {
-    Airport test = new Airport("temp_name", AirlineTest.getValidAirline());
-    test.addAirline(AirlineTest.getValidAirline());
-    return test;
+    Airline test = new Airline("name");
+    File file = new File(dir, "airline.txt");
+    try(FileWriter fw = new FileWriter(file)) {
+      TextDumper dumper = new TextDumper(fw);
+      dumper.dump(test);
+
+      assertThat((int) file.length(), equalTo(5));
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
   }
 
 }

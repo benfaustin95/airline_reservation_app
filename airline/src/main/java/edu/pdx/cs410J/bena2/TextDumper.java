@@ -34,17 +34,6 @@ public class TextDumper implements AirlineDumper<Airline> {
     }
   }
 
-
-  public void dumpAirport(Airport airport) throws IllegalArgumentException
-  {
-    if(airport == null)
-      throw new IllegalArgumentException("Null Airport can not be written to file");
-
-    for (Airline airline : airport.getAirlines()) {
-      dump(airline);
-    }
-  }
-
 }
 
 

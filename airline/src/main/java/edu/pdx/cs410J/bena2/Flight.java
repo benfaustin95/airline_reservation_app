@@ -53,6 +53,7 @@ public class Flight extends AbstractFlight implements Cloneable{
                 String departureTime, String arrivalDate, String arrivalTime)
           throws IllegalArgumentException
   {
+    this();
     this.flightNumber = validateNumber(flightNumber);
     this.source = validateLocation(source);
     this.destination = validateLocation(destination);

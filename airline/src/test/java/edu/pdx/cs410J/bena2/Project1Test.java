@@ -42,10 +42,20 @@ class Project1Test {
     assertThrows(IllegalArgumentException.class,() -> test.createAirlineAndFlight(arguments));
   }
 
-  ArrayList<String> getInvalidFlightData()
+  public static ArrayList<String> getInvalidFlightData()
   {
     ArrayList<String> test = new ArrayList<>();
     String toAdd[] = {"1","src","1/1/2023","10:39","dsw", "1/2/2023","12:23"};
+
+    Collections.addAll(test, toAdd);
+
+    return test;
+  }
+
+  public static ArrayList<String> getValidFlightData()
+  {
+    ArrayList<String> test = new ArrayList<>();
+    String toAdd[] = {"name","1","src","1/1/2023","10:39","dsw", "1/2/2023","12:23"};
 
     Collections.addAll(test, toAdd);
 

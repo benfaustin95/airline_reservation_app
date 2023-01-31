@@ -1,7 +1,11 @@
 package edu.pdx.cs410J.bena2;
 
 import edu.pdx.cs410J.InvokeMainTestCase;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+
+import java.io.File;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -9,13 +13,13 @@ import static org.hamcrest.MatcherAssert.assertThat;
 /**
  * An integration test for the {@link Project1} main class.
  */
-class Project1IT extends InvokeMainTestCase {
+class Project2IT extends InvokeMainTestCase {
 
     /**
      * Invokes the main method of {@link Project1} with the given arguments.
      */
     private MainMethodResult invokeMain(String... args) {
-        return invokeMain( Project1.class, args );
+        return invokeMain( Project2.class, args );
     }
 
     /*
@@ -49,7 +53,7 @@ class Project1IT extends InvokeMainTestCase {
     @Test
     void testOnlyPrintMeAndTooFewArguments() {
         MainMethodResult result = invokeMain("-print","1","src","1/1/2023","10:39","dsw","1/1/2023","19:49");
-        assertThat(result.getTextWrittenToStandardError(), containsString(Project1.fewArguments));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Error Command Line: Missing Arrival Time"));
         assertThat(result.getTextWrittenToStandardOut(),containsString(""));
     }
 
@@ -60,12 +64,10 @@ class Project1IT extends InvokeMainTestCase {
     @Test
     void testTooManyArguments() {
         MainMethodResult result = invokeMain("-print", "name", "1", "src", "1/1/2023", "10:39", "dsw", "1/1/2023", "11:39", "extra argument");
-        assertThat(result.getTextWrittenToStandardError(), containsString("To many arguments to create a flight, please see README " +
-                "for further instruction on valid command line arguments."));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Error Command Line: Extra Argument - extra argument"));
 
         result = invokeMain( "name", "1", "src", "1/1/2023", "10:39", "dsw", "1/1/2023", "11:39", "extra argument");
-        assertThat(result.getTextWrittenToStandardError(), containsString("To many arguments to create a flight, please see README " +
-                "for further instruction on valid command line arguments."));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Error Command Line: Extra Argument - extra argument"));
     }
 
     /**
@@ -114,25 +116,37 @@ class Project1IT extends InvokeMainTestCase {
     @Test
     void testOnlyInvalidREADMEOnCommandLine() {
         MainMethodResult result = invokeMain("- README");
-        assertThat(result.getTextWrittenToStandardError(), containsString(Project1.fewArguments));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Invalid Options: - README"));
         MainMethodResult result1 = invokeMain("README");
-        assertThat(result1.getTextWrittenToStandardError(), containsString(Project1.fewArguments));
+        assertThat(result1.getTextWrittenToStandardError(), containsString("Error Command Line:" +
+                        " Missing Flight Number,Missing Source Location,Missing Departure Date," +
+                        "Missing Departure Time,Missing Destination Location,Missing Arrival Date," +
+                        "Missing Arrival Time"));
         MainMethodResult result2 = invokeMain("readme");
-        assertThat(result2.getTextWrittenToStandardError(), containsString(Project1.fewArguments));
+        assertThat(result2.getTextWrittenToStandardError(), containsString("Error Command Line:" +
+                " Missing Flight Number,Missing Source Location,Missing Departure Date," +
+                "Missing Departure Time,Missing Destination Location,Missing Arrival Date," +
+                "Missing Arrival Time"));
         MainMethodResult result3 = invokeMain("-readme");
-        assertThat(result3.getTextWrittenToStandardError(), containsString(Project1.fewArguments));
+        assertThat(result3.getTextWrittenToStandardError(), containsString("Invalid Options: -readme"));
     }
 
     @Test
     void testInvalidREADMEOnAndOtherCommandLine() {
-        MainMethodResult result = invokeMain("- README", "-print","name","1","src","1/1/2023","10:39","dsw","1/1/2023","13:50");
-        assertThat(result.getTextWrittenToStandardError(), containsString(Project1.manyArguments));
+        MainMethodResult result = invokeMain("- README", "-print","name","1","src","1/1/2023",
+                "10:39","dsw","1/1/2023","13:50");
+        assertThat(result.getTextWrittenToStandardError(), containsString("Invalid Options: " +
+                "- README"));
         MainMethodResult result1 = invokeMain("README","-print");
-        assertThat(result1.getTextWrittenToStandardError(), containsString(Project1.fewArguments));
+        assertThat(result1.getTextWrittenToStandardError(), containsString("Error Command " +
+                "Line: Missing Flight Number,Missing Source Location,Missing Departure Date,Missing " +
+                "Departure Time,Missing Destination Location,Missing Arrival Date,Missing Arrival Time"));
         MainMethodResult result2 = invokeMain("README", "-prin", "test","test");
-        assertThat(result2.getTextWrittenToStandardError(), containsString(Project1.fewArguments));
+        assertThat(result2.getTextWrittenToStandardError(), containsString("Invalid Options: " +
+                "-prin"));
         MainMethodResult result3 = invokeMain("-readme","-textfile");
-        assertThat(result3.getTextWrittenToStandardError(), containsString(Project1.fewArguments));
+        assertThat(result3.getTextWrittenToStandardError(), containsString("Invalid Options: " +
+                "-readme -textfile"));
     }
 
     /*
@@ -141,20 +155,25 @@ class Project1IT extends InvokeMainTestCase {
     @Test
     void testOnlyPrintMeOnCommandLine() {
         MainMethodResult result = invokeMain("-print");
-        assertThat(result.getTextWrittenToStandardError(), containsString("To few arguments to create a flight, please see README" +
-                " for further instruction on valid command line arguments."));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Error Command " +
+                "Line: Missing Airline Name,Missing Flight Number,Missing Source Location,Missing " +
+                "Departure Date,Missing Departure Time,Missing Destination Location,Missing Arrival " +
+                "Date,Missing Arrival Time"));
     }
 
     @Test
     void testPrintMeOnCommandLineToFewArguments() {
         MainMethodResult result = invokeMain("-print","name","src","1/1/2023","10:39","dsw");
-        assertThat(result.getTextWrittenToStandardError(), containsString(Project1.fewArguments));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Error Command Line: " +
+                "Missing Destination Location,Missing Arrival Date,Missing Arrival Time"));
     }
 
     @Test
     void testPrintMeOnCommandLineToManyArguments() {
-        MainMethodResult result = invokeMain("-print","name", "1", "1", "src","1/1/2023","10:39","dsw","1/1/2023","14:23");
-        assertThat(result.getTextWrittenToStandardError(), containsString(Project1.manyArguments));
+        MainMethodResult result = invokeMain("-print","name", "1", "1", "src","1/1/2023",
+                "10:39","dsw","1/1/2023","14:23");
+        assertThat(result.getTextWrittenToStandardError(), containsString("Error Command" +
+                " Line: Extra Argument - 14:23"));
     }
 
     @Test
@@ -191,7 +210,7 @@ class Project1IT extends InvokeMainTestCase {
     void testPrintMeInvalidName()
     {
         MainMethodResult result = invokeMain("-print", " ", "1", "src", "1/31/2023", "10:39", "dsw","1/31/2023","14:23");
-        assertThat(result.getTextWrittenToStandardError(),containsString("Airline name   is invalid, must not be empty."));
+        assertThat(result.getTextWrittenToStandardError(),containsString("Name   is invalid, must not be empty."));
     }
 
     @Test
@@ -202,9 +221,6 @@ class Project1IT extends InvokeMainTestCase {
 
         result = invokeMain("-print", "airline name", "0", "src", "1/31/2023", "10:39", "dsw","1/1/2023","14:23");
         assertThat(result.getTextWrittenToStandardError(),containsString("Flight Number 0 is invalid, must be greater than zero."));
-
-        result = invokeMain("-print", "airline name", "-1", "src", "1/31/2023", "10:39", "dsw","1/1/2023","14:23");
-        assertThat(result.getTextWrittenToStandardError(),containsString("Flight Number -1 is invalid, must be greater than zero."));
     }
 
     @Test
@@ -220,5 +236,11 @@ class Project1IT extends InvokeMainTestCase {
         assertThat(result.getTextWrittenToStandardError(),containsString("Location d is invalid, format must be three alphabetic letters."));
     }
 
-
+    @Test
+    void testValidEmptyFileFlight(@TempDir File dir)
+    {
+        MainMethodResult result = invokeMain("-print","-textFile","../../file.txt", "name","1",
+                "src","1/1/2023","10:39","dsn","1/2/2023","2:39");
+        assertThat(result.getTextWrittenToStandardOut(),containsString("Flight 1"));
+    }
 }

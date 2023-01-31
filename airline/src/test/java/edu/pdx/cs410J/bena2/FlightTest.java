@@ -305,6 +305,17 @@ public class FlightTest {
 
         assertFalse(test.equals(" "));
     }
+
+
+    @Test
+    void testCopyConstructor()
+    {
+        Flight test = getValidFlight();
+        Flight copy = new Flight(test);
+
+        assertTrue(test.equals(copy));
+        assertThrows(IllegalArgumentException.class, ()->new Flight(null));
+    }
     protected static Flight getValidFlight() {
         Flight test = null;
         try {

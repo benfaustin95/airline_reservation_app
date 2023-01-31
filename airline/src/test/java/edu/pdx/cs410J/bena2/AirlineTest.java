@@ -2,6 +2,8 @@ package edu.pdx.cs410J.bena2;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -178,7 +180,7 @@ public class AirlineTest{
     {
         Airline test = getValidAirline();
 
-        assertFalse(test.equals(" "));
+        assertFalse(test.equals(new ArrayList<String>()));
     }
 
     @Test
@@ -216,6 +218,22 @@ public class AirlineTest{
         assertFalse(test.removeFlight(flight));
     }
 
+    @Test
+    public void testRemoveNullFlight()
+    {
+        Airline test = getValidAirline();
+
+        assertFalse(test.removeFlight(null));
+    }
+
+    @Test
+    public void testCopyConstructor()
+    {
+        Airline test = getValidAirline();
+        Airline copy = new Airline(test);
+
+        assertTrue(test.equals(copy));
+    }
 
     public static Airline getValidAirline()
     {

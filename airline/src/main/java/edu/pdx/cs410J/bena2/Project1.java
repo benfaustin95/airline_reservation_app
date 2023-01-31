@@ -29,73 +29,6 @@ public class Project1 {
     "Departure Date", "Departure Time", "Destination Location", "Arrival Date", "Arrival Time"};
 
     /**
-     * Main method for  CS410J Project 1, parses the command line for airline/flight data
-     * and program options. All errors cause the program to exit and an error message to be printed
-     * to standard error.
-     * @param args an Array of Strings hold user supplied input from the command line
-     */
-  public static void main(String[] args) {
-      // Holds airline and will be used to create and print the airline
-      Project1 test = new Project1();
-      // Valid command line operations
-      String[] operations = {"-README", "-print"};
-      // Will signal to print the flight if flipped to true
-      boolean print = false;
-      // Will hold the argument list (args)
-      ArrayList<String> args_list = new ArrayList<>();
-
-
-      Collections.addAll(args_list,args);
-
-      // If no arguments on command line through exception and print readme to standard error
-      if(args_list.isEmpty()){
-          System.err.println(missingArguments);
-          try {
-              test.printREADME(1);
-          }
-          catch(IOException ex)
-          {
-              System.err.println(ex.getMessage());
-          }
-          return;
-      }
-
-      // If argument list contains -README then readme is printed via standard out and program is
-      // exited
-      if(args_list.contains(operations[0])){
-
-          args_list.remove(operations[0]);
-          try {
-              test.printREADME(0);
-          }
-          catch(IOException ex)
-          {
-              System.err.println(ex.getMessage());
-          }
-          return;
-      }
-
-      // If argument list contains -print print is flipped to true and the argument is removed from
-      // the list
-      if(args_list.contains(operations[1])) {
-          print = true;
-          args_list.remove(operations[1]);
-      }
-
-      // createAirline and Flight is called and at this point the arg_list should contain only
-      // airline and flight information. If the airline/flight is successfully instantiated then
-      // and print is fliped on print flight is called.
-      try{
-          test.createAirlineAndFlight(args_list);
-          if(print)
-            test.printFlight();
-      }
-      catch(IllegalArgumentException ex){
-          System.err.println(ex.getMessage());
-      }
-  }
-
-    /**
      * createAirlineAndFlight instantiates a new airline object and adds a new flight to the airline.
      * Both the flight and airline are created using data passed in via an ArrayList of strings.
      * @param flightData An ArrayList of Strings that holds the data needed to instantiate the flight
@@ -106,15 +39,19 @@ public class Project1 {
      */
   public void createAirlineAndFlight(ArrayList<String> flightData) throws IllegalArgumentException {
 
-      if(flightData.size() < 8)
-          throw new IllegalArgumentException(toFewArguments(flightData));
-
-      if(flightData.size() > 8)
-          throw new IllegalArgumentException(toManyArguments(flightData));
+      correctNumberOfArguments(flightData);
 
       airline = new Airline(flightData.get(0), new Flight(flightData.get(1), flightData.get(2), flightData.get(5), flightData.get(3),
               flightData.get(4), flightData.get(6), flightData.get(7)));
   }
+
+    protected static void correctNumberOfArguments(ArrayList<String> flightData) {
+        if(flightData.size() < 8)
+            throw new IllegalArgumentException(toFewArguments(flightData));
+
+        if(flightData.size() > 8)
+            throw new IllegalArgumentException(toManyArguments(flightData));
+    }
 
 
     /**
@@ -125,7 +62,7 @@ public class Project1 {
     public void printFlight() throws IllegalArgumentException
   {
       if(airline == null)
-          throw new IllegalArgumentException("No Airline has been create");
+          throw new IllegalArgumentException("No Airline has been created");
 
       Collection<Flight> temp= airline.getFlights();
 
@@ -192,7 +129,7 @@ public class Project1 {
 
       for(int i = 8; i<size; ++i)
       {
-          error.append("Extra Argument ").append(args.get(i));
+          error.append("Extra Argument - ").append(args.get(i));
           if(i!=(size-1))
               error.append(",");
 

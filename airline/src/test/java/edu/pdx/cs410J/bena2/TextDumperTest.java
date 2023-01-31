@@ -11,62 +11,93 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class TextDumperTest {
 
   @Test
   void airlineNameIsDumpedInTextFormat() {
-    Airport test = getValidAirport();
+    Airline test = AirlineTest.getValidAirline();
     String text = null;
 
     try (StringWriter sw = new StringWriter())
     {
+      for(int i =0; i<10; ++i)
+      {
+        test.addFlight(FlightTest.getValidFlight());
+      }
+
       TextDumper dumper = new TextDumper(sw);
-      dumper.dumpAirport(test);
+      dumper.dump(test);
       text = sw.toString();
     } catch (IOException | IllegalArgumentException e) {
       fail(e.getMessage());
     }
-    assertThat(text, containsString("name,1,src"));
+    assertThat(text.length(), equalTo(539));
   }
 
 
   @Test
-  void canParseTextWrittenByTextDumper() throws IOException, ParserException {
-    Airport test = getValidAirport();
+  void canParseTextWrittenByTextDumper(@TempDir File dir) throws IOException, ParserException {
+    Airline test = AirlineTest.getValidAirline();
 
-    File textFile = new File("airline.txt");
+    File textFile = new File(dir,"airline.txt");
     TextDumper dumper = new TextDumper(new FileWriter(textFile));
-    dumper.dumpAirport(test);
+    dumper.dump(test);
 
    TextParser parser = new TextParser(new FileReader(textFile));
-    Airport test2 = parser.parseAirport();
+    Airline test2 = parser.parse();
     assertThat(test.toString(), equalTo(test2.toString()));
   }
 
   @Test
-  void canDumpIntoFile()
+  void canDumpIntoFile(@TempDir File dir)
   {
-    Airline test = null;
-
-    try(FileWriter file = new FileWriter("test.txt"))
+    Airline test = null, test2 = null;
+    File file = new File(dir, "test.txt");
+    File file2 = new File(dir, "test2.txt");
+    try(FileWriter fw= new FileWriter(file))
     {
       test = AirlineTest.getValidAirline();
-      TextDumper dumper = new TextDumper(file);
+      TextDumper dumper = new TextDumper(fw);
       dumper.dump(test);
-    }
-    catch(IOException ex) {
 
+      FileReader fr = new FileReader(file);
+      TextParser parser = new TextParser(fr);
+      test2 = parser.parse();
+      fr.close();
+
+      FileWriter fw2 = new FileWriter(file2);
+      TextDumper dumper2 = new TextDumper(fw2);
+      dumper2.dump(test2);
+      fw2.close();
+
+      assertThat(file.length(), equalTo(file2.length()));
     }
-    assertTrue(true);
+    catch(IOException | ParserException ex) {
+        fail(ex.getMessage());
+    }
   }
+
+  @Test
+  void testNullAirlineWrittenError(@TempDir File dir)
+  {
+    try {
+      TextDumper dumper = new TextDumper(new FileWriter(new File(dir, "test.txt")));
+      assertThrows(IllegalArgumentException.class, () -> dumper.dump(null));
+    } catch (IOException e) {
+      fail(e.getMessage());
+    }
+  }
+
+
 
   public static Airport getValidAirport()
   {
-      Airport test = new Airport("temp_name", AirlineTest.getValidAirline());
-      test.addAirline(new Airline("name2", FlightTest.getValidFlight()));
-      return test;
+    Airport test = new Airport("temp_name", AirlineTest.getValidAirline());
+    test.addAirline(AirlineTest.getValidAirline());
+    return test;
   }
 
 }

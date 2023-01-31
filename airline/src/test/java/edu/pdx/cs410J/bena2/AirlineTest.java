@@ -69,7 +69,8 @@ public class AirlineTest{
     @Test
     public void testInitializeWithNullFlight()
     {
-       assertThrows(IllegalArgumentException.class, ()->new Airline("name", null));
+       Airline test =  new Airline("name", null);
+       assertTrue(test.getFlights().size()==0);
     }
 
     @Test
@@ -104,11 +105,7 @@ public class AirlineTest{
         assertThat(test.getFlights().size(), equalTo(1));
     }
 
-    @Test
-    public void testAddNullFlight(){
 
-        assertThrows(IllegalArgumentException.class, () -> getValidAirline().addFlight(null));
-    }
 
     @Test
     public void testGetFlights()

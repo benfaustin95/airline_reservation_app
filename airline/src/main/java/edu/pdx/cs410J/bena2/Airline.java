@@ -95,6 +95,8 @@ public class Airline extends AbstractAirline<Flight> implements Cloneable{
      */
     @Override
     public void addFlight(Flight flight) throws IllegalArgumentException {
+        if(flight == null)
+            return;
         roster.add(new Flight(flight));
     }
 
@@ -116,7 +118,7 @@ public class Airline extends AbstractAirline<Flight> implements Cloneable{
     public static String validateName(String name) throws IllegalArgumentException{
         if(name == null || name.isEmpty() || name.isBlank())
             throw new IllegalArgumentException("Name " +name + " is invalid, must not be empty.");
-        return name;
+        return name.trim();
     }
 
 

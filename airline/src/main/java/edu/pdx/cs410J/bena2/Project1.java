@@ -6,9 +6,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.text.ParseException;
 import java.util.*;
 
 /**
@@ -27,6 +24,9 @@ public class Project1 {
             "for further instruction on valid command line arguments.";
     // references the airline created by the user
     protected Airline airline;
+    // holds list of args
+    protected static final String [] ARG_TYPE = {"Airline Name", "Flight Number", "Source Location",
+    "Departure Date", "Departure Time", "Destination Location", "Arrival Date", "Arrival Time"};
 
     /**
      * Main method for  CS410J Project 1, parses the command line for airline/flight data
@@ -107,10 +107,10 @@ public class Project1 {
   public void createAirlineAndFlight(ArrayList<String> flightData) throws IllegalArgumentException {
 
       if(flightData.size() < 8)
-          throw new IllegalArgumentException(fewArguments);
+          throw new IllegalArgumentException(toFewArguments(flightData));
 
       if(flightData.size() > 8)
-          throw new IllegalArgumentException(manyArguments);
+          throw new IllegalArgumentException(toManyArguments(flightData));
 
       airline = new Airline(flightData.get(0), new Flight(flightData.get(1), flightData.get(2), flightData.get(5), flightData.get(3),
               flightData.get(4), flightData.get(6), flightData.get(7)));
@@ -168,6 +168,36 @@ public class Project1 {
   public Project1()
   {
     airline = null;
+  }
+
+  public static String toFewArguments(ArrayList<String> args)
+  {
+     StringBuilder error = new StringBuilder();
+     int size = args.size();
+
+     for(int i =size; i<8; ++i)
+     {
+         error.append("Missing ").append(ARG_TYPE[i]);
+         if(i!=7)
+             error.append(",");
+     }
+
+     return error.toString();
+  }
+
+  public static String toManyArguments(ArrayList<String> args) throws IllegalArgumentException
+  {
+      StringBuilder error = new StringBuilder();
+      int size = args.size();
+
+      for(int i = 8; i<size; ++i)
+      {
+          error.append("Extra Argument ").append(args.get(i));
+          if(i!=(size-1))
+              error.append(",");
+
+      }
+      return error.toString();
   }
 
 }

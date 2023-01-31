@@ -192,7 +192,7 @@ public class Flight extends AbstractFlight implements Cloneable{
     if(number == null)
       throw  new IllegalArgumentException("null flight number not accepted");
     try {
-      rnumber = Integer.parseInt(number);
+      rnumber = Integer.parseInt(number.trim());
       if(rnumber <= 0)
         throw new IllegalArgumentException("Flight Number " + number + " is invalid, must be greater than zero.");
     }
@@ -210,7 +210,12 @@ public class Flight extends AbstractFlight implements Cloneable{
    * @throws IllegalArgumentException Thrown if the string supplied is not a valid location.
    */
   public static String validateLocation(String location) throws IllegalArgumentException {
-    if(location == null || location.length()!= 3 || !location.matches("[A-za-z]{3}"))
+    if(location == null)
+      throw new IllegalArgumentException("Location can not be null");
+
+    location = location.trim();
+
+    if(location.length()!= 3 || !location.matches("[A-za-z]{3}"))
       throw new IllegalArgumentException("Location " + location + " is invalid, format must be three alphabetic letters.");
     return location;
   }
@@ -229,8 +234,13 @@ public class Flight extends AbstractFlight implements Cloneable{
     DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm");
     df.setLenient(false);
     Date rdate = null;
+
     if(date == null || time == null)
       throw new IllegalArgumentException("Null arguments are not accepted");
+
+    date = date.trim();
+    time = time.trim();
+
     if(!date.matches("(0?[1-9]|1[0-2])\\/(0?[1-9]|1[0-9]|2[0-9]|3[01])\\/\\d{4}"))
       throw new IllegalArgumentException("Date "+date+" is invalid, date must be in format mm/dd/yyyy");
     if(!time.matches("([01]?[0-9]|2[0-4]):[0-5][0-9]"))

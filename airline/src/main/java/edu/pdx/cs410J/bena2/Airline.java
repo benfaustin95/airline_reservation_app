@@ -190,6 +190,11 @@ public class Airline extends AbstractAirline<Flight> implements Cloneable{
         return roster.remove(flight);
     }
 
+    /**
+     * getLastFlight returns a reference to the last flight added to the airline.
+     * @return a Flight reference to the last flight added to the airline.
+     * @throws NullPointerException thrown if there are no flights in the airline.
+     */
     public Flight getLastFlight() throws NullPointerException
     {
         if(roster.isEmpty())

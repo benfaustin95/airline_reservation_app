@@ -18,12 +18,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * from <code>Project1IT</code> which is an integration test (and can capture data)
  * written to {@link System#out} and the like.
  */
-class Project1Test {
+class CommandLineParserTest {
 
   @Test
   void readmeCanBeReadAsResource() throws IOException {
     try (
-            InputStream readme = Project1.class.getResourceAsStream("README.txt")
+            InputStream readme = CommandLineParser.class.getResourceAsStream("README.txt")
     ) {
       assertThat(readme, not(nullValue()));
       BufferedReader reader = new BufferedReader(new InputStreamReader(readme));
@@ -35,7 +35,7 @@ class Project1Test {
   @Test
   void createAirlineAndFlight()
   {
-    Project1 test = new Project1();
+    CommandLineParser test = new CommandLineParser();
     ArrayList<String> arguments= getInvalidFlightData();
 
 
@@ -45,7 +45,7 @@ class Project1Test {
   public static ArrayList<String> getInvalidFlightData()
   {
     ArrayList<String> test = new ArrayList<>();
-    String toAdd[] = {"1","src","1/1/2023","10:39","dsw", "1/2/2023","12:23"};
+    String[] toAdd = {"1","src","1/1/2023","10:39","dsw", "1/2/2023","12:23"};
 
     Collections.addAll(test, toAdd);
 
@@ -55,7 +55,7 @@ class Project1Test {
   public static ArrayList<String> getValidFlightData()
   {
     ArrayList<String> test = new ArrayList<>();
-    String toAdd[] = {"name","1","src","1/1/2023","10:39","dsw", "1/2/2023","12:23"};
+    String[] toAdd = {"name","1","src","1/1/2023","10:39","dsw", "1/2/2023","12:23"};
 
     Collections.addAll(test, toAdd);
 
@@ -64,9 +64,39 @@ class Project1Test {
   @Test
   void testNullAirline()
   {
-    Project1 test = new Project1();
+    CommandLineParser test = new CommandLineParser();
 
-    assertThrows(IllegalArgumentException.class, ()->test.printFlight());
+    assertThrows(IllegalArgumentException.class, test::printFlight);
+  }
+
+  @Test
+  void testCorrectNumberOfArguments()
+  {
+    ArrayList<String> test1 = getInvalidFlightData();
+    ArrayList<String> test2 = getValidFlightData();
+    test2.add("last");
+
+    assertThrows(IllegalArgumentException.class, () -> CommandLineParser.correctNumberOfArguments(test1));
+    assertThrows(IllegalArgumentException.class, () -> CommandLineParser.correctNumberOfArguments(test2));
+
+  }
+
+
+  @Test
+ void testCreateAirline()
+  {
+    ArrayList<String> test = getValidFlightData();
+    CommandLineParser parser = new CommandLineParser();
+
+    parser.createAirlineAndFlight(test);
+
+    assertThat(parser.airline.getFlights().size(), equalTo(1));
+
+    parser.createAirlineAndFlight(test);
+
+    assertThat(parser.airline.getFlights().size(), equalTo(2));
+
+    assertThrows(IllegalArgumentException.class, ()->parser.createAirlineAndFlight(getInvalidFlightData()));
   }
 
 

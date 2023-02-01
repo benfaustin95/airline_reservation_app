@@ -2,8 +2,6 @@ package edu.pdx.cs410J.bena2;
 
 import edu.pdx.cs410J.InvokeMainTestCase;
 import edu.pdx.cs410J.ParserException;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -19,14 +17,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /**
- * An integration test for the {@link Project1} main class.
+ * An integration test for the {@link CommandLineParser} main class.
  */
 class Project2IT extends InvokeMainTestCase {
 
-    @TempDir
-    static Path sharedDir;
     /**
-     * Invokes the main method of {@link Project1} with the given arguments.
+     * Invokes the main method of {@link CommandLineParser} with the given arguments.
      */
     private MainMethodResult invokeMain(String... args) {
         return invokeMain( Project2.class, args );
@@ -42,7 +38,7 @@ class Project2IT extends InvokeMainTestCase {
     @Test
     void testNoCommandLineArguments() {
         MainMethodResult result = invokeMain();
-        assertThat(result.getTextWrittenToStandardError(), containsString(Project1.missingArguments));
+        assertThat(result.getTextWrittenToStandardError(), containsString(CommandLineParser.missingArguments));
     }
 
     /**
@@ -64,9 +60,9 @@ class Project2IT extends InvokeMainTestCase {
     void testOnlyPrintMeAndTooFewArguments() {
         MainMethodResult result = invokeMain("-print","1","src","1/1/2023","10:39","dsw","1/1/2023","19:49");
         assertThat(result.getTextWrittenToStandardError(), containsString("Error Command Line:" +
-                " Arguments Provided - Airline Name 1 ,Flight Number src ,Source Location 1/1/2023 ," +
-                "Departure Date 10:39 ,Departure Time dsw ,Destination Location 1/1/2023 ,Arrival Date 19:49 \n" +
-                " Arguments Missing - Arrival Time \n" +
+                " Arguments Provided - Airline Name 1 , Flight Number src , Source Location 1/1/2023 ," +
+                " Departure Date 10:39 , Departure Time dsw , Destination Location 1/1/2023 , Arrival Date 19:49 \n" +
+                "Arguments Missing - Arrival Time \n" +
                 "Please see README for further instructions"));
         assertThat(result.getTextWrittenToStandardOut(),containsString(""));
     }
@@ -133,14 +129,14 @@ class Project2IT extends InvokeMainTestCase {
         assertThat(result.getTextWrittenToStandardError(), containsString("Invalid Options: - README"));
         MainMethodResult result1 = invokeMain("README");
         assertThat(result1.getTextWrittenToStandardError(), containsString("Error Command Line: " +
-                "Arguments Provided - Airline Name README \n Arguments Missing - Flight Number ," +
-                "Source Location ,Departure Date ,Departure Time ,Destination Location ,Arrival Date ," +
-                "Arrival Time "));
+                "Arguments Provided - Airline Name README \nArguments Missing - Flight Number ," +
+                " Source Location , Departure Date , Departure Time , Destination Location , Arrival Date ," +
+                " Arrival Time "));
         MainMethodResult result2 = invokeMain("readme");
         assertThat(result2.getTextWrittenToStandardError(), containsString("Error Command Line: " +
-                "Arguments Provided - Airline Name readme \n Arguments Missing - Flight Number ," +
-                "Source Location ,Departure Date ,Departure Time ,Destination Location ,Arrival Date ," +
-                "Arrival Time "));
+                "Arguments Provided - Airline Name readme \nArguments Missing - Flight Number ," +
+                " Source Location , Departure Date , Departure Time , Destination Location , Arrival Date ," +
+                " Arrival Time "));
         MainMethodResult result3 = invokeMain("-readme");
         assertThat(result3.getTextWrittenToStandardError(), containsString("Invalid Options: -readme"));
     }
@@ -153,9 +149,9 @@ class Project2IT extends InvokeMainTestCase {
                 "- README"));
         MainMethodResult result1 = invokeMain("README","-print");
         assertThat(result1.getTextWrittenToStandardError(), containsString("Error Command Line: " +
-                "Arguments Provided - Airline Name README \n Arguments Missing - Flight Number ," +
-                "Source Location ,Departure Date ,Departure Time ,Destination Location ,Arrival Date ," +
-                "Arrival Time "));
+                "Arguments Provided - Airline Name README \nArguments Missing - Flight Number ," +
+                " Source Location , Departure Date , Departure Time , Destination Location , Arrival Date ," +
+                " Arrival Time "));
         MainMethodResult result2 = invokeMain("README", "-prin", "test","test");
         assertThat(result2.getTextWrittenToStandardError(), containsString("Invalid Options: " +
                 "-prin"));
@@ -171,8 +167,8 @@ class Project2IT extends InvokeMainTestCase {
     void testOnlyPrintMeOnCommandLine() {
         MainMethodResult result = invokeMain("-print");
         assertThat(result.getTextWrittenToStandardError(), containsString("Error Command Line:" +
-                " Arguments Provided - \n Arguments Missing - Airline Name ,Flight Number ,Source Location ," +
-                "Departure Date ,Departure Time ,Destination Location ,Arrival Date ,Arrival Time \n" +
+                " Arguments Provided - \nArguments Missing - Airline Name , Flight Number , Source Location ," +
+                " Departure Date , Departure Time , Destination Location , Arrival Date , Arrival Time \n" +
                 "Please see README for further instructions."));
     }
 
@@ -180,9 +176,9 @@ class Project2IT extends InvokeMainTestCase {
     void testPrintMeOnCommandLineToFewArguments() {
         MainMethodResult result = invokeMain("-print","name","src","1/1/2023","10:39","dsw");
         assertThat(result.getTextWrittenToStandardError(), containsString("Error Command Line: " +
-                "Arguments Provided - Airline Name name ,Flight Number src ,Source Location 1/1/2023 ," +
-                "Departure Date 10:39 ,Departure Time dsw \n" +
-                " Arguments Missing - Destination Location ,Arrival Date ,Arrival Time \n" +
+                "Arguments Provided - Airline Name name , Flight Number src , Source Location 1/1/2023 ," +
+                " Departure Date 10:39 , Departure Time dsw \n" +
+                "Arguments Missing - Destination Location , Arrival Date , Arrival Time \n" +
                 "Please see README for further instructions."));
     }
 
@@ -317,24 +313,64 @@ class Project2IT extends InvokeMainTestCase {
     @Test
     public void testNoFilePathOptionFollowingTextFile(@TempDir Path dir)
     {
-        Path testFile = dir.resolve("test2");
         MainMethodResult result = invokeMain("-textFile", "-print", "name","1", "src"
                     , "1/1/2023", "10:39", "dsn", "1/2/2023", "2:39");
 
         assertThat(result.getTextWrittenToStandardError(), equalTo("Command Line: -textFile option selected but no file path provided" +
-                "\nPlease see README for further instructions\n"));
+                "\n"));
+
     }
     @Test
-    public void testNoFilePathLastOption(@TempDir Path dir)
+    public void testNoFilePathLastOption()
     {
-        Path testFile = dir.resolve("test2");
         MainMethodResult result = invokeMain("-print", "-textFile", "name","1", "src"
                 , "1/1/2023", "10:39", "dsn", "1/2/2023", "2:39");
 
         assertThat(result.getTextWrittenToStandardError(), equalTo("Error Command Line: " +
-                "Arguments Provided - Airline Name 1 ,Flight Number src ,Source Location 1/1/2023 ," +
-                "Departure Date 10:39 ,Departure Time dsn ,Destination Location 1/2/2023 ,Arrival Date " +
-                "2:39 \n Arguments Missing - Arrival Time \nPlease see README for further instructions.\n"));
+                "Arguments Provided - Airline Name 1 , Flight Number src , Source Location 1/1/2023 ," +
+                " Departure Date 10:39 , Departure Time dsn , Destination Location 1/2/2023 , Arrival Date " +
+                "2:39 \nArguments Missing - Arrival Time \nPlease see README for further instructions.\n"));
     }
 
+
+    @Test
+    public void testWrongName(@TempDir Path dir)
+    {
+        Path testFile = dir.resolve("test2");
+
+        MainMethodResult result = invokeMain("-print", "-textFile", testFile.toString(),"name","1", "src"
+                , "1/1/2023", "10:39", "dsn", "1/2/2023", "2:39");
+
+
+        result = invokeMain("-print", "-textFile", testFile.toString(),"nam2","1", "src"
+                , "1/1/2023", "10:39", "dsn", "1/2/2023", "2:39");
+
+        assertThat(result.getTextWrittenToStandardError(), containsString("does not match Airline"));
+    }
+
+    @Test
+    public void testbadFile(@TempDir Path dir)
+    {
+        Path testFile = dir.resolve("test2");
+
+        MainMethodResult result = invokeMain("-print", "-textFile", testFile.toString()+"/badDirectoryTest","name","1", "src"
+                , "1/1/2023", "10:39", "dsn", "1/2/2023", "2:39");
+
+        assertThat(result.getTextWrittenToStandardError(), containsString("Unable to write"));
+    }
+
+    @Test
+    public void testWrongName2(@TempDir Path dir)
+    {
+        Path testFile = dir.resolve("test2");
+
+        MainMethodResult result = invokeMain("-print", "-textFile", testFile.toString(),"-textFile","name","1", "src"
+                , "1/1/2023", "10:39", "dsn", "1/2/2023", "2:39");
+
+
+        result = invokeMain("-print", "-textFile", testFile.toString(),"nam2","1", "src"
+                , "1/1/2023", "10:39", "dsn", "1/2/2023", "2:39");
+
+        assertThat(result.getTextWrittenToStandardError(), containsString("does not match Airline"));
+    }
 }

@@ -1,16 +1,13 @@
 package edu.pdx.cs410J.bena2;
 
 import edu.pdx.cs410J.ParserException;
-import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -54,7 +51,7 @@ public class TextDumperTest {
   @Test
   void canDumpIntoFile(@TempDir File dir)
   {
-    Airline test = null, test2 = null;
+    Airline test, test2;
     File file = new File(dir, "test.txt");
     File file2 = new File(dir, "test2.txt");
     try(FileWriter fw= new FileWriter(file))

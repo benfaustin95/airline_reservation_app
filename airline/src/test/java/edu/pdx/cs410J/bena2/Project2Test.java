@@ -3,17 +3,14 @@ package edu.pdx.cs410J.bena2;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class Project2Test {
 
@@ -22,7 +19,7 @@ public class Project2Test {
         String[] test = {"-README", "-readme", "-textFile", "text.txt", "args", "source"};
         Set<String> options = new HashSet<>();
         ArrayList<String> args = new ArrayList<>();
-        String name = null;
+        String name;
 
         name = Project2.splitOptionsAndArgs(test, args, options);
 
@@ -36,9 +33,8 @@ public class Project2Test {
         String[] test = {"-README", "-readme", "-textFile"};
         Set<String> options = new HashSet<>();
         ArrayList<String> args = new ArrayList<>();
-        String name = null;
 
-        assertThrows(IllegalArgumentException.class,()->Project2.splitOptionsAndArgs(test, args, options));
+        assertNull(Project2.splitOptionsAndArgs(test, args, options));
 
     }
     @Test
@@ -74,8 +70,8 @@ public class Project2Test {
     {
         Project2 test = new Project2();
 
-        test.createAirlineAndFlight(Project1Test.getValidFlightData());
-        test.addFlight(Project1Test.getValidFlightData());
+        test.createAirlineAndFlight(CommandLineParserTest.getValidFlightData());
+        test.createAirlineAndFlight(CommandLineParserTest.getValidFlightData());
 
         assertThat(test.airline.getFlights().size(), equalTo(2));
     }
@@ -84,9 +80,9 @@ public class Project2Test {
     {
         Project2 test = new Project2();
 
-        test.createAirlineAndFlight(Project1Test.getValidFlightData());
+        test.createAirlineAndFlight(CommandLineParserTest.getValidFlightData());
         assertThrows(IllegalArgumentException.class,
-                ()->test.addFlight(Project1Test.getInvalidFlightData()));
+                ()->test.createAirlineAndFlight(CommandLineParserTest.getInvalidFlightData()));
     }
 
     @Test
@@ -94,10 +90,14 @@ public class Project2Test {
         File file = new File(dir,"text.txt");
         Project2 test = new Project2();
         Project2 test2 = new Project2();
-        test.createAirlineAndFlight(Project1Test.getValidFlightData());
+        test.createAirlineAndFlight(CommandLineParserTest.getValidFlightData());
 
-        test.dumpFile(file);
-        test2.parseFile(file);
+        try {
+            test.dumpFile(file);
+            test2.parseFile(file);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
 
         assertTrue(test.airline.equals(test2.airline));
     }

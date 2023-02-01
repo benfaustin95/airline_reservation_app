@@ -15,6 +15,7 @@ public class Project2 extends CommandLineParser {
      * to standard error.
      * @param args an Array of Strings hold user supplied input from the command line
      */
+
   public static void main(String[] args) {
       Project2 test = new Project2();
       String[] operations = {"-README", "-print", "-textFile"};
@@ -84,16 +85,43 @@ public class Project2 extends CommandLineParser {
      * @return the instantiated file.
      */
     private static File fileSet(Set<String> optionsList, String fName) {
-      
-      if(fName == null)
-      {
-          System.err.println("Command Line: -textFile option selected but no file path provided");
-          return null;
-      } 
-      
-      optionsList.remove("-textFile"); 
-      
-      return new File(fName);
+
+        if (fName == null) {
+            System.err.println("Command Line: -textFile option selected but no file path provided");
+            return null;
+        }
+
+        optionsList.remove("-textFile");
+
+        File toReturn = new File(fName);
+
+        try {
+
+            if (!toReturn.exists())
+                return toReturn;
+            if (!toReturn.isFile())
+            {
+                System.err.println("Error Command Line: File Path Provided Is Not A Valid File");
+                return null;
+            }
+            if(!toReturn.canRead())
+            {
+                System.err.println("Error Command Line: File Path Provided Is Not Readable");
+                return null;
+            }
+            if(!toReturn.canWrite())
+            {
+                System.err.println("Error Command Line: File Path Provided Is Not Writeable");
+                return null;
+            }
+        }
+        catch(SecurityException ex)
+        {
+            System.err.println("Error Command Line: Do not have security level to access file");
+            return null;
+        }
+
+        return toReturn;
     }
 
 

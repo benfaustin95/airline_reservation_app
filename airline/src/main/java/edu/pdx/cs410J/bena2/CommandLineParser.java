@@ -12,8 +12,8 @@ import java.util.*;
 public class CommandLineParser {
 
     //Standard Error message  for missing arguments
-    public static final String missingArguments = "Missing command line arguments, please see following README "
-            + " for further instruction on valid command line arguments.";
+    public static final String missingArguments = "Missing command line arguments, please see " +
+            "below usage information";
     protected Airline airline;
     // holds list of args
     protected static final String [] ARG_TYPE = {"Airline Name", "Flight Number", "Source Location",

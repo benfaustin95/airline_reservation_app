@@ -1,6 +1,6 @@
 #################################################################################
 #              Ben Austin, CS410J-001, 1/24/2023, bena2@pdx.edu                  #
-#                Program 1: Designing an Airline Application                    #
+#                Program 2: Designing an Airline Application                    #
 #################################################################################
 
 Overview:

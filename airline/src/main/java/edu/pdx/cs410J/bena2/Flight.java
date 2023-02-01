@@ -273,7 +273,7 @@ public class Flight extends AbstractFlight implements Cloneable{
     SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm");
     if(!departure.before(arrival))
       throw new IllegalArgumentException("Arrival ("+df.format(arrival)+") can not occur before or" +
-              " in conjunction with Departure ("+df.format(arrival)+")");
+              " in conjunction with Departure ("+df.format(departure)+")");
   }
 
 

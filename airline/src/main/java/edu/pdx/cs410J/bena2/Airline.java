@@ -201,4 +201,10 @@ public class Airline extends AbstractAirline<Flight> implements Cloneable{
             throw new NullPointerException();
         return ((ArrayList<Flight>)roster).get(roster.size()-1);
     }
+
+    @Override
+    public int hashCode()
+    {
+        return 1;
+    }
 }

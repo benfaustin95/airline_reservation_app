@@ -1,11 +1,11 @@
-Test Airline, 1432, SRC, 1/1/2023, 10:29, DSN, 1/2/2023, 19:29
-Test Airline, 1431, SRC, 1/1/2023, 10:29, DSN, 1/2/2023, 19:29
-Test Airline, 1412, SRC, 1/1/2023, 10:29, DSN, 1/2/2023, 19:29
-Test Airline, 1421, SRC, 1/1/2023, 10:29, DSN, 1/2/2023, 19:29
-Test Airline, 1675, SRC, 1/1/2023, 10:29, DSN, 1/2/2023, 19:29
-Test Airline, 1812, SRC, 1/1/2023, 10:29, DSN, 1/2/2023, 19:29
-Test Airline, 2321, SRC, 1/1/2023, 10:29, DSN, 1/2/2023, 19:29
-Test Airline, 4312, SRC, 1/1/2023, 10:29, DSN, 1/2/2023, 19:29
-Test Airline, 8762, SRC, 1/1/2023, 10:29, DSN, 1/2/2023, 19:29
-Test Airline2, 4312, SRC, 1/1/2023, 10:29, DSN, 1/2/2023, 19:29
-Test Airline2, 8762, SRC, 1/1/2023, 10:29, DSN, 1/2/2023, 19:29
+Test Airline, 1432, SRC, 1/1/2023, 10:29, AM, DSN, 1/2/2023, 9:29, PM
+Test Airline, 1431, SRC, 1/1/2023, 10:29, AM, DSN, 1/2/2023, 9:29, PM
+Test Airline, 1412, SRC, 1/1/2023, 10:29, AM, DSN, 1/2/2023, 9:29, PM
+Test Airline, 1421, SRC, 1/1/2023, 10:29, AM, DSN, 1/2/2023, 9:29, PM
+Test Airline, 1675, SRC, 1/1/2023, 10:29, AM, DSN, 1/2/2023, 9:29, PM
+Test Airline, 1812, SRC, 1/1/2023, 10:29, AM, DSN, 1/2/2023, 9:29, PM
+Test Airline, 2321, SRC, 1/1/2023, 10:29, AM, DSN, 1/2/2023, 9:29, PM
+Test Airline, 4312, SRC, 1/1/2023, 10:29, AM, DSN, 1/2/2023, 9:29, PM
+Test Airline, 8762, SRC, 1/1/2023, 10:29, AM, DSN, 1/2/2023, 9:29, PM
+Test Airline2, 4312, SRC, 1/1/2023, 10:29, AM, DSN, 1/2/2023, 9:29, PM
+Test Airline2, 8762, SRC, 1/1/2023, 10:29, AM, DSN, 1/2/2023, 9:29, PM

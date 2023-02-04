@@ -39,26 +39,30 @@ public class Flight extends AbstractFlight implements Cloneable{
   /**
    * Flight serves as the constructor for the Flight class. The Flight constructor sets all fields to
    * value of the corresponding parameter.
-   * @param flightNumber  A String holding the flight number
-   * @param source        A String holding the three letter source location identifier.
-   * @param destination   A String holding the three letter destination location identifier.
-   * @param departureDate A String holding the flight's departure date
-   * @param departureTime A String holding the flight's departure time
-   * @param arrivalDate   A String holding the flight's arrival date
-   * @param arrivalTime   A String holding the flight's arrival time
+   *
+   * @param flightNumber        A String holding the flight number
+   * @param source              A String holding the three letter source location identifier.
+   * @param destination         A String holding the three letter destination location identifier.
+   * @param departureDate       A String holding the flight's departure date
+   * @param departureTime       A String holding the flight's departure time
+   * @param departureAmPmMarker A String holding the flight's departure am/pm marker.
+   * @param arrivalTime         A String holding the flight's arrival time
+   * @param arrivalDate         A String holding the flight's arrival date
+   * @param arrivalAmPmMarker   A String holding the flight's arrival am/pm marker.
    * @throws IllegalArgumentException Not thrown within the function but rather the methods called by
    *                                  the constructor and not caught.
    */
   public Flight(String flightNumber, String source, String destination, String departureDate,
-                String departureTime, String arrivalDate, String arrivalTime)
+                String departureTime, String departureAmPmMarker, String arrivalTime, String arrivalDate,
+                String arrivalAmPmMarker)
           throws IllegalArgumentException
   {
     this();
     this.flightNumber = validateNumber(flightNumber);
     this.source = validateLocation(source,0);
     this.destination = validateLocation(destination,1);
-    this.departure = validateDateAndTime(departureDate,departureTime,0);
-    this.arrival = validateDateAndTime(arrivalDate, arrivalTime,1);
+    this.departure = validateDateAndTime(departureDate,departureTime,departureAmPmMarker,0);
+    this.arrival = validateDateAndTime(arrivalDate, arrivalTime,arrivalAmPmMarker,1);
     validateOrder(departure,arrival);
   }
 
@@ -100,8 +104,8 @@ public class Flight extends AbstractFlight implements Cloneable{
     this.flightNumber = flight.flightNumber;
     this.source = flight.source;
     this.destination = flight.destination;
-    this.departure = flight.departure;
-    this.arrival = flight.arrival;
+    this.departure = new Date(flight.departure.getTime());
+    this.arrival = new Date(flight.arrival.getTime());
 
   }
 
@@ -163,7 +167,7 @@ public class Flight extends AbstractFlight implements Cloneable{
   @Override
   public String getArrivalString(){
 
-    DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+    DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm aa");
 
     return dateFormat.format(arrival);
   }
@@ -176,7 +180,7 @@ public class Flight extends AbstractFlight implements Cloneable{
   @Override
   public String getDepartureString(){
 
-    DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+    DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm aa");
 
     return dateFormat.format(departure);
   }
@@ -226,36 +230,42 @@ public class Flight extends AbstractFlight implements Cloneable{
    * validateDateAndTime validates that the Strings passed in are valid Date and Time representations.
    * The Date must be in the following format: MM/dd/YYYY
    * The time must be in the following format: HH:mm (24 hour time)
+   * the am/pm marker must be either am or pm
    * @param date A String holding the date to be tested.
    * @param time A String holding the time to be tested.
+   * @param amPmMarker A String holding the am/pm marker of the time.
    * @return A reference to a Date object containing the valid date and time.
    * @throws IllegalArgumentException Thrown if either the date or time passed in is not valid.
    */
-  public static Date validateDateAndTime(String date, String time, int type) throws IllegalArgumentException
+  public static Date validateDateAndTime(String date, String time, String amPmMarker, int type) throws IllegalArgumentException
   {
-    DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+    DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm aa");
     df.setLenient(false);
     Date rdate = null;
 
-    if(date == null || time == null)
+    if(date == null || time == null || amPmMarker == null)
       throw new IllegalArgumentException("Null arguments are not accepted");
 
     date = date.trim();
     time = time.trim();
+    amPmMarker = amPmMarker.trim();
 
     if(!date.matches("(0?[1-9]|1[0-2])\\/(0?[1-9]|1[0-9]|2[0-9]|3[01])\\/\\d{4}"))
       throw new IllegalArgumentException((type == 0 ? "Departure ": "Arrival ")+"date "+date+" " +
               "is invalid, date must be in format mm/dd/yyyy");
     if(!time.matches("([01]?[0-9]|2[0-4]):[0-5][0-9]"))
       throw new IllegalArgumentException((type == 0 ? "Departure ": "Arrival ")+"time "+time
-              +" is invalid, time must be in format hh:mm (24 hour time)");
+              +" is invalid, time must be in format hh:mm aa");
+    if(!amPmMarker.matches("[aApP][mM]"))
+      throw new IllegalArgumentException((type == 0 ? "Departure ": "Arrival ")+"am/pm marker "+amPmMarker
+              +" is invalid, either am or pm");
     try {
-      rdate = df.parse(date + " " + time);
+      rdate = df.parse(date + " " + time+" "+amPmMarker);
     }
     catch (ParseException ex)
     {
       throw new IllegalArgumentException((type == 0 ? "Departure ": "Arrival ") +"date and time "+
-              date + " " + time + " is invalid, date must be in format MM/dd/yyyy hh:mm (24 hour time) " +
+              date + " " + time + " "+amPmMarker+" is invalid, date must be in format MM/dd/yyyy hh:mm aa" +
               "and exist");
     }
 
@@ -270,7 +280,7 @@ public class Flight extends AbstractFlight implements Cloneable{
    */
   public static void validateOrder(Date departure, Date arrival) throws IllegalArgumentException
   {
-    SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+    SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm aa");
     if(!departure.before(arrival))
       throw new IllegalArgumentException("Arrival ("+df.format(arrival)+") can not occur before or" +
               " in conjunction with Departure ("+df.format(departure)+")");

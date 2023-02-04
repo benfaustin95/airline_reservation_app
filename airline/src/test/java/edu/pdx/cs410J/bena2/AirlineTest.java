@@ -213,7 +213,7 @@ public class AirlineTest{
     public void testRemoveFlightThatDoesNotExist()
     {
         Airline test = getValidAirline();
-        Flight flight = new Flight("2","src","dsw","1/1/2023", "10:39","1/2/2023","2:40");
+        Flight flight = new Flight("2","src","dsw","1/1/2023", "10:39","am" , "2:40", "1/2/2023","pm");
 
         assertFalse(test.removeFlight(flight));
     }
@@ -239,7 +239,7 @@ public class AirlineTest{
     public void testGetLastFlight()
     {
         Airline test = getValidAirline();
-        test.addFlight(new Flight("2","srx","dsn","1/1/2023","10:20","1/1/2023","19:48"));
+        test.addFlight(new Flight("2","srx","dsn","1/1/2023","10:20","am", "9:48", "1/1/2023","pm"));
         assertTrue(test.getLastFlight().getNumber()==2);
 
         Airline test2 = new Airline("name");

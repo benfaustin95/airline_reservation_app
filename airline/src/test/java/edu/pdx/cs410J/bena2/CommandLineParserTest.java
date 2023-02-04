@@ -55,7 +55,7 @@ class CommandLineParserTest {
   public static ArrayList<String> getValidFlightData()
   {
     ArrayList<String> test = new ArrayList<>();
-    String[] toAdd = {"name","1","src","1/1/2023","10:39","dsw", "1/2/2023","12:23"};
+    String[] toAdd = {"name","1","src","1/1/2023","10:39","am","dsw", "1/2/2023","12:23","pm"};
 
     Collections.addAll(test, toAdd);
 

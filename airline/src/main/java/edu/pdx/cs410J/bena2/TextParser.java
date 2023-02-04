@@ -84,7 +84,7 @@ public class TextParser implements AirlineParser<Airline> {
       return new Airline(arg_list.get(0));
 
     return new Airline(arg_list.get(0),new Flight(arg_list.get(1),arg_list.get(2),
-            arg_list.get(5),arg_list.get(3),arg_list.get(4),arg_list.get(6),arg_list.get(7)));
+            arg_list.get(6),arg_list.get(3),arg_list.get(4),arg_list.get(5) , arg_list.get(8), arg_list.get(7),arg_list.get(9)));
   }
 
 
@@ -106,8 +106,8 @@ public class TextParser implements AirlineParser<Airline> {
                 " make sure each file contains data for only one airline");
     if(arg_list.size() != 8)
       return null;
-    return new Flight(arg_list.get(1),arg_list.get(2),arg_list.get(5),arg_list.get(3),
-            arg_list.get(4),arg_list.get(6),arg_list.get(7));
+    return new Flight(arg_list.get(1),arg_list.get(2),arg_list.get(6),arg_list.get(3),
+            arg_list.get(4), arg_list.get(5), arg_list.get(8), arg_list.get(7), arg_list.get(9));
   }
 
   /**
@@ -121,16 +121,16 @@ public class TextParser implements AirlineParser<Airline> {
   private static ArrayList<String> splitLine(String line) throws IllegalArgumentException {
 
     StringTokenizer temp = new StringTokenizer(line, ",");
-    ArrayList<String> arg_list = new ArrayList<>(8);
+    ArrayList<String> arg_list = new ArrayList<>(10);
 
     while(temp.hasMoreTokens())
     {
       arg_list.add(temp.nextToken());
     }
 
-    if(arg_list.size() < 8 && arg_list.size()>1)
+    if(arg_list.size() < 10 && arg_list.size()>1)
       throw new IllegalArgumentException(CommandLineParser.toFewArguments(arg_list));
-    else if(arg_list.size() > 8)
+    else if(arg_list.size() > 10)
      throw new IllegalArgumentException(CommandLineParser.toManyArguments(arg_list));
 
     return arg_list;

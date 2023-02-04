@@ -17,7 +17,8 @@ public class CommandLineParser {
     protected Airline airline;
     // holds list of args
     protected static final String [] ARG_TYPE = {"Airline Name", "Flight Number", "Source Location",
-            "Departure Date", "Departure Time", "Destination Location", "Arrival Date", "Arrival Time"};
+            "Departure Date", "Departure Time", "Departure am/pm marker","Destination Location", "Arrival Date",
+            "Arrival Time", "Arrival am/pm marker"};
     /**
      * createAirlineAndFlight if the airline field is null the method instantiates a new airline
      * object and adds a new flight to the airline. Both the flight and airline are created using
@@ -35,15 +36,15 @@ public class CommandLineParser {
         correctNumberOfArguments(flightData);
 
         if(airline == null)
-            airline = new Airline(flightData.get(0), new Flight(flightData.get(1), flightData.get(2), flightData.get(5), flightData.get(3),
-                    flightData.get(4), flightData.get(6), flightData.get(7)));
+            airline = new Airline(flightData.get(0), new Flight(flightData.get(1), flightData.get(2), flightData.get(6), flightData.get(3),
+                    flightData.get(4),flightData.get(5) , flightData.get(8), flightData.get(7),flightData.get(9)));
 
         else if(!airline.getName().equals(flightData.get(0)))
             throw new IllegalArgumentException("Airline ("+airline.getName()+") provided in file " +
                     "does not match Airline ("+flightData.get(0)+") provided on command line");
 
-        else airline.addFlight(new Flight(flightData.get(1), flightData.get(2),flightData.get(5),
-                    flightData.get(3), flightData.get(4),flightData.get(6), flightData.get(7)));
+        else airline.addFlight(new Flight(flightData.get(1), flightData.get(2),flightData.get(6),
+                    flightData.get(3), flightData.get(4),flightData.get(5), flightData.get(8), flightData.get(7), flightData.get(9)));
     }
 
     /**
@@ -53,10 +54,10 @@ public class CommandLineParser {
      * @throws IllegalArgumentException Thrown if the number of arguments stored in the list is invalid.
      */
     protected static void correctNumberOfArguments(ArrayList<String> flightData) throws IllegalArgumentException{
-        if(flightData.size() < 8)
+        if(flightData.size() < 10)
             throw new IllegalArgumentException(toFewArguments(flightData));
 
-        if(flightData.size() > 8)
+        if(flightData.size() > 10)
             throw new IllegalArgumentException(toManyArguments(flightData));
     }
 
@@ -160,7 +161,7 @@ public class CommandLineParser {
                 error.append(", ");
         }
         error.append("\nArguments Missing - ");
-        for(int i =size; i<8; ++i)
+        for(int i =size; i<10; ++i)
         {
             error.append(ARG_TYPE[i]).append(" ");
             if(i!=7)
@@ -180,7 +181,7 @@ public class CommandLineParser {
         StringBuilder error = new StringBuilder();
         int size = args.size();
 
-        for(int i = 8; i<size; ++i)
+        for(int i = 10; i<size; ++i)
         {
             error.append("Extra Argument - ").append(args.get(i));
             if(i!=(size-1))

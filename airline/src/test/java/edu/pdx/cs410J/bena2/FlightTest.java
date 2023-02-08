@@ -22,7 +22,7 @@ public class FlightTest {
     @Test
     void initializeFlightStrings() {
 
-        assertThat("Flight 1 departs src at 01/01/2023 10:39 AM arrives dsn at 01/02/2023 02:50 PM",
+        assertThat("Flight 1 departs PDX at 01/01/2023 10:39 AM arrives SEA at 01/02/2023 02:50 PM",
                 equalTo(getValidFlight().toString()));
     }
 
@@ -32,14 +32,15 @@ public class FlightTest {
         Flight test = null;
 
         try {
-            test = new Flight("1", "src", "dsn",
+            test = new Flight("1", "pdx", "SEA",
                     new SimpleDateFormat("MM/dd/yyyy hh:mm aa").parse("1/1/2023 10:39 AM"),
                     new SimpleDateFormat("MM/dd/yyyy hh:mm aa").parse("1/2/2023 2:50 PM"));
         } catch (IllegalArgumentException | ParseException ex) {
             fail(ex.getMessage());
         }
 
-        assertThat("Flight 1 departs src at 01/01/2023 10:39 AM arrives dsn at 01/02/2023 02:50 PM",equalTo(test.toString()));
+        assertThat("Flight 1 departs PDX at 01/01/2023 10:39 AM arrives SEA at 01/02/2023 02:50 PM",equalTo(test.toString()));
+
     }
     @Test
     void testGoodFNumber(){
@@ -51,34 +52,38 @@ public class FlightTest {
     @Test
     void testBadFNumber() {
         assertThrows(IllegalArgumentException.class, () -> new Flight("123f",
-                "src", "dsn", "1/1/2023", "10:39","am", "2:50", "1/2/2023","pm"));
+                "PDX", "SEA", "1/1/2023", "10:39","am", "2:50", "1/2/2023","pm"));
 
         assertThrows(IllegalArgumentException.class, () -> new Flight("",
-                "src", "dsn", "1/1/2023", "10:39","am", "2:50", "1/2/2023","pm"));
+                "PDX", "SEA", "1/1/2023", "10:39","am", "2:50", "1/2/2023","pm"));
+
 
         assertThrows(IllegalArgumentException.class, () -> new Flight("0",
-                "src", "dsn", "1/1/2023", "10:39","am", "2:50", "1/2/2023","pm"));
+                "PDX", "SEA", "1/1/2023", "10:39","am", "2:50", "1/2/2023","pm"));
 
         assertThrows(IllegalArgumentException.class, () -> new Flight("-1",
-                "src", "dsn", "1/1/2023", "10:39","am", "2:50", "1/2/2023","pm"));
+                "PDX", "SEA", "1/1/2023", "10:39","am", "2:50", "1/2/2023","pm"));
 
         assertThrows(IllegalArgumentException.class, () -> new Flight("f",
-                "src", "dsn", "1/1/2023", "10:39","am", "2:50", "1/2/2023","pm"));
+                "PDX", "SEA", "1/1/2023", "10:39","am", "2:50", "1/2/2023","pm"));
 
         assertThrows(IllegalArgumentException.class, () -> new Flight(null,
-                "src", "dsn", "1/1/2023", "10:39","am", "2:50", "1/2/2023","pm"));
+                "PDX", "SEA", "1/1/2023", "10:39","am", "2:50", "1/2/2023","pm"));
+
+        assertThrows(IllegalArgumentException.class, () -> new Flight("12.12",
+                "PDX", "SEA", "1/1/2023", "10:39","am", "2:50", "1/2/2023","pm"));
     }
 
     @Test
     void testSource(){
 
-        assertThat("src", equalTo(getValidFlight().getSource()));
+        assertThat("PDX", equalTo(getValidFlight().getSource()));
     }
 
     @Test
     void testBadSource() {
         assertThrows(IllegalArgumentException.class, () -> new Flight("123",
-                "srcw", "dsn", "1/1/2023", "10:39","am", "2:50", "1/2/2023","pm"));
+                "PDXw", "dsn", "1/1/2023", "10:39","am", "2:50", "1/2/2023","pm"));
 
         assertThrows(IllegalArgumentException.class, () -> new Flight("123",
                 "", "dsn", "1/1/2023", "10:39","am", "2:50", "1/2/2023","pm"));
@@ -95,18 +100,23 @@ public class FlightTest {
         assertThrows(IllegalArgumentException.class, () -> new Flight("123",
                 "s12", "dsn", "1/1/2023", "10:39","am", "2:50", "1/2/2023","pm"));
 
+        assertThrows(IllegalArgumentException.class, () -> new Flight("123",
+                "src", "dsn", "1/1/2023", "10:39","am", "2:50", "1/2/2023","pm"));
     }
 
     @Test
     void testDestination(){
 
-        assertThat("dsn", equalTo(getValidFlight().getDestination()));
+        assertThat("SEA", equalTo(getValidFlight().getDestination()));
     }
 
     @Test
     void testBadDestination() {
         assertThrows(IllegalArgumentException.class, () -> new Flight("123",
-                "src", "dsnbad", "1/1/2023", "10:39","am", "2:50", "1/2/2023","am"));
+                "SEA", "dsnbad", "1/1/2023", "10:39","am", "2:50", "1/2/2023","am"));
+
+        assertThrows(IllegalArgumentException.class, () -> new Flight("123",
+                "SEA", "DSN", "1/1/2023", "10:39","am", "2:50", "1/2/2023","am"));
     }
 
     @Test
@@ -125,7 +135,7 @@ public class FlightTest {
             test_departure = new SimpleDateFormat("MM/dd/yyyy hh:mm aa").parse("1/1/2023 10:39 am");
             test_arrival = new SimpleDateFormat("MM/dd/yyyy hh:mm aa").parse("1/2/2023 1:11 pm");
 
-            test = new Flight("1","src", "dsn", test_departure,
+            test = new Flight("1","PDX", "SEA", test_departure,
                     test_arrival);
 
         } catch (ParseException | IllegalArgumentException ex) {
@@ -150,7 +160,7 @@ public class FlightTest {
             test_departure = new SimpleDateFormat("MM/dd/yyyy hh:mm aa").parse("1/1/2023 10:39 am");
             test_arrival = new SimpleDateFormat("MM/dd/yyyy hh:mm aa").parse("1/2/2023 1:11 am");
 
-            test = new Flight("1","src", "dsn", test_departure,
+            test = new Flight("1","PDX", "SEA", test_departure,
                     test_arrival);
 
         } catch (ParseException | IllegalArgumentException ex) {
@@ -162,89 +172,120 @@ public class FlightTest {
     @Test
     void testInvalidYearString() {
         assertThrows(IllegalArgumentException.class, () -> new Flight("123",
-                "src", "dsn", "1/1/223", "10:39","am", "2:50", "1/2/2023","pm"));
+                "PDX", "dsn", "1/1/223", "10:39","am", "2:50", "1/2/2023","pm"));
         assertThrows(IllegalArgumentException.class, () -> new Flight("123",
-                "src", "dsn", "1/1/20234", "10:39","am", "2:50", "1/2/2023","pm"));
+                "PDX", "SEA", "1/1/20234", "10:39","am", "2:50", "1/2/2023","pm"));
         assertThrows(IllegalArgumentException.class, () -> new Flight("123",
-                "src", "dsn", "1/1/-2023", "10:39","am", "2:50", "1/2/2023","pm"));
+                "PDX", "SEA", "1/1/-2023", "10:39","am", "2:50", "1/2/2023","pm"));
         assertThrows(IllegalArgumentException.class, () -> new Flight("123",
-                "src", "dsn", "1/1/2f23", "10:39","am", "2:50", "1/2/2023","pm"));
+                "PDX", "SEA", "1/1/2f23", "10:39","am", "2:50", "1/2/2023","pm"));
         assertThrows(IllegalArgumentException.class, () -> new Flight("123",
-                "src", "dsn", "1/1/0000", "10:39","am", "2:50", "1/2/2023","pm"));
+                "PDX", "SEA", "1/1/0000", "10:39","am", "2:50", "1/2/2023","pm"));
         assertThrows(IllegalArgumentException.class, () -> new Flight("123",
-                "src", "dsn", "1/1/23", "10:39","am", "2:50", "1/2/2023","pm"));
+                "PDX", "SEA", "1/1/23", "10:39","am", "2:50", "1/2/2023","pm"));
     }
 
     @Test
     void testInvalidMonthString() {
         assertThrows(IllegalArgumentException.class, () -> new Flight("123",
-                "src", "dsn", "21/1/2023", "10:39","am", "2:50", "1/2/2023","pm"));
+                "PDX", "SEA", "21/1/2023", "10:39","am", "2:50", "1/2/2023","pm"));
         assertThrows(IllegalArgumentException.class, () -> new Flight("123",
-                "src", "dsn", "-12/1/2023", "10:39","am", "2:50", "1/2/2023","pm"));
+                "PDX", "SEA", "-12/1/2023", "10:39","am", "2:50", "1/2/2023","pm"));
         assertThrows(IllegalArgumentException.class, () -> new Flight("123",
-                "src", "dsn", "0/1/2023", "10:39","am", "2:50", "1/2/2023","pm"));
+                "PDX", "SEA", "0/1/2023", "10:39","am", "2:50", "1/2/2023","pm"));
         assertThrows(IllegalArgumentException.class, () -> new Flight("123",
-                "src", "dsn", "123/1/2023", "10:39","am", "2:50", "1/2/2023","pm"));
+                "PDX", "SEA", "123/1/2023", "10:39","am", "2:50", "1/2/2023","pm"));
         assertThrows(IllegalArgumentException.class, () -> new Flight("123",
-                "src", "dsn", "/1/2023", "10:39","am", "2:50", "1/2/2023","pm"));
+                "PDX", "SEA", "/1/2023", "10:39","am", "2:50", "1/2/2023","pm"));
         assertThrows(IllegalArgumentException.class, () -> new Flight("123",
-                "src", "dsn", "13/1/2023", "10:39","am", "2:50", "1/2/2023","pm"));
+                "PDX", "SEA", "13/1/2023", "10:39","am", "2:50", "1/2/2023","pm"));
+        assertThrows(IllegalArgumentException.class, () -> new Flight("123",
+                "PDX", "SEA", "12/1/2023", "10:39","am", "2:50", "2/32/2023","pm"));
+        assertThrows(IllegalArgumentException.class, () -> new Flight("123",
+                "PDX", "SEA", "12/1/2023", "10:39","am", "2:50", "2/30/2023","pm"));
     }
 
     @Test
     void testInvalidDayString() {
         assertThrows(IllegalArgumentException.class, () -> new Flight("123",
-                "src", "dsn", "12/32/2023", "10:39","am", "2:50", "1/2/2023","pm"));
+                "PDX", "SEA", "12/32/2023", "10:39","am", "2:50", "1/2/2023","pm"));
         assertThrows(IllegalArgumentException.class, () -> new Flight("123",
-                "src", "dsn", "12/-1/2023", "10:39","am", "2:50", "1/2/2023","pm"));
+                "PDX", "SEA", "12/-1/2023", "10:39","am", "2:50", "1/2/2023","pm"));
         assertThrows(IllegalArgumentException.class, () -> new Flight("123",
-                "src", "dsn", "12/0/2023", "10:39","am", "2:50", "1/2/2023","pm"));
+                "PDX", "SEA", "12/0/2023", "10:39","am", "2:50", "1/2/2023","pm"));
         assertThrows(IllegalArgumentException.class, () -> new Flight("123",
-                "src", "dsn", "12/123/2023", "10:39","am", "2:50", "1/2/2023","pm"));
+                "PDX", "SEA", "12/123/2023", "10:39","am", "2:50", "1/2/2023","pm"));
         assertThrows(IllegalArgumentException.class, () -> new Flight("123",
-                "src", "dsn", "2/31/2023", "10:39","am", "2:50", "1/2/2023","pm"));
+                "PDX", "SEA", "2/31/2023", "10:39","am", "2:50", "1/2/2023","pm"));
         assertThrows(IllegalArgumentException.class, () -> new Flight("123",
-                "src", "dsn", null, "10:39","am", "2:50", "1/2/2023","pm"));
+                "PDX", "SEA", null, "10:39","am", "2:50", "1/2/2023","pm"));
     }
 
     @Test
     void testInvalidHourString() {
         assertThrows(IllegalArgumentException.class, () -> new Flight("123",
-                "src", "dsn", "12/12/2023", "25:39","am", "2:50", "1/2/2023","pm"));
+                "PDX", "SEA", "12/12/2023", "25:39","am", "2:50", "1/2/2023","pm"));
         assertThrows(IllegalArgumentException.class, () -> new Flight("123",
-                "src", "dsn", "12/12/2023", "-1:39","am", "2:50", "1/2/2023","pm"));
+                "PDX", "SEA", "12/12/2023", "-1:39","am", "2:50", "1/2/2023","pm"));
         assertThrows(IllegalArgumentException.class, () -> new Flight("123",
-                "src", "dsn", "12/12/2023", "100:39","am", "2:50", "1/2/2023","pm"));
+                "PDX", "SEA", "12/12/2023", "100:39","am", "2:50", "1/2/2023","pm"));
         assertThrows(IllegalArgumentException.class, () -> new Flight("123",
-                "src", "dsn", "12/12/2023", ":39","am", "2:50", "1/2/2023","pm"));
+                "PDX", "SEA", "12/12/2023", ":39","am", "2:50", "1/2/2023","pm"));
         assertThrows(IllegalArgumentException.class, () -> new Flight("123",
-                "src", "dsn", "12/12/2023", "99:39","am", "2:50", "1/2/2023","pm"));
+                "PDX", "SEA", "12/12/2023", "99:39","am", "2:50", "1/2/2023","pm"));
         assertThrows(IllegalArgumentException.class, () -> new Flight("123",
-                "src", "dsn", "12/12/2023", null,"am", "2:50", "1/2/2023","pm"));
+                "PDX", "SEA", "12/12/2023", null,"am", "2:50", "1/2/2023","pm"));
+        assertThrows(IllegalArgumentException.class, () -> new Flight("123",
+                "PDX", "SEA", "12/12/2023", "13:12","am", "2:50", "1/2/2023","pm"));
     }
 
     @Test
     void testInvalidMinuteString() {
         assertThrows(IllegalArgumentException.class, () -> new Flight("123",
-                "src", "dsn", "12/12/2023", "12:60","am", "2:50", "1/2/2023","pm"));
+                "PDX", "SEA", "12/12/2022", "12:60","am", "2:50", "1/2/2023","pm"));
         assertThrows(IllegalArgumentException.class, () -> new Flight("123",
-                "src", "dsn", "12/12/2023", "12:-1","am", "2:50", "1/2/2023","pm"));
+                "PDX", "SEA", "12/12/2022", "12:-1","am", "2:50", "1/2/2023","pm"));
         assertThrows(IllegalArgumentException.class, () -> new Flight("123",
-                "src", "dsn", "12/12/2023", "12:390","am", "2:50", "1/2/2023","pm"));
+                "PDX", "SEA", "12/12/2022", "12:390","am", "2:50", "1/2/2023","pm"));
         assertThrows(IllegalArgumentException.class, () -> new Flight("123",
-                "src", "dsn", "12/12/2023", "12:0","am", "2:50", "1/2/2023","pm"));
+                "PDX", "SEA", "12/12/2022", "12:0","am", "2:50", "1/2/2023","pm"));
         assertThrows(IllegalArgumentException.class, () -> new Flight("123",
-                "src", "dsn", "12/12/2023", "12:","am", "2:50", "1/2/2023","pm"));
+                "PDX", "SEA", "12/12/2022", "12:","am", "2:50", "1/2/2023","pm"));
+        assertThrows(IllegalArgumentException.class, () -> new Flight("123",
+                "PDX", "SEA", "12/12/2022", "12:0","am", "2:50", "1/2/2023","pm"));
+    }
+
+    @Test
+    void testInvalidAMPMString() {
+        assertThrows(IllegalArgumentException.class, () -> new Flight("123",
+                "PDX", "SEA", "12/12/2022", "12:50","cm", "2:50", "1/2/2023","pm"));
+        assertThrows(IllegalArgumentException.class, () -> new Flight("123",
+                "PDX", "SEA", "12/12/2022", "12:21","ac", "2:50", "1/2/2023","pm"));
+        assertThrows(IllegalArgumentException.class, () -> new Flight("123",
+                "PDX", "SEA", "12/12/2022", "12:30","pa", "2:50", "1/2/2023","pm"));
+        assertThrows(IllegalArgumentException.class, () -> new Flight("123",
+                "PDX", "SEA", "12/12/2022", "12:01","m", "2:50", "1/2/2023","pm"));
+        assertThrows(IllegalArgumentException.class, () -> new Flight("123",
+                "PDX", "SEA", "12/12/2022", "12:11","a", "2:50", "1/2/2023","pm"));
+        assertThrows(IllegalArgumentException.class, () -> new Flight("123",
+                "PDX", "SEA", "12/12/2022", "12:10","p", "2:50", "1/2/2023","pm"));
+        assertThrows(IllegalArgumentException.class, () -> new Flight("123",
+                "PDX", "SEA", "12/12/2022", "12:10","", "2:50", "1/2/2023","pm"));
+        assertThrows(IllegalArgumentException.class, () -> new Flight("123",
+                "PDX", "SEA", "12/12/2022", "12:10",null, "2:50", "1/2/2023","pm"));
+        assertThrows(IllegalArgumentException.class, () -> new Flight("123",
+                "PDX", "SEA", "12/12/2022", "13:10","pm", "2:50", "1/2/2023","pm"));
+
     }
 
     @Test
     void testArrivalBeforeDeparture()
     {
-        assertThrows(IllegalArgumentException.class, () -> new Flight("123", "src",
-                "dsn", "12/12/2023", "12:13","pm", "12:13", "12/11/2023","pm"));
+        assertThrows(IllegalArgumentException.class, () -> new Flight("123", "PDX",
+                "SEA", "12/12/2023", "12:13","pm", "12:13", "12/11/2023","pm"));
 
-        assertThrows(IllegalArgumentException.class, () -> new Flight("123", "src",
-                "dsn", "12/11/2023", "12:14","pm", "12:13", "12/11/2023","pm"));
+        assertThrows(IllegalArgumentException.class, () -> new Flight("123", "PDX",
+                "SEA", "12/11/2023", "12:14","pm", "12:13", "12/11/2023","pm"));
     }
 
     @Test
@@ -252,7 +293,17 @@ public class FlightTest {
     {
         Flight test = getValidFlight();
 
-        assertThat(test.getDump(), equalTo("1,src,01/01/2023,10:39,AM,dsn,01/02/2023,02:50,PM"));
+        assertThat(test.getDump(), equalTo("1,PDX,01/01/2023,10:39,AM,SEA,01/02/2023,02:50,PM"));
+    }
+
+    @Test
+    void testPrettyDump()
+    {
+        Flight test = getValidFlight();
+
+        assertThat(test.getPrettyDump(), equalTo("Flight 1 Departs from Portland, OR at " +
+                "10:39 AM on Sunday the 01 of January 2023 and arrives in Seattle, WA at 02:50 PM " +
+                "on Monday the 02 of January 2023 lasting 1691 minutes"));
     }
 
     @Test
@@ -270,7 +321,8 @@ public class FlightTest {
        Flight clone = test.clone();
 
        assertTrue(clone.equals(test));
-        assertNotSame(clone.getDeparture(), test.getDeparture());
+       assertNotSame(test,clone);
+       assertNotSame(clone.getDeparture(), test.getDeparture());
     }
 
     @Test
@@ -292,7 +344,7 @@ public class FlightTest {
     @Test
     void testEqualsFailure()
     {
-        Flight test = new Flight("32", "srd","dsn", "1/1/2023", "10:23","am", "2:54", "1/2/2023","pm");
+        Flight test = new Flight("32", "PDX","SEA", "1/1/2023", "10:23","am", "2:54", "1/2/2023","pm");
         Flight test2 = getValidFlight();
 
         assertFalse(test.equals(test2));
@@ -316,10 +368,17 @@ public class FlightTest {
         assertTrue(test.equals(copy));
         assertThrows(IllegalArgumentException.class, ()->new Flight(null));
     }
+
+    @Test
+    void testGetPrettyDump()
+    {
+
+        assertThat(getValidFlight().getPrettyDump(), equalTo(validFlightDump));
+    }
     protected static Flight getValidFlight() {
         Flight test = null;
         try {
-            test = new Flight("1", "src", "dsn", "1/1/2023",
+            test = new Flight("1", "PDX", "SEA", "1/1/2023",
                     "10:39","am" , "2:50", "1/2/2023","pm" );
         }
         catch (IllegalArgumentException ex) {
@@ -328,4 +387,7 @@ public class FlightTest {
         return test;
     }
 
+    public static final String validFlightDump = "Flight 1 Departs from Portland," +
+            " OR at 10:39 AM on Sunday the 01 of January 2023 and arrives in Seattle, WA at 02:50 " +
+            "PM on Monday the 02 of January 2023 lasting 1691 minutes";
 }

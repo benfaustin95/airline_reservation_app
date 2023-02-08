@@ -67,6 +67,18 @@ public class TextParserTest {
 
     name = "invalid-InvalidName-airline.txt";
     invalidFile(name);
+
+    name = "invalid-BadAMMarker-airline.txt";
+    invalidFile(name);
+
+    name = "invalid-BadPMMarker-airline.txt";
+    invalidFile(name);
+
+    name = "invalid-BadLocation-airline.txt";
+    invalidFile(name);
+
+    name = "invalid-MissingAMMarker-airline.txt";
+    invalidFile(name);
   }
 
   @Test
@@ -140,7 +152,7 @@ public class TextParserTest {
   }
   private void invalidFile(String name) {
     try(InputStream resource = getClass().getResourceAsStream(name)){
-      assertThat(resource,notNullValue());
+      assertNotNull(resource);
       TextParser parser = new TextParser((new InputStreamReader(resource)));
       assertThrows(ParserException.class,parser::parse);
     }

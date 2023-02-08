@@ -5,6 +5,7 @@ import edu.pdx.cs410J.AbstractAirline;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * The Airline class holds the data related to an airline instance, including the airline name and
@@ -20,7 +21,7 @@ public class Airline extends AbstractAirline<Flight> implements Cloneable{
     // The name of the airline
     private String name;
     // The roster of flights belonging to the airline
-    Collection<Flight>  roster;
+    ArrayList<Flight>  roster;
 
     /**
      * Airline serves as the default constructor for the Airline class, sets all fields to their
@@ -98,6 +99,7 @@ public class Airline extends AbstractAirline<Flight> implements Cloneable{
         if(flight == null)
             return;
         roster.add(new Flight(flight));
+
     }
 
     /**
@@ -106,6 +108,7 @@ public class Airline extends AbstractAirline<Flight> implements Cloneable{
      */
     @Override
     public Collection<Flight> getFlights() {
+        Collections.sort(roster);
         return roster;
     }
 
@@ -190,21 +193,9 @@ public class Airline extends AbstractAirline<Flight> implements Cloneable{
         return roster.remove(flight);
     }
 
-    /**
-     * getLastFlight returns a reference to the last flight added to the airline.
-     * @return a Flight reference to the last flight added to the airline.
-     * @throws NullPointerException thrown if there are no flights in the airline.
-     */
-    public Flight getLastFlight() throws NullPointerException
-    {
-        if(roster.isEmpty())
-            throw new NullPointerException();
-        return ((ArrayList<Flight>)roster).get(roster.size()-1);
-    }
-
     @Override
     public int hashCode()
     {
-        return 1;
+        return toString().hashCode();
     }
 }

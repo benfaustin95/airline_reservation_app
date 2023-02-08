@@ -104,7 +104,7 @@ public class TextParser implements AirlineParser<Airline> {
     if(!aName.equals(arg_list.get(0)))
         throw new IllegalArgumentException("Second Airline (Name " + arg_list.get(0) + ") identified in file. Please" +
                 " make sure each file contains data for only one airline");
-    if(arg_list.size() != 8)
+    if(arg_list.size() != 10)
       return null;
     return new Flight(arg_list.get(1),arg_list.get(2),arg_list.get(6),arg_list.get(3),
             arg_list.get(4), arg_list.get(5), arg_list.get(8), arg_list.get(7), arg_list.get(9));

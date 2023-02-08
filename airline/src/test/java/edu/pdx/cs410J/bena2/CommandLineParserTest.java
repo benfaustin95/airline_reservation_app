@@ -55,20 +55,12 @@ class CommandLineParserTest {
   public static ArrayList<String> getValidFlightData()
   {
     ArrayList<String> test = new ArrayList<>();
-    String[] toAdd = {"name","1","src","1/1/2023","10:39","am","dsw", "1/2/2023","12:23","pm"};
+    String[] toAdd = {"name","1","pdx","1/1/2023","10:39","am","sea", "1/2/2023","12:23","pm"};
 
     Collections.addAll(test, toAdd);
 
     return test;
   }
-  @Test
-  void testNullAirline()
-  {
-    CommandLineParser test = new CommandLineParser();
-
-    assertThrows(IllegalArgumentException.class, test::printFlight);
-  }
-
   @Test
   void testCorrectNumberOfArguments()
   {

@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.bena2;
 
+import edu.pdx.cs410J.AirlineDumper;
 import edu.pdx.cs410J.ParserException;
 
 import java.io.*;
@@ -19,6 +20,9 @@ public class CommandLineParser {
     protected static final String [] ARG_TYPE = {"Airline Name", "Flight Number", "Source Location",
             "Departure Date", "Departure Time", "Departure am/pm marker","Destination Location", "Arrival Date",
             "Arrival Time", "Arrival am/pm marker"};
+    protected static final String[] operations = {"-README", "-print", "-textFile","-pretty"};
+    protected static boolean print = false, stdOut = false;
+
     /**
      * createAirlineAndFlight if the airline field is null the method instantiates a new airline
      * object and adds a new flight to the airline. Both the flight and airline are created using
@@ -31,20 +35,24 @@ public class CommandLineParser {
      *                                  does not match what is in flightData. An IllegalArgumentException
      *                                  can also be thrown by the Airline or Flight constructor.
      */
-    public void createAirlineAndFlight(ArrayList<String> flightData) throws IllegalArgumentException {
+    public Flight createAirlineAndFlight(ArrayList<String> flightData) throws IllegalArgumentException {
 
         correctNumberOfArguments(flightData);
 
+        Flight toAdd = new Flight(flightData.get(1), flightData.get(2),flightData.get(6),
+                flightData.get(3), flightData.get(4),flightData.get(5), flightData.get(8),
+                flightData.get(7), flightData.get(9));
+
         if(airline == null)
-            airline = new Airline(flightData.get(0), new Flight(flightData.get(1), flightData.get(2), flightData.get(6), flightData.get(3),
-                    flightData.get(4),flightData.get(5) , flightData.get(8), flightData.get(7),flightData.get(9)));
+            airline = new Airline(flightData.get(0),toAdd);
 
         else if(!airline.getName().equals(flightData.get(0)))
             throw new IllegalArgumentException("Airline ("+airline.getName()+") provided in file " +
                     "does not match Airline ("+flightData.get(0)+") provided on command line");
 
-        else airline.addFlight(new Flight(flightData.get(1), flightData.get(2),flightData.get(6),
-                    flightData.get(3), flightData.get(4),flightData.get(5), flightData.get(8), flightData.get(7), flightData.get(9)));
+        else airline.addFlight(toAdd);
+
+        return toAdd;
     }
 
     /**
@@ -61,24 +69,6 @@ public class CommandLineParser {
             throw new IllegalArgumentException(toManyArguments(flightData));
     }
 
-
-    /**
-     * printFlight prints the flight information of the (only) flight stored in the airlines roster.
-     * @throws IllegalArgumentException Throws an IllegalArgumentException if hte airline is empty,
-     *                                  airline roster is empty, or the flight s null.
-     */
-    public void printFlight() throws IllegalArgumentException
-    {
-        if(airline == null)
-            throw new IllegalArgumentException("No Airline has been created");
-        try {
-            System.out.println(airline.getLastFlight().toString());
-        }
-        catch (NullPointerException ex)
-        {
-            return;
-        }
-    }
 
     /**
      * printREADME prints out the README stored in the resources folder.
@@ -164,7 +154,7 @@ public class CommandLineParser {
         for(int i =size; i<10; ++i)
         {
             error.append(ARG_TYPE[i]).append(" ");
-            if(i!=7)
+            if(i!=9)
                 error.append(", ");
         }
         return error.toString();
@@ -197,17 +187,35 @@ public class CommandLineParser {
      * @throws IOException Thrown if the file is not valid
      * @throws IllegalArgumentException Thrown if the output fails.
      */
-    protected void dumpFile(File file) throws IOException, IllegalArgumentException{
+    protected void dumpFile(File file, int type) throws IOException, IllegalArgumentException{
+        AirlineDumper<Airline> dumper = null;
 
         try(FileWriter fw = new FileWriter(file)) {
+            if(type == 0)
+                dumper = new TextDumper(fw);
+            else
+                dumper = new PrettyPrinter(fw);
 
-            TextDumper dumper = new TextDumper(fw);
             dumper.dump(airline);
 
         } catch (IOException e) {
-            throw new IOException(" Unable to write");
+            throw new IOException(file.getPath() +" unable to write");
         }
     }
+
+   protected void prettyPrintFile(File file) throws IOException, IllegalArgumentException {
+       PrettyPrinter printer = null;
+
+       if(file == null && stdOut) {
+           printer = new PrettyPrinter(System.out);
+           printer.dump(airline);
+           return;
+       }
+
+       dumpFile(file, 1);
+
+
+   }
 
     /**
      * parseFile handles parsing the airline data from the provided file.
@@ -226,7 +234,7 @@ public class CommandLineParser {
         } catch (FileNotFoundException e) {
             return;
         } catch (IOException e) {
-            throw new IOException(" Unable to read");
+            throw new IOException(file.getPath()+" Unable to read");
         }
     }
 
@@ -238,17 +246,28 @@ public class CommandLineParser {
      * @param optionsList The List meant to hold the options.
      * @return the Name of the file parsed from args.
      */
-    public static String splitOptionsAndArgs(String[] args, ArrayList<String> argsList,
+    public static String [] splitOptionsAndArgs(String[] args, ArrayList<String> argsList,
                                              Set<String> optionsList) {
-        String toReturn = null;
+        String [] toReturn = new String[2];
+        toReturn[0] = null;
+        toReturn[1] = null;
 
         for(int i = 0; i<args.length; ++i)
         {
-            if(args[i].equals("-textFile") && toReturn == null)
+            if(args[i].equals("-textFile") && toReturn[0]== null)
             {
                 optionsList.add(args[i]);
                 if(i+1 < args.length && !args[i+1].startsWith("-")) {
-                    toReturn = args[++i];
+                    toReturn[0] = args[++i];
+                }
+                continue;
+            }
+
+            if(args[i].equals("-pretty") && toReturn[1] == null)
+            {
+                optionsList.add(args[i]);
+                if(i+1 < args.length && (!args[i+1].startsWith("-") || args[i+1].equals("-"))) {
+                    toReturn[1] = args[++i];
                 }
                 continue;
             }
@@ -257,7 +276,6 @@ public class CommandLineParser {
             else
                 argsList.add(args[i]);
         }
-
         return toReturn;
     }
 }

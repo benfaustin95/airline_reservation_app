@@ -18,21 +18,27 @@ public class Project2 extends CommandLineParser {
 
   public static void main(String[] args) {
       Project2 test = new Project2();
-      String[] operations = {"-README", "-print", "-textFile"};
-      boolean print = false;
       ArrayList<String> args_list = new ArrayList<>();
       Set<String> options_list = new HashSet<>();
-      String fName = null;
-      File file = null;
+      String fNames [] = null;
+      File [] file = new File[2];
+      print = stdOut = false;
 
-      fName = splitOptionsAndArgs(args, args_list, options_list);
+      fNames = splitOptionsAndArgs(args, args_list, options_list);
 
       if(args_list.isEmpty() && options_list.isEmpty()) {
           System.err.println(missingArguments);
           printUsage(0);
           return;
       }
-      
+
+      if(fNames[0] != null && fNames[0].equals(fNames[1]))
+      {
+          System.err.println("File path for -textFile and -pretty options can not be the same\n" +
+                  "Please see README for further instruction");
+          return;
+      }
+
       if(options_list.contains(operations[0])) {
           printREADME(0);
           return;
@@ -46,15 +52,22 @@ public class Project2 extends CommandLineParser {
 
       if(options_list.contains(operations[2]))
       {
-          file = fileSet(options_list, fName);
-          if(file == null)
+          file[0] = fileSet(options_list, fNames[0],operations[2]);
+          if(file[0] == null)
               return;
+      }
+
+      if(options_list.contains(operations[3]))
+      {
+          file[1] = fileSet(options_list, fNames[1], operations[3]);
+          if(file[1] == null && !stdOut)
+                  return;
       }
 
       if(invalidOptions(options_list))
           return;
 
-      test.execution( print, args_list, fName, file);
+      test.execution(args_list, fNames, file);
   }
 
     /**
@@ -84,14 +97,20 @@ public class Project2 extends CommandLineParser {
      * @param fName the file path.
      * @return the instantiated file.
      */
-    private static File fileSet(Set<String> optionsList, String fName) {
+    private static File fileSet(Set<String> optionsList, String fName, String option) {
 
         if (fName == null) {
-            System.err.println("Command Line: -textFile option selected but no file path provided");
+            System.err.println("Command Line: "+option+
+                    " option selected but no file path provided");
             return null;
         }
 
-        optionsList.remove("-textFile");
+        optionsList.remove(option);
+
+        if(option.equals(operations[3]) && fName.equals("-")) {
+            stdOut = true;
+            return null;
+        }
 
         File toReturn = new File(fName);
 
@@ -101,23 +120,27 @@ public class Project2 extends CommandLineParser {
                 return toReturn;
             if (!toReturn.isFile())
             {
-                System.err.println("Error Command Line: File Path Provided Is Not A Valid File");
+                System.err.println("Error Command Line: File Path Provided for option "+option+" " +
+                        "Is Not A Valid File");
                 return null;
             }
             if(!toReturn.canRead())
             {
-                System.err.println("Error Command Line: File Path Provided Is Not Readable");
+                System.err.println("Error Command Line: File Path Provided for option "+option+" "
+                        +"Is Not Readable");
                 return null;
             }
             if(!toReturn.canWrite())
             {
-                System.err.println("Error Command Line: File Path Provided Is Not Writeable");
+                System.err.println("Error Command Line: File Path Provided for option "+option+" "
+                        +" Is Not Writeable");
                 return null;
             }
         }
         catch(SecurityException ex)
         {
-            System.err.println("Error Command Line: Do not have security level to access file");
+            System.err.println("Error Command Line: Do not have security level to access file provided" +
+                    " for option "+option);
             return null;
         }
 
@@ -128,23 +151,25 @@ public class Project2 extends CommandLineParser {
     /**
      * execution handles the primary execution of the program, parsing the file, creating the new
      * flight, and outputting the airline.
-     * @param print a Boolean indicating whether the latest flight should be output.
      * @param args_list  a List of arguments used to create the airline/file.
      * @param fName the file path.
      * @param file the file to be read from/writen too.
      */
-    protected void execution(boolean print, ArrayList<String> args_list, String fName, File file) {
+    protected void execution(ArrayList<String> args_list, String[] fName, File[] file) {
         try{
-            if(file != null )
-                parseFile(file);
+            if(file[0] != null )
+                parseFile(file[0]);
   
-            createAirlineAndFlight(args_list);
+            Flight toPrint = createAirlineAndFlight(args_list);
   
-           if(file != null)
-               dumpFile(file);
+           if(file[0] != null)
+               dumpFile(file[0], 0);
+
+           if(file[1] != null || stdOut)
+               prettyPrintFile(file[1]);
   
             if(print)
-                printFlight();
+                System.out.println(toPrint.toString());
         }
         catch(IllegalArgumentException ex){
             System.err.println("Error Command Line: "+ex.getMessage()+"\n" +
@@ -152,11 +177,11 @@ public class Project2 extends CommandLineParser {
         }
         catch (ParserException ex)
         {
-            System.err.println("File Error:"+ ex.getMessage());
+            System.err.println("File Error "+ ex.getMessage());
         }
         catch(IOException ex)
         {
-            System.err.println("Error Command Line: Invalid file path "+ fName +ex.getMessage());
+            System.err.println("Error Command Line: Invalid file path "+ ex.getMessage());
         }
     }
 

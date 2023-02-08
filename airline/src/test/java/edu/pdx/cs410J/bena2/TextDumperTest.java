@@ -7,6 +7,7 @@ import org.junit.jupiter.api.io.TempDir;
 import java.io.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -16,6 +17,7 @@ public class TextDumperTest {
   @Test
   void airlineNameIsDumpedInTextFormat() {
     Airline test = AirlineTest.getValidAirline();
+    AirlineTest.addManyFlightstoAirline(test);
     String text = null;
 
     try (StringWriter sw = new StringWriter())
@@ -31,7 +33,9 @@ public class TextDumperTest {
     } catch (IOException | IllegalArgumentException e) {
       fail(e.getMessage());
     }
-    assertThat(text.length(), equalTo(539));
+    assertThat(text.length(), equalTo(770));
+    assertThat(text, containsString("name,4,JFK,12/01/2022,10:23,AM,SEA,01/01/2023,10:32,PM\n" +
+            "name,3,JFK,01/01/2023,10:23,AM,SEA,01/01/2023,10:32,PM"));
   }
 
 
@@ -57,6 +61,7 @@ public class TextDumperTest {
     try(FileWriter fw= new FileWriter(file))
     {
       test = AirlineTest.getValidAirline();
+      AirlineTest.addManyFlightstoAirline(test);
       TextDumper dumper = new TextDumper(fw);
       dumper.dump(test);
 

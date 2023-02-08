@@ -19,11 +19,11 @@ public class Project2Test {
         String[] test = {"-README", "-readme", "-textFile", "text.txt", "args", "source"};
         Set<String> options = new HashSet<>();
         ArrayList<String> args = new ArrayList<>();
-        String name;
+        String[] name;
 
         name = Project2.splitOptionsAndArgs(test, args, options);
 
-        assertThat(name, equalTo("text.txt"));
+        assertThat(name[0], equalTo("text.txt"));
         assertThat(options.size(), equalTo(3));
         assertThat(args.size(), equalTo(2));
     }
@@ -34,7 +34,7 @@ public class Project2Test {
         Set<String> options = new HashSet<>();
         ArrayList<String> args = new ArrayList<>();
 
-        assertNull(Project2.splitOptionsAndArgs(test, args, options));
+        assertNull(Project2.splitOptionsAndArgs(test, args, options)[0]);
 
     }
     @Test
@@ -42,11 +42,11 @@ public class Project2Test {
         String[] test = {"README", "readme", "textFile"};
         Set<String> options = new HashSet<>();
         ArrayList<String> args = new ArrayList<>();
-        String name = null;
+        String name[] = null;
 
         name = Project2.splitOptionsAndArgs(test, args, options);
 
-        assertThat(name, equalTo(null));
+        assertThat(name[0], equalTo(null));
         assertThat(options.size(), equalTo(0));
         assertThat(args.size(), equalTo(3));
 
@@ -56,11 +56,11 @@ public class Project2Test {
         String[] test = {"README", "readme", "textFile","-README","-README"};
         Set<String> options = new HashSet<>();
         ArrayList<String> args = new ArrayList<>();
-        String name = null;
+        String name[] = null;
 
         name = Project2.splitOptionsAndArgs(test, args, options);
 
-        assertThat(name, equalTo(null));
+        assertThat(name[0], equalTo(null));
         assertThat(options.size(), equalTo(1));
         assertThat(args.size(), equalTo(3));
 
@@ -93,7 +93,7 @@ public class Project2Test {
         test.createAirlineAndFlight(CommandLineParserTest.getValidFlightData());
 
         try {
-            test.dumpFile(file);
+            test.dumpFile(file,0);
             test2.parseFile(file);
         } catch (Exception e) {
             fail(e.getMessage());

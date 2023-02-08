@@ -1,10 +1,14 @@
 package edu.pdx.cs410J.bena2;
 
 import edu.pdx.cs410J.AbstractFlight;
+import edu.pdx.cs410J.AirlineDumper;
+import edu.pdx.cs410J.AirportNames;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * The Flight class holds the data related to a Flight instance. The Flight class overrides all
@@ -19,7 +23,7 @@ import java.util.Date;
  *     <li> Arrival: The Date and Time the flight lands </li>
  * </ul>
  */
-public class Flight extends AbstractFlight implements Cloneable{
+public class Flight extends AbstractFlight implements Cloneable, Comparable<Flight>{
 
   protected int flightNumber;
   protected String source;
@@ -217,13 +221,16 @@ public class Flight extends AbstractFlight implements Cloneable{
   public static String validateLocation(String location, int type) throws IllegalArgumentException {
     if(location == null)
       throw new IllegalArgumentException("Location can not be null");
-
     location = location.trim();
 
     if(location.length()!= 3 || !location.matches("[A-za-z]{3}"))
       throw new IllegalArgumentException((type == 0 ? "Source ": "Destination ")+"Location " +
               location + " is invalid, format must be three alphabetic letters.");
-    return location;
+
+    if(!AirportNames.getNamesMap().containsKey(location.toUpperCase()))
+      throw new IllegalArgumentException((type == 0 ? "Source ": "Destination ")+"Location " +
+              location + " is invalid, is not a known airport.");
+    return location.toUpperCase();
   }
 
   /**
@@ -253,7 +260,7 @@ public class Flight extends AbstractFlight implements Cloneable{
     if(!date.matches("(0?[1-9]|1[0-2])\\/(0?[1-9]|1[0-9]|2[0-9]|3[01])\\/\\d{4}"))
       throw new IllegalArgumentException((type == 0 ? "Departure ": "Arrival ")+"date "+date+" " +
               "is invalid, date must be in format mm/dd/yyyy");
-    if(!time.matches("([01]?[0-9]|2[0-4]):[0-5][0-9]"))
+    if(!time.matches("((1[012])|([0]?[0-9])):[0-5][0-9]"))
       throw new IllegalArgumentException((type == 0 ? "Departure ": "Arrival ")+"time "+time
               +" is invalid, time must be in format hh:mm aa");
     if(!amPmMarker.matches("[aApP][mM]"))
@@ -351,4 +358,30 @@ public class Flight extends AbstractFlight implements Cloneable{
     return flightNumber == ((Flight)toCompare).flightNumber;
   }
 
+  @Override
+  public int compareTo(Flight o) {
+    int cval = source.compareTo(o.source);
+    if(cval != 0)
+      return cval;
+    return departure.compareTo(o.departure);
+  }
+
+  public String getPrettyDump() {
+    SimpleDateFormat tf = new SimpleDateFormat("hh:mm aa 'on' EEEE 'the' dd 'of' MMMM yyyy");
+    StringBuilder toReturn = new StringBuilder();
+
+    toReturn.append("Flight ").append(flightNumber);
+    toReturn.append(" Departs from ").append(AirportNames.getName(source));
+    toReturn.append(" at ").append(tf.format(departure));
+    toReturn.append(" and arrives in ").append(AirportNames.getName(destination));
+    toReturn.append(" at ").append(tf.format(arrival));
+    toReturn.append(" lasting ").append(getTimeDiffMin(departure,arrival)).append(" minutes");
+
+    return toReturn.toString();
+  }
+
+  private long getTimeDiffMin(Date departure, Date arrival) {
+    long duration = arrival.getTime()-departure.getTime();
+    return TimeUnit.MINUTES.convert(duration,TimeUnit.MILLISECONDS);
+  }
 }

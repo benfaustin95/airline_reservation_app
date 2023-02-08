@@ -3,6 +3,7 @@ package edu.pdx.cs410J.bena2;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -213,7 +214,7 @@ public class AirlineTest{
     public void testRemoveFlightThatDoesNotExist()
     {
         Airline test = getValidAirline();
-        Flight flight = new Flight("2","src","dsw","1/1/2023", "10:39","am" , "2:40", "1/2/2023","pm");
+        Flight flight = new Flight("2","pdx","sea","1/1/2023", "10:39","am" , "2:40", "1/2/2023","pm");
 
         assertFalse(test.removeFlight(flight));
     }
@@ -236,14 +237,30 @@ public class AirlineTest{
     }
 
     @Test
-    public void testGetLastFlight()
+    public void testOrdering()
     {
         Airline test = getValidAirline();
-        test.addFlight(new Flight("2","srx","dsn","1/1/2023","10:20","am", "9:48", "1/1/2023","pm"));
-        assertTrue(test.getLastFlight().getNumber()==2);
+        addManyFlightstoAirline(test);
 
-        Airline test2 = new Airline("name");
-        assertThrows(NullPointerException.class, test2::getLastFlight);
+        Iterator<Flight> current = test.getFlights().iterator();
+
+        for(int i=4; i>0; --i)
+        {
+            assertThat(current.next().getNumber(), equalTo(i));
+        }
+    }
+
+    @Test
+    public void testHashCode()
+    {
+        assertThat(getValidAirline().hashCode(), equalTo(getValidAirline().toString().hashCode()));
+    }
+    public static void addManyFlightstoAirline(Airline test) {
+        test.addFlight(new Flight("2", "LAX","SEA","1/1/2023","10:23", "am","10:32","1/1/2023","pm"));
+        test.addFlight(new Flight("3", "JFK","SEA","1/1/2023","10:23", "am",
+                "10:32","1/1/2023", "pm"));
+        test.addFlight(new Flight("4", "JFK","SEA","12/1/2022","10:23", "am",
+                "10:32","1/1/2023", "pm"));
     }
 
     public static Airline getValidAirline()
@@ -259,6 +276,7 @@ public class AirlineTest{
        }
        return test;
     }
+
 
 
 }

@@ -20,7 +20,7 @@ public class Project2 extends CommandLineParser {
       Project2 test = new Project2();
       ArrayList<String> args_list = new ArrayList<>();
       Set<String> options_list = new HashSet<>();
-      String fNames [] = null;
+      String[] fNames;
       File [] file = new File[2];
       print = stdOut = false;
 
@@ -67,7 +67,7 @@ public class Project2 extends CommandLineParser {
       if(invalidOptions(options_list))
           return;
 
-      test.execution(args_list, fNames, file);
+      test.execution(args_list, file);
   }
 
     /**
@@ -152,10 +152,9 @@ public class Project2 extends CommandLineParser {
      * execution handles the primary execution of the program, parsing the file, creating the new
      * flight, and outputting the airline.
      * @param args_list  a List of arguments used to create the airline/file.
-     * @param fName the file path.
-     * @param file the file to be read from/writen too.
+     * @param file the file to be read from/written too.
      */
-    protected void execution(ArrayList<String> args_list, String[] fName, File[] file) {
+    protected void execution(ArrayList<String> args_list, File[] file) {
         try{
             if(file[0] != null )
                 parseFile(file[0]);

@@ -29,7 +29,7 @@ public class PrettyPrinterTest {
     public void testOrderedFlights()
     {
         Airline test = AirlineTest.getValidAirline();
-        AirlineTest.addManyFlightstoAirline(test);
+        AirlineTest.addManyFlightsToAirline(test);
 
         try(StringWriter sw = new StringWriter())
         {
@@ -53,7 +53,7 @@ public class PrettyPrinterTest {
 
        try(InputStream fr = getClass().getResourceAsStream("valid-airline.txt");
            FileWriter fw = new FileWriter(file);
-           BufferedReader br = new BufferedReader(new FileReader(file));)
+           BufferedReader br = new BufferedReader(new FileReader(file)))
        {
           TextParser parser = new TextParser(new InputStreamReader(fr));
 

@@ -17,7 +17,7 @@ public class TextDumperTest {
   @Test
   void airlineNameIsDumpedInTextFormat() {
     Airline test = AirlineTest.getValidAirline();
-    AirlineTest.addManyFlightstoAirline(test);
+    AirlineTest.addManyFlightsToAirline(test);
     String text = null;
 
     try (StringWriter sw = new StringWriter())
@@ -61,7 +61,7 @@ public class TextDumperTest {
     try(FileWriter fw= new FileWriter(file))
     {
       test = AirlineTest.getValidAirline();
-      AirlineTest.addManyFlightstoAirline(test);
+      AirlineTest.addManyFlightsToAirline(test);
       TextDumper dumper = new TextDumper(fw);
       dumper.dump(test);
 

@@ -1,12 +1,11 @@
 package edu.pdx.cs410J.bena2;
 
 import edu.pdx.cs410J.AbstractFlight;
-import edu.pdx.cs410J.AirlineDumper;
 import edu.pdx.cs410J.AirportNames;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -197,18 +196,18 @@ public class Flight extends AbstractFlight implements Cloneable, Comparable<Flig
    * @throws IllegalArgumentException Thrown if the String supplied is not a valid flight number.
    */
   public static int validateNumber(String number) throws IllegalArgumentException {
-    Integer rnumber = null;
+    int rNumber;
     if(number == null)
       throw  new IllegalArgumentException("null flight number not accepted");
     try {
-      rnumber = Integer.parseInt(number.trim());
-      if(rnumber <= 0)
+      rNumber = Integer.parseInt(number.trim());
+      if(rNumber <= 0)
         throw new IllegalArgumentException("Flight Number " + number + " is invalid, must be greater than zero.");
     }
     catch(NumberFormatException ex){
       throw new IllegalArgumentException("Flight Number " + number + " is invalid, must be numeric.");
     }
-    return rnumber;
+    return rNumber;
   }
 
   /**
@@ -248,7 +247,7 @@ public class Flight extends AbstractFlight implements Cloneable, Comparable<Flig
   {
     DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm aa");
     df.setLenient(false);
-    Date rdate = null;
+    Date rdate;
 
     if(date == null || time == null || amPmMarker == null)
       throw new IllegalArgumentException("Null arguments are not accepted");
@@ -309,7 +308,7 @@ public class Flight extends AbstractFlight implements Cloneable, Comparable<Flig
   }
 
   /**
-   *  dateDump creates a new string that deliminates date and time with a comma rather than a space.
+   *  dateDump creates a new string that delineates date and time with a comma rather than a space.
    * @param date the Date string representation to be modified.
    * @return a reference to the new string holding the modified date.
    */
@@ -360,9 +359,9 @@ public class Flight extends AbstractFlight implements Cloneable, Comparable<Flig
 
   @Override
   public int compareTo(Flight o) {
-    int cval = source.compareTo(o.source);
-    if(cval != 0)
-      return cval;
+    int cVal = source.compareTo(o.source);
+    if(cVal != 0)
+      return cVal;
     return departure.compareTo(o.departure);
   }
 

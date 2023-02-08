@@ -42,7 +42,7 @@ public class Project2Test {
         String[] test = {"README", "readme", "textFile"};
         Set<String> options = new HashSet<>();
         ArrayList<String> args = new ArrayList<>();
-        String name[] = null;
+        String[] name;
 
         name = Project2.splitOptionsAndArgs(test, args, options);
 
@@ -56,7 +56,7 @@ public class Project2Test {
         String[] test = {"README", "readme", "textFile","-README","-README"};
         Set<String> options = new HashSet<>();
         ArrayList<String> args = new ArrayList<>();
-        String name[] = null;
+        String[] name;
 
         name = Project2.splitOptionsAndArgs(test, args, options);
 

@@ -56,7 +56,7 @@ public class CommandLineParser {
     }
 
     /**
-     * correctNumberofArguemnts ensures that the correct number of arguments are present in the
+     * correctNumberOfArguments ensures that the correct number of arguments are present in the
      * Array list provided.
      * @param flightData the ArrayList to be validated.
      * @throws IllegalArgumentException Thrown if the number of arguments stored in the list is invalid.
@@ -188,7 +188,7 @@ public class CommandLineParser {
      * @throws IllegalArgumentException Thrown if the output fails.
      */
     protected void dumpFile(File file, int type) throws IOException, IllegalArgumentException{
-        AirlineDumper<Airline> dumper = null;
+        AirlineDumper<Airline> dumper;
 
         try(FileWriter fw = new FileWriter(file)) {
             if(type == 0)
@@ -204,10 +204,9 @@ public class CommandLineParser {
     }
 
    protected void prettyPrintFile(File file) throws IOException, IllegalArgumentException {
-       PrettyPrinter printer = null;
 
        if(file == null && stdOut) {
-           printer = new PrettyPrinter(System.out);
+           PrettyPrinter printer = new PrettyPrinter(System.out);
            printer.dump(airline);
            return;
        }

@@ -73,7 +73,7 @@ public class AirlineTest{
     public void testInitializeWithNullFlight()
     {
        Airline test =  new Airline("name", null);
-       assertTrue(test.getFlights().size()==0);
+        assertEquals(0, test.getFlights().size());
     }
 
     @Test
@@ -128,9 +128,9 @@ public class AirlineTest{
         Airline test = getValidAirline();
         Airline clone = test.clone();
 
-        assertTrue(test.equals(clone));
-        assertTrue(test.getFlights() != clone.getFlights());
-        assertFalse(test == clone);
+        assertEquals(test, clone);
+        assertNotSame(test.getFlights(), clone.getFlights());
+        assertNotSame(test, clone);
     }
 
     @Test
@@ -240,7 +240,7 @@ public class AirlineTest{
     public void testOrdering()
     {
         Airline test = getValidAirline();
-        addManyFlightstoAirline(test);
+        addManyFlightsToAirline(test);
 
         Iterator<Flight> current = test.getFlights().iterator();
 
@@ -255,7 +255,7 @@ public class AirlineTest{
     {
         assertThat(getValidAirline().hashCode(), equalTo(getValidAirline().toString().hashCode()));
     }
-    public static void addManyFlightstoAirline(Airline test) {
+    public static void addManyFlightsToAirline(Airline test) {
         test.addFlight(new Flight("2", "LAX","SEA","1/1/2023","10:23", "am","10:32","1/1/2023","pm"));
         test.addFlight(new Flight("3", "JFK","SEA","1/1/2023","10:23", "am",
                 "10:32","1/1/2023", "pm"));

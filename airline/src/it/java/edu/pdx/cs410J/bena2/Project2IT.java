@@ -1,9 +1,7 @@
 package edu.pdx.cs410J.bena2;
 
-import com.sun.tools.javac.Main;
 import edu.pdx.cs410J.InvokeMainTestCase;
 import edu.pdx.cs410J.ParserException;
-import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -13,8 +11,7 @@ import java.nio.file.Path;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * An integration test for the {@link CommandLineParser} main class.
@@ -315,7 +312,7 @@ class Project2IT extends InvokeMainTestCase {
 
 
     @Test
-    public void testNoFilePathOptionFollowingTextFile(@TempDir Path dir)
+    public void testNoFilePathOptionFollowingTextFile()
     {
         MainMethodResult result = invokeMain("-textFile", "-print", "name","1", "PDX"
                     , "1/1/2023", "10:39", "am","SEA", "1/2/2023", "2:39","pm");
@@ -343,11 +340,11 @@ class Project2IT extends InvokeMainTestCase {
     {
         Path testFile = dir.resolve("test2");
 
-        MainMethodResult result = invokeMain("-print", "-textFile", testFile.toString(),"name","1", "PDX"
+        invokeMain("-print", "-textFile", testFile.toString(),"name","1", "PDX"
                 , "1/1/2023", "10:39", "am", "SEA", "1/2/2023", "2:39","pm");
 
 
-        result = invokeMain("-print", "-textFile", testFile.toString(),"nam2","1", "PDX"
+        MainMethodResult result = invokeMain("-print", "-textFile", testFile.toString(),"nam2","1", "PDX"
                 , "1/1/2023", "10:39", "am","SEA", "1/2/2023", "2:39","pm");
 
         assertThat(result.getTextWrittenToStandardError(), containsString("does not match Airline"));
@@ -358,7 +355,7 @@ class Project2IT extends InvokeMainTestCase {
     {
         Path testFile = dir.resolve("test2");
 
-        MainMethodResult result = invokeMain("-print", "-textFile", testFile.toString()+"/badDirectoryTest","name","1", "PDX"
+        MainMethodResult result = invokeMain("-print", "-textFile", testFile+"/badDirectoryTest","name","1", "PDX"
                 , "1/1/2023", "10:39","am", "SEA", "1/2/2023", "2:39","pm");
 
         assertThat(result.getTextWrittenToStandardError(), containsString("unable to write"));
@@ -484,7 +481,7 @@ class Project2IT extends InvokeMainTestCase {
     public void testPrettyPrintOverwrite(@TempDir Path dir) {
         Path testFile = dir.resolve("test2");
         MainMethodResult result = null;
-        long prev =0;
+        long prev;
 
         for (int i = 1; i < 10; ++i) {
             result = invokeMain("-textFile", testFile.toString(), "name", String.valueOf(i), "PDX"
@@ -498,7 +495,7 @@ class Project2IT extends InvokeMainTestCase {
         result =invokeMain("-print", "-pretty",testFile.toString(),"name","1","PDX","1/1/2023","10:39","am",
                 "sea", "1/2/2023","2:34","pm");
 
-        assertFalse(prev == testFile.toFile().length());
+        assertNotEquals(prev, testFile.toFile().length());
     }
 
 

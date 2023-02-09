@@ -20,7 +20,7 @@ public class TextDumper implements AirlineDumper<Airline> {
   /**
    * TextDumper acts as the primary constructor for the TextDumper class. The Writer field is
    * set to the value passed in.
-   * @param writer a Reader holding the outputstream used to write to the file.
+   * @param writer a Writer holding the outputstream used to write to the file.
    */
   public TextDumper(Writer writer) {
     this.writer = writer;

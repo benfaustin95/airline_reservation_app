@@ -203,6 +203,14 @@ public class CommandLineParser {
         }
     }
 
+    /**
+     * prettyPrintFile handles outputting the formatted textual representation of the airline data.
+     * If the file is null the airline information is printed via standard out. If the file is not
+     * null dumpFile is called with type set to 1.
+     * @param file the File to be written to.
+     * @throws IOException thrown if the file can not be written to.
+     * @throws IllegalArgumentException thrown if the airline is null.
+     */
    protected void prettyPrintFile(File file) throws IOException, IllegalArgumentException {
 
        if(file == null && stdOut) {

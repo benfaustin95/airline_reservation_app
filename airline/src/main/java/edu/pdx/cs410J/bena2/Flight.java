@@ -228,7 +228,7 @@ public class Flight extends AbstractFlight implements Cloneable, Comparable<Flig
 
     if(!AirportNames.getNamesMap().containsKey(location.toUpperCase()))
       throw new IllegalArgumentException((type == 0 ? "Source ": "Destination ")+"Location " +
-              location + " is invalid, is not a known airport.");
+              location + " is invalid, must be a known airport.");
     return location.toUpperCase();
   }
 
@@ -261,10 +261,10 @@ public class Flight extends AbstractFlight implements Cloneable, Comparable<Flig
               "is invalid, date must be in format mm/dd/yyyy");
     if(!time.matches("((1[012])|([0]?[0-9])):[0-5][0-9]"))
       throw new IllegalArgumentException((type == 0 ? "Departure ": "Arrival ")+"time "+time
-              +" is invalid, time must be in format hh:mm aa");
+              +" is invalid, time must be in format hh:mm (12 hour format)");
     if(!amPmMarker.matches("[aApP][mM]"))
       throw new IllegalArgumentException((type == 0 ? "Departure ": "Arrival ")+"am/pm marker "+amPmMarker
-              +" is invalid, either am or pm");
+              +" is invalid, must be either am or pm");
     try {
       rdate = df.parse(date + " " + time+" "+amPmMarker);
     }
@@ -357,6 +357,15 @@ public class Flight extends AbstractFlight implements Cloneable, Comparable<Flig
     return flightNumber == ((Flight)toCompare).flightNumber;
   }
 
+  /**
+   * compareTo handles the Flight's implementation of the Comparable Interface. The method compares two
+   * flight objects first by source location then by departure time. Flights with the same departure
+   * time and source location are considered equal.
+   * @param o the Flight to be compared.
+   * @return  -1 if the current instance is less than the instance being compared, 0 if equal, and 1
+   *            if the current instance is greater than the instance being compared.
+   *
+   */
   @Override
   public int compareTo(Flight o) {
     int cVal = source.compareTo(o.source);
@@ -365,6 +374,10 @@ public class Flight extends AbstractFlight implements Cloneable, Comparable<Flig
     return departure.compareTo(o.departure);
   }
 
+  /**
+   * getPrettyDump returns the formatted textual representation of the Flight object.
+   * @return A String containing the formatted Flight.
+   */
   public String getPrettyDump() {
     SimpleDateFormat tf = new SimpleDateFormat("hh:mm aa 'on' EEEE 'the' dd 'of' MMMM yyyy");
     StringBuilder toReturn = new StringBuilder();
@@ -379,6 +392,13 @@ public class Flight extends AbstractFlight implements Cloneable, Comparable<Flig
     return toReturn.toString();
   }
 
+  /**
+   * getTimeDiffMin utilizes the TimeUnit class as well as the Date class to calculate the difference
+   * (in minutes) between departure and arrival time for the flight.
+   * @param departure the Date holding the flight's departure time
+   * @param arrival the Date holding the flight's arrival time
+   * @return the long holding the difference in minutes.
+   */
   private long getTimeDiffMin(Date departure, Date arrival) {
     long duration = arrival.getTime()-departure.getTime();
     return TimeUnit.MINUTES.convert(duration,TimeUnit.MILLISECONDS);

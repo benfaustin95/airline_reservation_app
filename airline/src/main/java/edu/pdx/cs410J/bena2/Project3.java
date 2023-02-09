@@ -8,7 +8,7 @@ import java.util.*;
 /**
  * The main class for the CS410J airline Project2
  */
-public class Project2 extends CommandLineParser {
+public class Project3 extends CommandLineParser {
     /**
      * Main method for  CS410J Project 2, parses the command line for airline/flight data
      * and program options. All errors cause the program to exit and an error message to be printed
@@ -17,7 +17,7 @@ public class Project2 extends CommandLineParser {
      */
 
   public static void main(String[] args) {
-      Project2 test = new Project2();
+      Project3 test = new Project3();
       ArrayList<String> args_list = new ArrayList<>();
       Set<String> options_list = new HashSet<>();
       String[] fNames;
@@ -152,7 +152,7 @@ public class Project2 extends CommandLineParser {
      * execution handles the primary execution of the program, parsing the file, creating the new
      * flight, and outputting the airline.
      * @param args_list  a List of arguments used to create the airline/file.
-     * @param file the file to be read from/written too.
+     * @param file the array of Files to be read from/written too.
      */
     protected void execution(ArrayList<String> args_list, File[] file) {
         try{

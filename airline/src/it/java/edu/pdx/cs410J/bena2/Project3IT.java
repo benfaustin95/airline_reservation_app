@@ -16,13 +16,13 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * An integration test for the {@link CommandLineParser} main class.
  */
-class Project2IT extends InvokeMainTestCase {
+class Project3IT extends InvokeMainTestCase {
 
     /**
      * Invokes the main method of {@link CommandLineParser} with the given arguments.
      */
     private MainMethodResult invokeMain(String... args) {
-        return invokeMain( Project2.class, args );
+        return invokeMain( Project3.class, args );
     }
 
     /*
@@ -100,25 +100,25 @@ class Project2IT extends InvokeMainTestCase {
     @Test
     void testOnlyREADMEOnCommandLine() {
         MainMethodResult result = invokeMain("-README");
-        assertThat(result.getTextWrittenToStandardOut(), containsString("Ben Austin, CS410J-001, 1/24/2023, bena2@pdx.edu"));
+        assertThat(result.getTextWrittenToStandardOut(), containsString("Ben Austin, CS410J-001, 02/08/2023, bena2@pdx.edu"));
     }
 
     @Test
     void testREADMEAndFlightDataOnCommandLine() {
         MainMethodResult result = invokeMain("-README","name","1","PDX","1/1/2023","10:39","am","SEA","1/1/2023","11:49","pm");
-        assertThat(result.getTextWrittenToStandardOut(), containsString("Ben Austin, CS410J-001, 1/24/2023, bena2@pdx.edu"));
+        assertThat(result.getTextWrittenToStandardOut(), containsString("Ben Austin, CS410J-001, 02/08/2023, bena2@pdx.edu"));
     }
 
     @Test
     void testREADMEAndPrintMeAndFlightDataOnCommandLine() {
         MainMethodResult result = invokeMain("-README","-print","name","1","PDX","1/1/2023","10:39","am","SEA","1/1/2023","9:49", "pm");
-        assertThat(result.getTextWrittenToStandardOut(), containsString("Ben Austin, CS410J-001, 1/24/2023, bena2@pdx.edu"));
+        assertThat(result.getTextWrittenToStandardOut(), containsString("Ben Austin, CS410J-001, 02/08/2023, bena2@pdx.edu"));
     }
 
     @Test
     void testREADMEAndPrintMeOnCommandLine() {
         MainMethodResult result = invokeMain("-README","-print");
-        assertThat(result.getTextWrittenToStandardOut(), containsString("Ben Austin, CS410J-001, 1/24/2023, bena2@pdx.edu"));
+        assertThat(result.getTextWrittenToStandardOut(), containsString("Ben Austin, CS410J-001, 02/08/2023, bena2@pdx.edu"));
     }
 
     @Test

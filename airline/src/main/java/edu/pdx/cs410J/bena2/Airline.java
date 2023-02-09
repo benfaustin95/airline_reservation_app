@@ -193,6 +193,11 @@ public class Airline extends AbstractAirline<Flight> implements Cloneable{
         return roster.remove(flight);
     }
 
+    /**
+     * hashCode utilizes the toString method to calculate a unique hashcode for the Airline. The
+     * method is overridden for consistency as the Airline method also overrides the equals method.
+     * @return returns an integer containing the unique hashcode.
+     */
     @Override
     public int hashCode()
     {

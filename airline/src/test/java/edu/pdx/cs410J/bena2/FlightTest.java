@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.bena2;
 
+import edu.pdx.cs410J.AirportNames;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -299,11 +300,6 @@ public class FlightTest {
     @Test
     void testPrettyDump()
     {
-        Flight test = getValidFlight();
-
-        assertThat(test.getPrettyDump(), equalTo("Flight 1 Departs from Portland, OR at " +
-                "10:39 AM on Sunday the 01 of January 2023 and arrives in Seattle, WA at 02:50 PM " +
-                "on Monday the 02 of January 2023 lasting 1691 minutes"));
     }
 
     @Test
@@ -372,8 +368,9 @@ public class FlightTest {
     @Test
     void testGetPrettyDump()
     {
+        Flight test = getValidFlight();
 
-        assertThat(getValidFlight().getPrettyDump(), equalTo(validFlightDump));
+        assertThat(test.getPrettyDump(18),equalTo(validFlightDump));
     }
     protected static Flight getValidFlight() {
         Flight test = null;
@@ -387,7 +384,6 @@ public class FlightTest {
         return test;
     }
 
-    public static final String validFlightDump = "Flight 1 Departs from Portland," +
-            " OR at 10:39 AM on Sunday the 01 of January 2023 and arrives in Seattle, WA at 02:50 " +
-            "PM on Monday the 02 of January 2023 lasting 1691 minutes";
+    public static final String validFlightDump = "|       1       |   Portland, OR   |  Jan, " +
+            "01 2023 10:39 AM  |   Seattle, WA    |  Jan, 02 2023 02:50 PM  | 1691 minutes  |\n";
 }

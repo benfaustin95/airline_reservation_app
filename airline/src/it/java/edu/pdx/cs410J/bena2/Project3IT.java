@@ -7,6 +7,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import java.io.*;
 import java.nio.file.Path;
+import java.util.Date;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -381,10 +382,16 @@ class Project3IT extends InvokeMainTestCase {
     {
         MainMethodResult result = invokeMain("-print", "-pretty", "-","name","1", "PDX"
                 , "1/1/2023", "10:39", "am","SEA", "1/2/2023", "2:39","pm");
-        assertThat(result.getTextWrittenToStandardOut(), equalTo("Airline: name\nCurrent Flight " +
-                "Roster:\nFlight 1 Departs from Portland, OR at 10:39 AM on Sunday the 01 of January 2023 " +
-                "and arrives in Seattle, WA at 02:39 PM on Monday the 02 of January 2023 lasting 1680 minutes\n" +
-                "Flight 1 departs PDX at 01/01/2023 10:39 AM arrives SEA at 01/02/2023 02:39 PM\n"));
+        assertThat(result.getTextWrittenToStandardOut(), equalTo("name flight roster as of " +
+                "Feb 14th 2023\n\n---------------------------------------------------------------" +
+                "------------------------------------------------------------\n| Flight Number |  " +
+                "    Source      |        Departure        |   Destination    |         Arrival    " +
+                "     |    Length     |\n---------------------------------------------------------" +
+                "------------------------------------------------------------------\n|       1    " +
+                "   |   Portland, OR   |  Jan, 01 2023 10:39 AM  |   Seattle, WA    |  Jan, 02 2023 " +
+                "02:39 PM  | 1680 minutes  |\n----------------------------------------------------" +
+                "-----------------------------------------------------------------------\nFlight 1" +
+                " departs PDX at 01/01/2023 10:39 AM arrives SEA at 01/02/2023 02:39 PM\n"));
     }
 
     @Test
@@ -468,10 +475,10 @@ class Project3IT extends InvokeMainTestCase {
                 , "1/1/2023", "12:29", "am","SEA", "1/2/2023", "2:39","pm");
 
         try(BufferedReader br = new BufferedReader(new FileReader(testFile2.toFile()))) {
-           assertThat(br.readLine(), equalTo("Airline: name"));
-            assertThat(br.readLine(), equalTo("Current Flight Roster:"));
-            assertThat(br.readLine(), containsString("Flight 12 Departs from New York, NY " +
-                    "(Kennedy) at 10:09 AM "));
+           assertThat(br.readLine(), equalTo("name flight roster as of "+PrettyPrinter.today(new Date())));
+           br.readLine(); br.readLine(); br.readLine(); br.readLine();
+            assertThat(br.readLine(), containsString("|      12       |   New York, NY (Kennedy) " +
+                    "  |  Jan, 01 2023 10:09 AM  |        Seattle, WA         |  Jan, 02 2023 02:39 PM  | 1710 minutes  |"));
         } catch (IOException e) {
             fail(e.getMessage());
         }

@@ -1,11 +1,15 @@
 package edu.pdx.cs410J.bena2;
 
 import edu.pdx.cs410J.AirlineDumper;
+import edu.pdx.cs410J.AirportNames;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.Writer;
-import java.util.Iterator;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 
 /**
@@ -63,14 +67,25 @@ public class PrettyPrinter implements AirlineDumper<Airline> {
         try {
             Iterator<Flight> toDump = airline.getFlights().iterator();
             String name = airline.getName();
+            int maxAirportLen = maxAirportLength(airline)+6;
+            String divider = new String(new char[87+2*maxAirportLen]).replace('\0','-');
             pw = (writer ==null ? new PrintWriter(stream): new PrintWriter(writer));
 
-            pw.println("Airline: " + name);
-            pw.println("Current Flight Roster:");
+            pw.println(name + " flight roster as of " + today(new Date()));
+            pw.println();
             pw.flush();
-
+            pw.println(divider);
+            pw.printf("|%s|%s|%s|%s|%s|%s|\n",PrettyPrinter.centerString("Flight Number",15),
+                    PrettyPrinter.centerString("Source",maxAirportLen),
+                    PrettyPrinter.centerString("Departure",25),
+                    PrettyPrinter.centerString("Destination",maxAirportLen),
+                    PrettyPrinter.centerString("Arrival",25),
+                    PrettyPrinter.centerString("Length",15)
+            );
+            pw.println(divider);
             while (toDump.hasNext()) {
-                pw.println(toDump.next().getPrettyDump());
+                pw.print(toDump.next().getPrettyDump(maxAirportLen));
+                pw.println(divider);
                 pw.flush();
             }
         }
@@ -80,5 +95,36 @@ public class PrettyPrinter implements AirlineDumper<Airline> {
             else
                 pw.flush();;
         }
+    }
+
+    public static String today(Date date) {
+        String toReturn;
+       Calendar cDate = Calendar.getInstance();
+       cDate.setTime(date);
+
+       switch(cDate.get(Calendar.DAY_OF_MONTH)%10){
+           case 1: toReturn = new SimpleDateFormat("MMM dd'st' yyyy").format(date);
+                   break;
+           case 2: toReturn = new SimpleDateFormat("MMM dd'nd' yyyy").format(date);
+                   break;
+           case 3: toReturn = new SimpleDateFormat("MMM dd'rd' yyyy").format(date);
+               break;
+           default: toReturn = new SimpleDateFormat("MMM dd'th' yyyy").format(date);
+               break;
+       }
+
+       return toReturn;
+    }
+
+    public static int maxAirportLength(Airline airline)
+    {
+         return AirportNames.getNamesMap().keySet().stream().filter(s->airline.containsAirport(s)).map(s->AirportNames.getName(s)).max((s1,s2)->s1.length()-s2.length()).orElse("").length();
+    }
+
+    public static String centerString(String toCenter, int width)
+    {
+        int padding = width-toCenter.length();
+        int start = toCenter.length()+padding/2;
+        return String.format("%-"+width+"s",String.format("%"+start+"s",toCenter));
     }
 }

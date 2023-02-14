@@ -128,7 +128,7 @@ public class TextParser implements AirlineParser<Airline> {
       arg_list.add(temp.nextToken());
     }
 
-    if(arg_list.size() < 10 && arg_list.size()>1)
+    if(arg_list.size() < 10 && arg_list.size()>1 || arg_list.isEmpty())
       throw new IllegalArgumentException(CommandLineParser.toFewArguments(arg_list));
     else if(arg_list.size() > 10)
      throw new IllegalArgumentException(CommandLineParser.toManyArguments(arg_list));

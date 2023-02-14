@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -22,7 +24,8 @@ public class PrettyPrinterTest {
 
         String out = sw.toString();
 
-        assertThat(out, equalTo("Airline: name\nCurrent Flight Roster:\n"+FlightTest.validFlightDump+"\n"));
+        assertThat(out, containsString(header));
+        assertThat(out, containsString(FlightTest.validFlightDump));
     }
 
     @Test
@@ -38,8 +41,8 @@ public class PrettyPrinterTest {
             pw.dump(test);
 
             String outPut = sw.toString();
-            assertThat(outPut.length(), equalTo(754));
-            assertTrue(outPut.startsWith("Airline: name\nCurrent Flight Roster:\nFlight 4"));
+            assertThat(outPut.length(), equalTo(1624));
+            assertTrue(outPut.startsWith("name flight roster as of "+PrettyPrinter.today(new Date())));;
         }
         catch (IOException | IllegalArgumentException ex)
         {
@@ -63,8 +66,8 @@ public class PrettyPrinterTest {
 
           testOut.dump(testIn);
 
-          assertThat(br.readLine(), equalTo("Airline: Test Airline"));
-          assertThat(file.length(), equalTo((long)45+9*(4+FlightTest.validFlightDump.length())));
+          assertThat(br.readLine(), equalTo("Test Airline flight roster as of "+PrettyPrinter.today(new Date())));
+          assertThat(file.length(), equalTo(2652L));
 
        }
        catch (IOException | ParserException ex)
@@ -81,5 +84,24 @@ public class PrettyPrinterTest {
         assertThrows(IllegalArgumentException.class, () -> test.dump(null));
     }
 
+    @Test
+    public void testToday()
+    {
+        assertThat(PrettyPrinter.today(Flight.validateDateAndTime("1/1/2023","10:39", "am",0)), equalTo("Jan 01st 2023"));
+        assertThat(PrettyPrinter.today(Flight.validateDateAndTime("1/2/2023","10:39", "am",0)), equalTo("Jan 02nd 2023"));
+        assertThat(PrettyPrinter.today(Flight.validateDateAndTime("1/3/2023","10:39", "am",0)), equalTo("Jan 03rd 2023"));
+        assertThat(PrettyPrinter.today(Flight.validateDateAndTime("1/4/2023","10:39", "am",0)), equalTo("Jan 04th 2023"));
+    }
 
+    @Test
+    public void printTest()
+    {
+        Airline test = AirlineTest.getValidAirline();
+        PrettyPrinter printer = new PrettyPrinter(System.out);
+
+        printer.dump(test);
+    }
+
+    protected static String header = "| Flight Number |      Source      |        Departure       " +
+            " |   Destination    |         Arrival         |    Length     |\n";
 }

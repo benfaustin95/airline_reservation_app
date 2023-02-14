@@ -203,4 +203,14 @@ public class Airline extends AbstractAirline<Flight> implements Cloneable{
     {
         return toString().hashCode();
     }
+
+    public boolean containsAirport(String s) {
+
+        for(Flight flight: roster)
+        {
+            if(flight.getSource().equalsIgnoreCase(s)||flight.getDestination().equalsIgnoreCase(s))
+                return true;
+        }
+        return false;
+    }
 }

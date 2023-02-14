@@ -378,18 +378,15 @@ public class Flight extends AbstractFlight implements Cloneable, Comparable<Flig
    * getPrettyDump returns the formatted textual representation of the Flight object.
    * @return A String containing the formatted Flight.
    */
-  public String getPrettyDump() {
-    SimpleDateFormat tf = new SimpleDateFormat("hh:mm aa 'on' EEEE 'the' dd 'of' MMMM yyyy");
-    StringBuilder toReturn = new StringBuilder();
-
-    toReturn.append("Flight ").append(flightNumber);
-    toReturn.append(" Departs from ").append(AirportNames.getName(source));
-    toReturn.append(" at ").append(tf.format(departure));
-    toReturn.append(" and arrives in ").append(AirportNames.getName(destination));
-    toReturn.append(" at ").append(tf.format(arrival));
-    toReturn.append(" lasting ").append(getTimeDiffMin(departure,arrival)).append(" minutes");
-
-    return toReturn.toString();
+  public String getPrettyDump(int max) {
+    SimpleDateFormat tf = new SimpleDateFormat("MMM',' dd yyyy hh:mm aa");
+    return String.format("|%s|%s|%s|%s|%s|%s|\n",
+            PrettyPrinter.centerString(String.valueOf(flightNumber),15),
+            PrettyPrinter.centerString(AirportNames.getName(source),max),
+            PrettyPrinter.centerString(tf.format(departure),25),
+            PrettyPrinter.centerString(AirportNames.getName(destination), max),
+            PrettyPrinter.centerString(tf.format(arrival),25),
+            PrettyPrinter.centerString(getTimeDiffMin(departure,arrival),15));
   }
 
   /**
@@ -399,8 +396,8 @@ public class Flight extends AbstractFlight implements Cloneable, Comparable<Flig
    * @param arrival the Date holding the flight's arrival time
    * @return the long holding the difference in minutes.
    */
-  private long getTimeDiffMin(Date departure, Date arrival) {
+  private String getTimeDiffMin(Date departure, Date arrival) {
     long duration = arrival.getTime()-departure.getTime();
-    return TimeUnit.MINUTES.convert(duration,TimeUnit.MILLISECONDS);
+    return String.valueOf(TimeUnit.MINUTES.convert(duration,TimeUnit.MILLISECONDS))+" minutes";
   }
 }

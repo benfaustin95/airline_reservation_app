@@ -79,6 +79,9 @@ public class TextParserTest {
 
     name = "invalid-MissingAMMarker-airline.txt";
     invalidFile(name);
+
+    name = "invalid-extraLine-airline.txt";
+    invalidFile(name);
   }
 
   @Test

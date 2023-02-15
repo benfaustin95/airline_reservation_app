@@ -2,6 +2,9 @@ package edu.pdx.cs410J.bena2;
 
 import edu.pdx.cs410J.AbstractFlight;
 import edu.pdx.cs410J.AirportNames;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -112,7 +115,7 @@ public class Flight extends AbstractFlight implements Cloneable, Comparable<Flig
 
   }
 
-  /**
+    /**
    * getNumber overrides the Abstract Flight's getNumber method, returns the flight's
    * unique identification number
    * @return an Integer
@@ -278,6 +281,36 @@ public class Flight extends AbstractFlight implements Cloneable, Comparable<Flig
     return rdate;
   }
 
+  public static Date validateDateAndTime(String date, String time, int type) {
+    DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+    df.setLenient(false);
+    Date rdate;
+
+    if(date == null || time == null)
+      throw new IllegalArgumentException("Null arguments are not accepted");
+
+    date = date.trim();
+    time = time.trim();
+
+    if(!date.matches("(0?[1-9]|1[0-2])\\/(0?[1-9]|1[0-9]|2[0-9]|3[01])\\/\\d{4}"))
+      throw new IllegalArgumentException((type == 0 ? "Departure ": "Arrival ")+"date "+date+" " +
+              "is invalid, date must be in format mm/dd/yyyy");
+    if(!time.matches("((2[0123])|([01]?[0-9])):[0-5][0-9]"))
+      throw new IllegalArgumentException((type == 0 ? "Departure ": "Arrival ")+"time "+time
+              +" is invalid, time must be in format hh:mm (24 hour format)");
+
+    try{
+      rdate = df.parse(date + " " + time);
+    }
+    catch (ParseException ex)
+    {
+      throw new IllegalArgumentException((type == 0 ? "Departure ": "Arrival ") +"date and time "+
+              date + " " + time + " is invalid, date must be in format MM/dd/yyyy hh:mm" +
+              "and exist");
+    }
+
+    return rdate;
+  }
   /**
    * validateOrder ensures that the departure date occurs before the arrival date.
    * @param departure the Date representation of departure

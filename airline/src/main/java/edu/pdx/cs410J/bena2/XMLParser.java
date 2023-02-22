@@ -11,6 +11,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Reader;
 import java.util.Date;
 import java.util.Objects;
 
@@ -18,7 +19,7 @@ public class XMLParser implements AirlineParser<Airline> {
 
     protected final InputSource file;
 
-    public XMLParser(InputStream file) {
+    public XMLParser(Reader file) {
         this.file = new InputSource(file);
     }
 
@@ -72,7 +73,6 @@ public class XMLParser implements AirlineParser<Airline> {
                     break;
                 case "flight":
                     if(airline != null) airline.addFlight(parseFlight(current));
-                    else throw new IllegalArgumentException("No airline name provided");
                     break;
                 default:
                     break;
@@ -120,7 +120,7 @@ public class XMLParser implements AirlineParser<Airline> {
         }
         catch (IllegalArgumentException | NullPointerException ex)
         {
-            throw new IllegalArgumentException("Flight "+number+": "+ex.getMessage());
+            throw new IllegalArgumentException("Flight "+(number==null?"":number)+": "+ex.getMessage());
         }
     }
 
@@ -173,7 +173,7 @@ public class XMLParser implements AirlineParser<Airline> {
             }
         }
         try {
-            if (min != null && Integer.parseInt(min) < 10)
+            if (min != null && Integer.parseInt(min) < 10 && Integer.parseInt(min)>=0)
                 min = "0" + min;
             return hour+":"+min;
         }catch(NumberFormatException ex){
@@ -181,7 +181,7 @@ public class XMLParser implements AirlineParser<Airline> {
         }
     }
 
-    private String parseDate(Element current) {
+    private String parseDate(Element current)  throws NullPointerException{
         String day = null, month = null, year = null;
 
         Objects.requireNonNull(current, "null date element");
@@ -193,13 +193,13 @@ public class XMLParser implements AirlineParser<Airline> {
 
             switch (att.getNodeName()) {
                 case "day":
-                    day = att.getNodeValue();
+                    day = value(att, "day");
                     break;
                 case "month":
-                    month = att.getNodeValue();
+                    month = value(att, "month");
                     break;
                 case "year":
-                    year = att.getNodeValue();
+                    year = value(att, "year");
                     break;
                 default:
                     break;

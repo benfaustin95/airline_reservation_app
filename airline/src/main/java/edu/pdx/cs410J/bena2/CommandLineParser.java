@@ -1,6 +1,7 @@
 package edu.pdx.cs410J.bena2;
 
 import edu.pdx.cs410J.AirlineDumper;
+import edu.pdx.cs410J.AirlineParser;
 import edu.pdx.cs410J.ParserException;
 
 import java.io.*;
@@ -20,7 +21,7 @@ public class CommandLineParser {
     protected static final String [] ARG_TYPE = {"Airline Name", "Flight Number", "Source Location",
             "Departure Date", "Departure Time", "Departure am/pm marker","Destination Location", "Arrival Date",
             "Arrival Time", "Arrival am/pm marker"};
-    protected static final String[] operations = {"-README", "-print", "-textFile","-pretty"};
+    protected static final String[] operations = {"-README", "-print", "-textFile","-pretty","-xmlFile"};
     protected static boolean print = false, stdOut = false;
 
     /**
@@ -193,6 +194,8 @@ public class CommandLineParser {
         try(FileWriter fw = new FileWriter(file)) {
             if(type == 0)
                 dumper = new TextDumper(fw);
+            else if(type == 1)
+                dumper = new XMLDumper(fw);
             else
                 dumper = new PrettyPrinter(fw);
 
@@ -219,7 +222,7 @@ public class CommandLineParser {
            return;
        }
 
-       dumpFile(file, 1);
+       dumpFile(file, 3);
 
 
    }
@@ -231,13 +234,14 @@ public class CommandLineParser {
      *                         the file.
      * @throws IOException Thrown if the file provided can not be read from.
      */
-    protected void parseFile(File file) throws ParserException, IOException{
-
-        try(FileReader fr = new FileReader(file)) {
-
-            TextParser parser = new TextParser(fr);
+    protected void parseFile(File file, int type) throws ParserException, IOException{
+        AirlineParser<Airline> parser = null;
+        try(FileReader fr = new FileReader(file)){
+            if(type == 0)
+                parser = new TextParser(fr);
+            else
+                parser = new XMLParser(fr);
             airline = parser.parse();
-
         } catch (FileNotFoundException e) {
             return;
         } catch (IOException e) {
@@ -255,13 +259,13 @@ public class CommandLineParser {
      */
     public static String [] splitOptionsAndArgs(String[] args, ArrayList<String> argsList,
                                              Set<String> optionsList) {
-        String [] toReturn = new String[2];
+        String [] toReturn = new String[3];
         toReturn[0] = null;
         toReturn[1] = null;
 
         for(int i = 0; i<args.length; ++i)
         {
-            if(args[i].equals("-textFile") && toReturn[0]== null)
+            if(((args[i].equals(operations[2])) || args[i].equals(operations[4])) && toReturn[0]== null)
             {
                 optionsList.add(args[i]);
                 if(i+1 < args.length && !args[i+1].startsWith("-")) {
@@ -269,8 +273,7 @@ public class CommandLineParser {
                 }
                 continue;
             }
-
-            if(args[i].equals("-pretty") && toReturn[1] == null)
+            if(args[i].equals(operations[3]) && toReturn[1] == null)
             {
                 optionsList.add(args[i]);
                 if(i+1 < args.length && (!args[i+1].startsWith("-") || args[i+1].equals("-"))) {

@@ -8,7 +8,7 @@ import java.util.*;
 /**
  * The main class for the CS410J airline Project2
  */
-public class Project3 extends CommandLineParser {
+public class Project4 extends CommandLineParser {
     /**
      * Main method for  CS410J Project 2, parses the command line for airline/flight data
      * and program options. All errors cause the program to exit and an error message to be printed
@@ -17,12 +17,13 @@ public class Project3 extends CommandLineParser {
      */
 
   public static void main(String[] args) {
-      Project3 test = new Project3();
+      Project4 test = new Project4();
       ArrayList<String> args_list = new ArrayList<>();
       Set<String> options_list = new HashSet<>();
       String[] fNames;
       File [] file = new File[2];
       print = stdOut = false;
+      int parserType = 0;
 
       fNames = splitOptionsAndArgs(args, args_list, options_list);
 
@@ -32,9 +33,16 @@ public class Project3 extends CommandLineParser {
           return;
       }
 
+      if(options_list.contains(operations[2]) && options_list.contains(operations[4]))
+      {
+          System.err.println("Options "+operations[2]+" and "+operations[4]+" can not be exercised" +
+                  " together. \nPlease see README for further instructions");
+          return;
+      }
+
       if(fNames[0] != null && fNames[0].equals(fNames[1]))
       {
-          System.err.println("File path for -textFile and -pretty options can not be the same\n" +
+          System.err.println("File path for (-textFile or -xmlFile) and -pretty options can not be the same\n" +
                   "Please see README for further instruction");
           return;
       }
@@ -50,9 +58,10 @@ public class Project3 extends CommandLineParser {
           options_list.remove(operations[1]);
       }
 
-      if(options_list.contains(operations[2]))
+      if(options_list.contains(operations[2]) || options_list.contains(operations[4]))
       {
-          file[0] = fileSet(options_list, fNames[0],operations[2]);
+          parserType = (options_list.contains(operations[2])?0:1);
+          file[0] = fileSet(options_list, fNames[0],(parserType==0?operations[2]:operations[4]));
           if(file[0] == null)
               return;
       }
@@ -61,13 +70,13 @@ public class Project3 extends CommandLineParser {
       {
           file[1] = fileSet(options_list, fNames[1], operations[3]);
           if(file[1] == null && !stdOut)
-                  return;
+              return;
       }
 
       if(invalidOptions(options_list))
           return;
 
-      test.execution(args_list, file);
+      test.execution(args_list, file,parserType);
   }
 
     /**
@@ -97,7 +106,7 @@ public class Project3 extends CommandLineParser {
      * @param fName the file path.
      * @return the instantiated file.
      */
-    private static File fileSet(Set<String> optionsList, String fName, String option) {
+    protected static File fileSet(Set<String> optionsList, String fName, String option) {
 
         if (fName == null) {
             System.err.println("Command Line: "+option+
@@ -112,12 +121,23 @@ public class Project3 extends CommandLineParser {
             return null;
         }
 
+        return fileValidation(fName, option, 0);
+    }
+
+    protected static File fileValidation(String fName, String option, int type) {
+
         File toReturn = new File(fName);
 
         try {
 
-            if (!toReturn.exists())
+            if (!toReturn.exists() && type == 0)
                 return toReturn;
+            if(!toReturn.exists())
+            {
+                System.err.println("Error Command Line: File Path Provided for option "+option+" "+
+                "does not exist, therefor can not be converted to XML");
+                return null;
+            }
             if (!toReturn.isFile())
             {
                 System.err.println("Error Command Line: File Path Provided for option "+option+" " +
@@ -136,6 +156,7 @@ public class Project3 extends CommandLineParser {
                         +" Is Not Writeable");
                 return null;
             }
+            return toReturn;
         }
         catch(SecurityException ex)
         {
@@ -144,7 +165,6 @@ public class Project3 extends CommandLineParser {
             return null;
         }
 
-        return toReturn;
     }
 
 
@@ -154,15 +174,15 @@ public class Project3 extends CommandLineParser {
      * @param args_list  a List of arguments used to create the airline/file.
      * @param file the array of Files to be read from/written too.
      */
-    protected void execution(ArrayList<String> args_list, File[] file) {
+    protected void execution(ArrayList<String> args_list, File[] file, int type) {
         try{
-            if(file[0] != null )
-                parseFile(file[0]);
-  
+            if(file[0] != null)
+                parseFile(file[0], type);
+
             Flight toPrint = createAirlineAndFlight(args_list);
   
            if(file[0] != null)
-               dumpFile(file[0], 0);
+               dumpFile(file[0], type);
 
            if(file[1] != null || stdOut)
                prettyPrintFile(file[1]);

@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.bena2;
 
+import edu.pdx.cs410J.AirlineDumper;
 import edu.pdx.cs410J.ParserException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -94,13 +95,16 @@ public class PrettyPrinterTest {
     }
 
     @Test
-    public void printTest()
-    {
-        Airline test = AirlineTest.getValidAirline();
-        PrettyPrinter printer = new PrettyPrinter(System.out);
+    public void testNullStreamAndWriter(){
+        AirlineDumper<Airline> test = new PrettyPrinter((Writer) null);
 
-        printer.dump(test);
+        try {
+            test.dump(AirlineTest.getValidAirline());
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
     }
+
 
     protected static String header = "| Flight Number |      Source      |        Departure       " +
             " |   Destination    |         Arrival         |    Length     |\n";

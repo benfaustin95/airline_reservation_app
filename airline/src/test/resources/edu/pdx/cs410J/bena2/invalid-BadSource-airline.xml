@@ -4,11 +4,10 @@
           SYSTEM "http://www.cs.pdx.edu/~whitlock/dtds/airline.dtd">
 
 <airline>
-  <!--test comment-->
   <name>Valid Airlines</name>
   <flight>
     <number>1437</number>
-    <src>BJX</src>
+    <src> </src>
     <depart>
       <date day="25" month="9" year="2020"/>
       <time hour="17" minute="0"/>

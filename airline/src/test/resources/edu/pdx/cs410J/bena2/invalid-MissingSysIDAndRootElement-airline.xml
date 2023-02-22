@@ -1,17 +1,15 @@
 <?xml version='1.0' encoding='us-ascii'?>
 
-<!DOCTYPE airline
-          SYSTEM "http://www.cs.pdx.edu/~whitlock/dtds/airline.dtd">
+<!-- A sample airline XML file -->
 
 <airline>
-  <!--test comment-->
-  <name>Valid Airlines</name>
+  <name>Example Airlines</name>
   <flight>
     <number>1437</number>
     <src>BJX</src>
     <depart>
       <date day="25" month="9" year="2020"/>
-      <time hour="17" minute="0"/>
+      <!-- Missing time -->
     </depart>
     <dest>CMN</dest> <!-- They're taking me to Marrakesh! -->
     <arrive>

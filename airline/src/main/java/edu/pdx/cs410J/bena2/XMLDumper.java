@@ -1,6 +1,5 @@
 package edu.pdx.cs410J.bena2;
 
-import edu.pdx.cs410J.AbstractAirline;
 import edu.pdx.cs410J.AirlineDumper;
 import org.w3c.dom.*;
 
@@ -11,22 +10,23 @@ import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.stream.StreamResult;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.Calendar;
 import java.util.Date;
 
 public class XMLDumper implements AirlineDumper<Airline> {
 
-    protected File file;
+    protected Writer file;
 
-    public XMLDumper(File file) {
+    public XMLDumper(Writer file){
         this.file = file;
     }
 
     @Override
-    public void dump(Airline airline) throws IOException {
+    public void dump(Airline airline) throws IOException, NullPointerException {
         Document doc = null;
+
+        if(airline == null) throw new NullPointerException("No Airline available to print");
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setValidating(true);
@@ -54,20 +54,18 @@ public class XMLDumper implements AirlineDumper<Airline> {
             Transformer xform = xfactory.newTransformer();
             xform.setOutputProperty(OutputKeys.INDENT, "yes");
             xform.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, AirlineXmlHelper.SYSTEM_ID);
+            xform.setOutputProperty(OutputKeys.ENCODING,"us-ascii");
             xform.transform(src,res);
 
-            for (Flight flight : airline.getFlights()) {
-                root.appendChild(createFlightNode(doc, flight));
-            }
 
         } catch (ParserConfigurationException e) {
-            throw new RuntimeException(e);
+            throw new IOException("Parser Configuration Error: "+e.getMessage());
         } catch (DOMException ex) {
-            throw new RuntimeException(ex);
+            throw new IOException("DOMImplementation Exception: "+ ex.getMessage());
         } catch (TransformerConfigurationException e) {
-            throw new RuntimeException(e);
+            throw new IOException("Transformer Configuration Exception: "+e.getMessage());
         } catch (TransformerException e) {
-            throw new RuntimeException(e);
+            throw new IOException("Transformer Exception: "+e.getMessage());
         }
     }
 
@@ -109,7 +107,7 @@ public class XMLDumper implements AirlineDumper<Airline> {
         toReturn.appendChild(date);
 
         Element time = doc.createElement("time");
-        time.setAttribute("hour", String.valueOf(cal.get(Calendar.HOUR)));
+        time.setAttribute("hour", String.valueOf(cal.get(Calendar.HOUR_OF_DAY)));
         time.setAttribute("minute", String.valueOf(cal.get(Calendar.MINUTE)));
         toReturn.appendChild(time);
 

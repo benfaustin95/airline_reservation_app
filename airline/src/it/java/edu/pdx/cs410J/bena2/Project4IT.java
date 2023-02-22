@@ -17,13 +17,13 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * An integration test for the {@link CommandLineParser} main class.
  */
-class Project3IT extends InvokeMainTestCase {
+class Project4IT extends InvokeMainTestCase {
 
     /**
      * Invokes the main method of {@link CommandLineParser} with the given arguments.
      */
     private MainMethodResult invokeMain(String... args) {
-        return invokeMain( Project3.class, args );
+        return invokeMain( Project4.class, args );
     }
 
     /*
@@ -382,8 +382,8 @@ class Project3IT extends InvokeMainTestCase {
     {
         MainMethodResult result = invokeMain("-print", "-pretty", "-","name","1", "PDX"
                 , "1/1/2023", "10:39", "am","SEA", "1/2/2023", "2:39","pm");
-        assertThat(result.getTextWrittenToStandardOut(), equalTo("name flight roster as of " +
-                "Feb 14th 2023\n\n---------------------------------------------------------------" +
+        assertThat(result.getTextWrittenToStandardOut(), containsString("\n\n--" +
+                "-------------------------------------------------------------" +
                 "------------------------------------------------------------\n| Flight Number |  " +
                 "    Source      |        Departure        |   Destination    |         Arrival    " +
                 "     |    Length     |\n---------------------------------------------------------" +
@@ -423,7 +423,7 @@ class Project3IT extends InvokeMainTestCase {
     {
         MainMethodResult result = invokeMain("-pretty","text","-textFile","text","-print", "name","1","PDX","1/1/2023","10:39",
                 "sea", "1/2/2023","2:34");
-        assertThat(result.getTextWrittenToStandardError(), equalTo("File path for -textFile and -pretty options can not be the same\n"
+        assertThat(result.getTextWrittenToStandardError(), equalTo("File path for (-textFile or -xmlFile) and -pretty options can not be the same\n"
                 +"Please see README for further instruction\n"));
     }
     @Test
@@ -535,6 +535,49 @@ class Project3IT extends InvokeMainTestCase {
                 "file line 1: Arguments Provided - Airline Name Airline , Flight Number  1 , Source Location" +
                 "  PDX , Departure Date  1/1/2023 , Departure Time 10:39 , Departure am/pm marker src \nArguments Missing" +
                 " - Destination Location , Arrival Date , Arrival Time , Arrival am/pm marker \n"));
+    }
+
+    @Test
+    public void xmlFileAndTextFileTogether()
+    {
+        assertThat(invokeMain("-xmlFile","test","-textFile","test2").getTextWrittenToStandardError(),
+                equalTo("Options -textFile and -xmlFile can not be exercised together. " +
+                        "\nPlease see README for further instructions\n"));
+    }
+
+    @Test
+    public void xmlParseValid(@TempDir File dir)
+    {
+        File file = new File(dir, "test");
+
+        for (int i = 1; i < 9; ++i) {
+            MainMethodResult result = invokeMain("-print", "-xmlFile", file.getPath(), "Airline Name", i + "23", "PDX", "3/"+i+"/2023", "10:23", "Am", "SEA", "3/"+(i+1)+"/2023", "12:34", "pm");
+            try(FileReader fr = new FileReader(file)) {
+                XMLParser parser = new XMLParser(fr);
+                assertThat(parser.parse().getFlights().size(), equalTo(i));
+            }catch (IOException | ParserException ex) {
+                fail(ex.getMessage());
+            }
+            assertThat(result.getTextWrittenToStandardError(), equalTo(""));
+            assertThat(result.getTextWrittenToStandardOut(), equalTo("Flight " + i + "23 departs PDX at 03/0"+i+"/2023 10:23 AM arrives SEA at 03/0"+(i+1)+"/2023 12:34 PM\n"));
+        }
+
+        try(BufferedReader br = new BufferedReader(new FileReader(file)))
+        {
+            String line = br.readLine();
+            assertThat(line, equalTo("<?xml version=\"1.0\" encoding=\"us-ascii\" standalone=\"no\"?>"));
+            line = br.readLine();
+            assertThat(line, equalTo("<!DOCTYPE airline SYSTEM \"http://www.cs.pdx.edu/~whitlock/dtds/airline.dtd\">"));
+            line = br.readLine();
+            assertThat(line, equalTo("<airline>"));
+            line = br.readLine();
+            assertThat(line, containsString("<name>Airline Name</name>"));
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+
+        MainMethodResult result = invokeMain("-xmlFile", file.getPath(),"-pretty", "-","Airline Name","23", "PDX", "3/31/2023", "10:23", "Am", "SEA", "3/31/2023", "12:34", "pm");
+        assertThat(result.getTextWrittenToStandardOut(), containsString("Airline Name flight roster as of Feb 22nd 2023"));
     }
 
 }

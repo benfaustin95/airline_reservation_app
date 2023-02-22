@@ -372,6 +372,17 @@ public class FlightTest {
 
         assertThat(test.getPrettyDump(18),equalTo(validFlightDump));
     }
+
+
+    @Test
+    void testValidateDateEdgeCases() {
+        assertThrows(IllegalArgumentException.class, ()->Flight.validateDateAndTime(null, "10:39",1));
+        assertThrows(IllegalArgumentException.class, ()->Flight.validateDateAndTime("1/1/2023", null,1));
+        assertThrows(IllegalArgumentException.class, ()->Flight.validateDateAndTime("2/31/2023","10:23",1));
+        assertThrows(IllegalArgumentException.class, ()->Flight.validateDateAndTime(null, "10:39",0));
+        assertThrows(IllegalArgumentException.class, ()->Flight.validateDateAndTime("1/1/2023", null,0));
+        assertThrows(IllegalArgumentException.class, ()->Flight.validateDateAndTime("2/31/2023","10:23",0));
+    }
     protected static Flight getValidFlight() {
         Flight test = null;
         try {

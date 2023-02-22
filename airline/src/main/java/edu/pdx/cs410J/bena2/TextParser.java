@@ -44,6 +44,7 @@ public class TextParser implements AirlineParser<Airline> {
     Airline airline = null;
     int counter = 0;
 
+    if(reader == null) return null;
 
     try (BufferedReader br = new BufferedReader(this.reader)) {
       String line;
@@ -64,7 +65,7 @@ public class TextParser implements AirlineParser<Airline> {
 
     if(counter == 0)
       throw new ParserException("File is empty, file provided must have contents or not yet" +
-              "exist");
+              " exist");
     return airline;
   }
 

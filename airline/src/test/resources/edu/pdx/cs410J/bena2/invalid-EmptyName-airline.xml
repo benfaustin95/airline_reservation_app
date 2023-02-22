@@ -4,8 +4,7 @@
           SYSTEM "http://www.cs.pdx.edu/~whitlock/dtds/airline.dtd">
 
 <airline>
-  <!--test comment-->
-  <name>Valid Airlines</name>
+  <name></name>
   <flight>
     <number>1437</number>
     <src>BJX</src>

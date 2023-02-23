@@ -54,6 +54,7 @@ public class XMLParserTest {
         System.out.println("HEREEEEEEEEEE");
         invalidFile("invalid-MissingDate-airline.xml","XML file does not conform to DTD: " +
                 "The content of element type \"flight\" must match \"(number,src,depart,dest,arrive)\".");
+        System.out.println("HEREEEEEEEEEE");
         invalidFile("invalid-MissingSrc-airline.xml","XML file does not conform to DTD: " +
                 "The content of element type \"flight\" must match \"(number,src,depart,dest,arrive)\".");
         invalidFile("invalid-EmptyAirline-airline.xml","XML file does not conform to DTD: " +

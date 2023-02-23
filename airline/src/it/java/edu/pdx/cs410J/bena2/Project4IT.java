@@ -101,25 +101,25 @@ class Project4IT extends InvokeMainTestCase {
     @Test
     void testOnlyREADMEOnCommandLine() {
         MainMethodResult result = invokeMain("-README");
-        assertThat(result.getTextWrittenToStandardOut(), containsString("Ben Austin, CS410J-001, 02/08/2023, bena2@pdx.edu"));
+        assertThat(result.getTextWrittenToStandardOut(), containsString("Ben Austin, CS410J-001, 02/22/2023, bena2@pdx.edu"));
     }
 
     @Test
     void testREADMEAndFlightDataOnCommandLine() {
         MainMethodResult result = invokeMain("-README","name","1","PDX","1/1/2023","10:39","am","SEA","1/1/2023","11:49","pm");
-        assertThat(result.getTextWrittenToStandardOut(), containsString("Ben Austin, CS410J-001, 02/08/2023, bena2@pdx.edu"));
+        assertThat(result.getTextWrittenToStandardOut(), containsString("Ben Austin, CS410J-001, 02/22/2023, bena2@pdx.edu"));
     }
 
     @Test
     void testREADMEAndPrintMeAndFlightDataOnCommandLine() {
         MainMethodResult result = invokeMain("-README","-print","name","1","PDX","1/1/2023","10:39","am","SEA","1/1/2023","9:49", "pm");
-        assertThat(result.getTextWrittenToStandardOut(), containsString("Ben Austin, CS410J-001, 02/08/2023, bena2@pdx.edu"));
+        assertThat(result.getTextWrittenToStandardOut(), containsString("Ben Austin, CS410J-001, 02/22/2023, bena2@pdx.edu"));
     }
 
     @Test
     void testREADMEAndPrintMeOnCommandLine() {
         MainMethodResult result = invokeMain("-README","-print");
-        assertThat(result.getTextWrittenToStandardOut(), containsString("Ben Austin, CS410J-001, 02/08/2023, bena2@pdx.edu"));
+        assertThat(result.getTextWrittenToStandardOut(), containsString("Ben Austin, CS410J-001, 02/22/2023, bena2@pdx.edu"));
     }
 
     @Test
@@ -541,7 +541,7 @@ class Project4IT extends InvokeMainTestCase {
     public void xmlFileAndTextFileTogether()
     {
         assertThat(invokeMain("-xmlFile","test","-textFile","test2").getTextWrittenToStandardError(),
-                equalTo("Options -textFile and -xmlFile can not be exercised together. " +
+                equalTo("Options -textFile and -xmlFile can not be exercised in conjunction. " +
                         "\nPlease see README for further instructions\n"));
     }
 

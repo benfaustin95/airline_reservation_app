@@ -207,6 +207,11 @@ public class Airline extends AbstractAirline<Flight> implements Cloneable{
         return toString().hashCode();
     }
 
+    /**
+     * containsAirport determines whether an airport is within the airlines flight roster.
+     * @param s a String referencing the name of the airport to be checked.
+     * @return true if the airport is present false if not.
+     */
     public boolean containsAirport(String s) {
 
         for(Flight flight: roster)

@@ -238,7 +238,7 @@ public class Flight extends AbstractFlight implements Cloneable, Comparable<Flig
   /**
    * validateDateAndTime validates that the Strings passed in are valid Date and Time representations.
    * The Date must be in the following format: MM/dd/YYYY
-   * The time must be in the following format: HH:mm (24 hour time)
+   * The time must be in the following format: hh:mm aa (12 hour time)
    * the am/pm marker must be either am or pm
    * @param date A String holding the date to be tested.
    * @param time A String holding the time to be tested.
@@ -281,6 +281,16 @@ public class Flight extends AbstractFlight implements Cloneable, Comparable<Flig
     return rdate;
   }
 
+  /**
+   * validateDateAndTime validates that the Strings passed in are valid Date and Time representations.
+   * The Date must be in the following format: MM/dd/YYYY
+   * The time must be in the following format: HH:mm (24 hour time)
+   * the am/pm marker must be either am or pm
+   * @param date A String holding the date to be tested.
+   * @param time A String holding the time to be tested.
+   * @return A reference to a Date object containing the valid date and time.
+   * @throws IllegalArgumentException Thrown if either the date or time passed in is not valid.
+   */
   public static Date validateDateAndTime(String date, String time, int type) {
     DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm");
     df.setLenient(false);

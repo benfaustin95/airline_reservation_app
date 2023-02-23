@@ -6,8 +6,19 @@ import org.checkerframework.checker.units.qual.C;
 import java.io.*;
 import java.util.Arrays;
 
+/**
+ * Converter extends the Project 4 class and contains the main method which can be utilized by the
+ * user to convert a plain textFile (of type CSV) to XML.
+ */
 public class Converter extends Project4{
     public final static String [] arguments = {"textFile", "xmlFile"};
+
+    /**
+     * main method for Converter parses the command line for file names and directs the conversion
+     * of the text file1 one into XML file2. All errors result in the programing terminating and an
+     * error message being output to the user.
+     * @param args a String array holding the file names to be utlized by the program.
+     */
     public static void main(String [] args) {
         File[] files = new File[2];
         Converter test = new Converter();

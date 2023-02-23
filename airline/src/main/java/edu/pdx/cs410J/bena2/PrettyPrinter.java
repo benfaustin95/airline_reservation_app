@@ -97,6 +97,11 @@ public class PrettyPrinter implements AirlineDumper<Airline> {
         }
     }
 
+    /**
+     * today Returns a String representation of the date passed in.
+     * @param date the Date to be converted to String.
+     * @return the String representation of the Date argument.
+     */
     public static String today(Date date) {
         String toReturn;
        Calendar cDate = Calendar.getInstance();
@@ -116,11 +121,23 @@ public class PrettyPrinter implements AirlineDumper<Airline> {
        return toReturn;
     }
 
+    /**
+     * maxAirportLength determines airport with the maximum name length contained within the airlines
+     * flight roster and returns the length.
+     * @param airline the Airline to be
+     * @return the max name length.
+     */
     public static int maxAirportLength(Airline airline)
     {
          return AirportNames.getNamesMap().keySet().stream().filter(s->airline.containsAirport(s)).map(s->AirportNames.getName(s)).max((s1,s2)->s1.length()-s2.length()).orElse("").length();
     }
 
+    /**
+     * centerString centers the string passed using the with argument provided.
+     * @param toCenter the string to be centered.
+     * @param width the width the string should be centered in.
+     * @return the centered string.
+     */
     public static String centerString(String toCenter, int width)
     {
         int padding = width-toCenter.length();

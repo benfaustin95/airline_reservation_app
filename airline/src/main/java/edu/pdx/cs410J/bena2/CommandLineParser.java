@@ -185,6 +185,7 @@ public class CommandLineParser {
     /**
      * dumpFile handles dumping the airline data out to the file provided.
      * @param file the File to be written to.
+     * @param type the type of dumper to be utilized
      * @throws IOException Thrown if the file is not valid
      * @throws IllegalArgumentException Thrown if the output fails.
      */
@@ -230,6 +231,7 @@ public class CommandLineParser {
     /**
      * parseFile handles parsing the airline data from the provided file.
      * @param file the File to read from.
+     * @param type the type of parser to be utilized
      * @throws ParserException Thrown if the parser runs into any format or data issues when parsing
      *                         the file.
      * @throws IOException Thrown if the file provided can not be read from.

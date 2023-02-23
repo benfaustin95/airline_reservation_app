@@ -7,11 +7,11 @@ import java.io.Writer;
 import java.util.*;
 
 /**
- * The TextDumper class handles outputting the provided airline via comma seperated as well
- * as error checking output. The TextDumper class implements the AirlineDumper class,
+ * The TextDumper class handles outputting the provided airline via comma seperated value as well
+ * as error checking output. The TextDumper class implements the AirlineDumper interface,
  * thus it implements the dump method, which is of void return type and takes an airline reference.
  * <ul>
- *     <li> Writer: Handles writing out character data to the desired writer </li>
+ *     <li> writer: Handles writing out character data to the desired writer </li>
  * </ul>
  */
 public class TextDumper implements AirlineDumper<Airline> {

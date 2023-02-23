@@ -14,12 +14,8 @@ public class Converter extends Project4{
 
         if(args.length == 0)
         {
+            System.err.println("No arguments provided please see below Command Line Usage: ");
             printConverterUsage();
-            return;
-        }
-
-        if(Arrays.asList(args).contains("-README")) {
-            printREADME(0);
             return;
         }
         if (args.length < 2) {
@@ -53,7 +49,7 @@ public class Converter extends Project4{
 
 
     /**
-     * printUsage prints out the Usage stored in the resources folder.
+     * printConverterUsage prints out the ConverterUsage stored in the resources folder.
      */
     protected static void printConverterUsage()
     {

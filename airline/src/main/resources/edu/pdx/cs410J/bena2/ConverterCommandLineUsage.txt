@@ -1,8 +1,4 @@
-command line usage: java -jar target/airline-2023.0.0.jar [options] <args>
-
+command line usage: java edu.pdx.cs410J.bena2.Converter textFile xmlFile
 arguments are (in this order):
     textFile: File containing valid Airline text data
-    xmlFile: File converted Airline data should be output to
-
-options are (options may appear in any order):
--README          Prints a README for this project and exits
+    xmlFile:  File converted Airline data should be output to

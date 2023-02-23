@@ -58,8 +58,7 @@ public class ConverterTest extends InvokeMainTestCase{
         assertThat(invokeMain("Test","test","test","test","test").getTextWrittenToStandardError(),
                 equalTo("Extra Argument: test Extra Argument: test Extra Argument: test\nPlease " +
                         "see README for further instructions\n"));
-        assertThat(invokeMain("-README").getTextWrittenToStandardOut(),containsString("bena2@pdx.edu"));
-        assertThat(invokeMain().getTextWrittenToStandardError(),containsString("<args>"));
+        assertThat(invokeMain().getTextWrittenToStandardError(),containsString("command line usage"));
     }
 
     @Test

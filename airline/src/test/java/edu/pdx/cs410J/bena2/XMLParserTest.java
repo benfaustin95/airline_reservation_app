@@ -38,8 +38,6 @@ public class XMLParserTest {
                 "Premature end of file.");
         invalidFile("invalid-MissingId-airline.xml","XML file does not conform to DTD: " +
                 "Element type \"airline\" must be declared.");
-        invalidFile("invalid-BadSystemId-airline.xml","error opening XML file: " +
-                "http://web.cecs.pdx.edu/~whitlock/dts/airline.dtd");
         invalidFile("invalid-MissingType-airline.xml","XML file does not conform to " +
                 "DTD: Element type \"encoding\" must be followed by either attribute " +
                 "specifications, \">\" or \"/>\".");

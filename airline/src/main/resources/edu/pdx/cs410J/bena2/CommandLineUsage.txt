@@ -14,4 +14,5 @@ options are (options may appear in any order):
 -textFile file   Where to read/write the airline info
 -pretty file     Pretty print the airline’s flights to
                  a text file or standard out (file = -)
+-xmlFile file    Where to read/write the airline info
 Date and time should be in the format: mm/dd/yyyy hh:mm aa (12 hour format)

@@ -10,7 +10,7 @@ import java.util.*;
  */
 public class Project4 extends CommandLineParser {
     /**
-     * Main method for  CS410J Project 2, parses the command line for airline/flight data
+     * Main method for  CS410J Project 4, parses the command line for airline/flight data
      * and program options. All errors cause the program to exit and an error message to be printed
      * to standard error.
      * @param args an Array of Strings hold user supplied input from the command line
@@ -36,7 +36,7 @@ public class Project4 extends CommandLineParser {
       if(options_list.contains(operations[2]) && options_list.contains(operations[4]))
       {
           System.err.println("Options "+operations[2]+" and "+operations[4]+" can not be exercised" +
-                  " together. \nPlease see README for further instructions");
+                  " in conjunction. \nPlease see README for further instructions");
           return;
       }
 
@@ -100,10 +100,12 @@ public class Project4 extends CommandLineParser {
     }
 
     /**
-     * fileSet if the file name provided is null the method outputs an error to standard error.
-     * Otherwise, a new File is instantiated with the File path.
+     * fileSet begins the validation of a file. if the file name provided is null the method
+     * outputs an error to standard error. Otherwise, the option associated with the file is removed from the optionsList and file
+     * validation is called.
      * @param optionsList a Set of options provided by the user.
      * @param fName the file path.
+     * @param option the option associated with the file
      * @return the instantiated file.
      */
     protected static File fileSet(Set<String> optionsList, String fName, String option) {
@@ -124,6 +126,15 @@ public class Project4 extends CommandLineParser {
         return fileValidation(fName, option, 0);
     }
 
+    /**
+     * fileValidation was opens a new File and checks that the file is valid, if the type
+     * parameter is zero the file is valid even if it doesn't exist, if the type parameter
+     * is one the file is not valid if it doesn't exist.
+     * @param fName a String containing the name of the file to be opened.
+     * @param option a String containing the option associated with the file.
+     * @param type an Int signaling whether the file must exist.
+     * @return null if the file is invalid, a file instance if the file is valid.
+     */
     protected static File fileValidation(String fName, String option, int type) {
 
         File toReturn = new File(fName);
@@ -173,6 +184,7 @@ public class Project4 extends CommandLineParser {
      * flight, and outputting the airline.
      * @param args_list  a List of arguments used to create the airline/file.
      * @param file the array of Files to be read from/written too.
+     * @param type an Int signalling whether the read/write file format.
      */
     protected void execution(ArrayList<String> args_list, File[] file, int type) {
         try{
@@ -201,6 +213,9 @@ public class Project4 extends CommandLineParser {
         catch(IOException ex)
         {
             System.err.println("Error Command Line: Invalid file path "+ ex.getMessage());
+        }
+        catch(Exception ex){
+            System.err.println("Error Command Line: "+ ex.getMessage());
         }
     }
 

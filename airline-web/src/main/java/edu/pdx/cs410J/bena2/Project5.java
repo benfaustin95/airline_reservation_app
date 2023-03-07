@@ -59,7 +59,7 @@ public class Project5 {
 
         AirlineRestClient client = new AirlineRestClient(hostName, port);
 
-        String message;
+       /* String message;
         try {
             if (word == null) {
                 // Print all word/definition pairs
@@ -85,6 +85,7 @@ public class Project5 {
         }
 
         System.out.println(message);
+        */
     }
 
     private static void error( String message )

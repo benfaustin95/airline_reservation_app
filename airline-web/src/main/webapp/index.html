@@ -27,24 +27,32 @@
     is created by the project archetype.
 </h2>
 
-
 <div>
     <form method="get" action="flights">
-        List all word/definition pairs <input type="submit" definition="Submit"/>
-    </form>
-</div>
-
-<div>
-    <form method="get" action="flights">
-        List definition for word <input name="word" type="text" size="10" title="word"/>
+        <label for="airline">Airline</label>
+        <input name="airline" id="airline" type="text"/>
+        <label for="src">Source</label>
+        <input name="src" id="src" type="text"/>
+        <label for="dest">Destination</label>
+        <input name="dest" id="dest" type="text"/>
         <input type="submit" definition="Submit"/>
     </form>
 </div>
 
 <div>
     <form method="post" action="flights">
-        Create a new word/definition pair <input name="word" type="text" size="10" title="word"/> /
-        <input name="definition" type="text" size="10" title="definition"/>
+        <label for="airline-post">Airline</label>
+        <input name="airline" id="airline-post" type="text"/>
+        <label for="src-post">Source</label>
+        <input name="src" id="src-post" type="text"/>
+        <label for="dest-post">Destination</label>
+        <input name="dest" id="dest-post" type="text"/>
+        <label for="arrive">Arrivwe</label>
+        <input name="arrive" id="arrive" type="text"/>
+        <label for="depart">Depart</label>
+        <input name="depart" id="depart" type="text"/>
+        <label for="fnumber">Fnumber</label>
+        <input name="flightNumber" id="fnumber" type="text"/>
         <input type="submit" definition="Submit"/>
     </form>
 </div>

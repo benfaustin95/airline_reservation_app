@@ -19,7 +19,6 @@ import java.util.Map;
  */
 public class AirlineServlet extends HttpServlet {
     static final String AIRLINE_PARAMETER = "airline";
-    static final String DEFINITION_PARAMETER = "definition";
     static final String SRC_PARAMETER = "src";
     static final String DST_PARAMETER ="dest";
     static final String FNUMBER_PARAMETER = "flightNumber";
@@ -50,18 +49,35 @@ public class AirlineServlet extends HttpServlet {
           case 2:
               writeFlights(response, 2, airline, src, dst);
               break;
+          case 4:
+              writeAllAirlines(response);
+              break;
           default:
               break;
       }
       return;
   }
 
+    protected void writeAllAirlines(HttpServletResponse response) throws IOException {
+
+      if(airport.isEmpty()) {
+          response.sendError(HttpServletResponse.SC_NOT_FOUND, "No airlines currently stored " +
+                  "in program");
+          return;
+      }
+
+      for(String name: airport.keySet()){
+          writeFlights(response, 1, name);
+      }
+
+    }
+
     private void writeFlights(HttpServletResponse response, int i, String ... strings) throws IOException {
       XMLDumper dumper = new XMLDumper(response.getWriter());
       Airline airline = airport.get(strings[0]);
 
       if(airline == null) {
-          response.setStatus(HttpServletResponse.SC_NOT_FOUND, "Airline "+strings[0]+" does not " +
+          response.sendError(HttpServletResponse.SC_NOT_FOUND, "Airline "+strings[0]+" does not " +
                   "exist");
           return;
       }
@@ -75,10 +91,13 @@ public class AirlineServlet extends HttpServlet {
 
     protected int validateGetParameters(String airline, String src, String dst, HttpServletResponse response) throws IOException{
 
+      if(airline == null && src == null && dst == null) return 4;
+
       if(airline == null) {
           missingRequiredParameter(response, AIRLINE_PARAMETER);
           return 3;
       }
+
       if(src == null && dst == null) return 1;
 
       if(src == null || dst == null) {
@@ -86,6 +105,14 @@ public class AirlineServlet extends HttpServlet {
           return 3;
       }
 
+      try{
+          Flight.validateLocation(src, 0);
+          Flight.validateLocation(dst, 1);
+
+      }catch (IllegalArgumentException ex){
+          response.sendError(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage());
+          return 3;
+      }
       return 2;
     }
 
@@ -150,7 +177,7 @@ public class AirlineServlet extends HttpServlet {
       throws IOException
   {
       String message = Messages.missingRequiredParameter(parameterName);
-      response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED, message);
+      response.sendError(HttpServletResponse.SC_BAD_REQUEST, message);
   }
 
   /**

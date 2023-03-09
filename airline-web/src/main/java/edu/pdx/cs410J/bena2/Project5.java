@@ -1,119 +1,153 @@
 package edu.pdx.cs410J.bena2;
 
 import edu.pdx.cs410J.ParserException;
+import edu.pdx.cs410J.web.HttpRequestHelper;
 
 import java.io.IOException;
-import java.io.PrintStream;
-import java.io.StringWriter;
-import java.util.Map;
+import java.net.UnknownHostException;
+import java.util.*;
 
 /**
- * The main class that parses the command line and communicates with the
- * Airline server using REST.
+ * The main class for the CS410J airline Project2
  */
-public class Project5 {
+public class Project5 extends CommandLineParser {
+    /**
+     * Main method for  CS410J Project 4, parses the command line for airline/flight data
+     * and program options. All errors cause the program to exit and an error message to be printed
+     * to standard error.
+     * @param args an Array of Strings hold user supplied input from the command line
+     */
 
-    public static final String MISSING_ARGS = "Missing command line arguments";
+  public static void main(String[] args) {
+      Project5 test = new Project5();
+      ArrayList<String> args_list = new ArrayList<>();
+      HashMap<String, String> options_list = new HashMap<>();
+      AirlineRestClient restClient = null;
+      print = search = false;
 
-    public static void main(String... args) {
-        String hostName = null;
-        String portString = null;
-        String word = null;
-        String definition = null;
+      splitOptionsAndArgs(args, args_list, options_list);
 
-        for (String arg : args) {
-            if (hostName == null) {
-                hostName = arg;
+      if(args_list.isEmpty() && options_list.isEmpty()) {
+          System.err.println(missingArguments);
+          printUsage(0);
+          return;
+      }
 
-            } else if ( portString == null) {
-                portString = arg;
+      if(options_list.containsKey(operations[0])) {
+          printREADME(0);
+          return;
+      }
+      
 
-            } else if (word == null) {
-                word = arg;
+      if(options_list.containsKey(operations[1])) {
+          print = true;
+          options_list.remove(operations[1]);
+      }
 
-            } else if (definition == null) {
-                definition = arg;
+      if((options_list.containsKey(operations[2]) || options_list.containsKey(operations[3])) && (restClient = setRestClient(options_list))==null){
+          return;
+      }
 
-            } else {
-                usage("Extraneous command line argument: " + arg);
-            }
-        }
+      if(options_list.containsKey(operations[4]))
+      {
+          if(print) {
+              System.err.println("Command Line Error: -print and -search can not be asserted together");
+              return;
+          }
+          search = true;
+          options_list.remove(operations[4]);
+      }
 
-        if (hostName == null) {
-            usage( MISSING_ARGS );
-            return;
+      if(invalidOptions(options_list))
+          return;
 
-        } else if ( portString == null) {
-            usage( "Missing port" );
-            return;
-        }
+      test.execution(args_list, restClient);
+  }
 
-        int port;
-        try {
-            port = Integer.parseInt( portString );
+    protected static  AirlineRestClient setRestClient(HashMap<String, String> optionsList) {
+      String host = optionsList.get(operations[2]);
+      String port = optionsList.get(operations[3]);
 
-        } catch (NumberFormatException ex) {
-            usage("Port \"" + portString + "\" must be an integer");
-            return;
-        }
+      optionsList.remove(operations[2]);
+      optionsList.remove(operations[3]);
 
-        AirlineRestClient client = new AirlineRestClient(hostName, port);
+      if(host == null || port == null) {
+          System.err.println("Command Line Error: host can not be specified without a port and vice versa");
+          return null;
+      }
 
-       /* String message;
-        try {
-            if (word == null) {
-                // Print all word/definition pairs
-                Map<String, String> dictionary = client.getAllDictionaryEntries();
-                StringWriter sw = new StringWriter();
-                PrettyPrinter pretty = new PrettyPrinter(sw);
-                pretty.dump(dictionary);
-                message = sw.toString();
-
-            } else if (definition == null) {
-                // Print all dictionary entries
-                message = PrettyPrinter.formatDictionaryEntry(word, client.getDefinition(word));
-
-            } else {
-                // Post the word/definition pair
-                client.addDictionaryEntry(word, definition);
-                message = Messages.definedWordAs(word, definition);
-            }
-
-        } catch (IOException | ParserException ex ) {
-            error("While contacting server: " + ex.getMessage());
-            return;
-        }
-
-        System.out.println(message);
-        */
-    }
-
-    private static void error( String message )
-    {
-        PrintStream err = System.err;
-        err.println("** " + message);
+      try{
+          return new AirlineRestClient(host, Integer.parseInt(port));
+      }catch (NumberFormatException ex) {
+          System.err.println("Command Line Error: "+port+" is not a valid integer");
+          return null;
+      }
     }
 
     /**
-     * Prints usage information for this program and exits
-     * @param message An error message to print
+     * invalidOptions validates that no options remain, outputs invalid options to standard error.
+     * @param options_list the Set of options.
+     * @return returns true if there are any invalid options and false if not.
      */
-    private static void usage( String message )
-    {
-        PrintStream err = System.err;
-        err.println("** " + message);
-        err.println();
-        err.println("usage: java Project5 host port [word] [definition]");
-        err.println("  host         Host of web server");
-        err.println("  port         Port of web server");
-        err.println("  word         Word in dictionary");
-        err.println("  definition   Definition of word");
-        err.println();
-        err.println("This simple program posts words and their definitions");
-        err.println("to the server.");
-        err.println("If no definition is specified, then the word's definition");
-        err.println("is printed.");
-        err.println("If no word is specified, all dictionary entries are printed");
-        err.println();
+    protected static boolean invalidOptions(Map<String, String> options_list) {
+
+        if(options_list.isEmpty())
+            return false;
+
+        System.err.print("Invalid Options: ");
+        for(String option: options_list.keySet())
+        {
+            System.err.print(option+" ");
+        }
+        System.err.println("\nPlease see README for further instructions on valid command line" +
+                " options");
+        return true;
+    }
+
+    /**
+     * execution handles the primary execution of the program, parsing the file, creating the new
+     * flight, and outputting the airline.
+     * @param args_list  a List of arguments used to create the airline/file.
+     */
+    protected void execution(ArrayList<String> args_list, AirlineRestClient client) {
+        try {
+            if (search) {
+                searchAirline(client, args_list);
+                return;
+            }
+
+            Flight toPrint = createAirlineAndFlight(args_list);//update name of function if needed
+
+            if(client != null)
+                client.addFlight(args_list.get(0), toPrint);
+
+            if (print)
+                System.out.println(toPrint.toString());
+
+        } catch (IllegalArgumentException ex) {
+            System.err.println("Error Command Line: " + ex.getMessage() + "\n" +
+                    "Please see README for further instructions.");
+        } catch (ParserException ex) {
+            System.err.println("Error XML: " + ex.getMessage());
+        } catch (IOException | HttpRequestHelper.RestException ex) {
+            System.err.println("Error Server: "+ex.getMessage());
+        } catch (Exception ex) {
+            System.err.println("Error Command Line: " + ex.getMessage());
+        }
+    }
+
+
+    protected void searchAirline(AirlineRestClient client, ArrayList<String> argsList) throws HttpRequestHelper.RestException, ParserException, IOException, IllegalArgumentException{
+        if(client == null)
+            throw new IllegalArgumentException("-search must be asserted with -host and -port options");
+
+        boolean path = validateSearchArguments(argsList);
+        if (path) {
+            airline = client.getAirline(argsList.get(0));
+            prettyPrintFile(null, null);
+            return;
+        }
+        airline = client.getAirline(argsList.get(0), argsList.get(1), argsList.get(2));
+        prettyPrintFile(argsList.get(1), argsList.get(2));
     }
 }

@@ -11,7 +11,7 @@ public class MessagesTest {
     public void testMissingRequiredParameter()
     {
         assertThat(Messages.missingRequiredParameter("test"), equalTo("The required" +
-                "parameter \"test\" is missing"));
+                " parameter \"test\" is missing"));
     }
 
     @Test

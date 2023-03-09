@@ -68,8 +68,8 @@ public class PrettyPrinterTest {
 
           testOut.dump(testIn);
 
-          assertThat(br.readLine(), equalTo("Test Airline flight roster as of "+PrettyPrinter.today(new Date())));
-          assertThat(file.length(), equalTo(2652L));
+          assertThat(br.readLine(), equalTo("Valid Airlines flight roster as of "+PrettyPrinter.today(new Date())));
+          assertThat(file.length(), equalTo(1114L));
 
        }
        catch (IOException | ParserException ex)

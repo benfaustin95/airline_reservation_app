@@ -473,7 +473,7 @@ public class Flight extends AbstractFlight implements Cloneable, Comparable<Flig
     map.put(AirlineServlet.FNUMBER_PARAMETER, String.valueOf(flightNumber));
     map.put(AirlineServlet.SRC_PARAMETER, source);
     map.put(AirlineServlet.DST_PARAMETER, destination);
-    map.put(AirlineServlet.ARRIVE_PARAMETER, arrival.toString());
-    map.put(AirlineServlet.DEPART_PARAMETER, departure.toString());
+    map.put(AirlineServlet.ARRIVE_PARAMETER, getArrivalString());
+    map.put(AirlineServlet.DEPART_PARAMETER, getDepartureString());
   }
 }

@@ -397,6 +397,14 @@ public class FlightTest {
         getValidFlight().put(test);
         assertThat(test.get("src"), equalTo("PDX"));
     }
+
+    @Test
+    void testValidateDate(){
+        String date = "test test";
+
+        assertThrows(IllegalArgumentException.class, ()->Flight.validateDate(date,1));
+        assertThrows(IllegalArgumentException.class, ()->Flight.validateDate(null,1));
+    }
     protected static Flight getValidFlight() {
         Flight test = null;
         try {

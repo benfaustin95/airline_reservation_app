@@ -8,6 +8,10 @@ public class Messages
 {
     public static String missingRequiredParameter( String parameterName )
     {
+        if(parameterName.equals("src"))
+            return "If a destination airport is provided a source airport is required";
+        if(parameterName.equals("dest"))
+            return "If a source airport is provided a destination airport is required";
         return String.format("The required parameter \"%s\" is missing", parameterName);
     }
 

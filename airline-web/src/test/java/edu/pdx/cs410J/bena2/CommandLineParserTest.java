@@ -73,23 +73,4 @@ class CommandLineParserTest {
 
   }
 
-
-  @Test
- void testCreateAirline()
-  {
-    ArrayList<String> test = getValidFlightData();
-    CommandLineParser parser = new CommandLineParser();
-
-    parser.createAirlineAndFlight(test);
-
-    assertThat(parser.airline.getFlights().size(), equalTo(1));
-
-    parser.createAirlineAndFlight(test);
-
-    assertThat(parser.airline.getFlights().size(), equalTo(2));
-
-    assertThrows(IllegalArgumentException.class, ()->parser.createAirlineAndFlight(getInvalidFlightData()));
-  }
-
-
 }

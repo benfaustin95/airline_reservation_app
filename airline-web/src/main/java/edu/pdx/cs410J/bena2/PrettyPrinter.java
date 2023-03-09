@@ -55,46 +55,7 @@ public class PrettyPrinter implements AirlineDumper<Airline> {
      */
     @Override
     public void dump(Airline airline) throws IllegalArgumentException {
-
-        PrintWriter pw = null;
-
-        if (airline == null)
-            throw new IllegalArgumentException("No Airline is available to pretty print");
-
-        if(writer == null && stream == null)
-            return;
-
-        try {
-            Iterator<Flight> toDump = airline.getFlights().iterator();
-            String name = airline.getName();
-            int maxAirportLen = maxAirportLength(airline)+6;
-            String divider = new String(new char[87+2*maxAirportLen]).replace('\0','-');
-            pw = (writer ==null ? new PrintWriter(stream): new PrintWriter(writer));
-
-            pw.println(name + " flight roster as of " + today(new Date()));
-            pw.println();
-            pw.flush();
-            pw.println(divider);
-            pw.printf("|%s|%s|%s|%s|%s|%s|\n",PrettyPrinter.centerString("Flight Number",15),
-                    PrettyPrinter.centerString("Source",maxAirportLen),
-                    PrettyPrinter.centerString("Departure",25),
-                    PrettyPrinter.centerString("Destination",maxAirportLen),
-                    PrettyPrinter.centerString("Arrival",25),
-                    PrettyPrinter.centerString("Length",15)
-            );
-            pw.println(divider);
-            while (toDump.hasNext()) {
-                pw.print(toDump.next().getPrettyDump(maxAirportLen));
-                pw.println(divider);
-                pw.flush();
-            }
-        }
-        finally {
-            if(writer != null)
-                pw.close();
-            else
-                pw.flush();;
-        }
+        dump(airline, null, null);
     }
 
     /**
@@ -143,5 +104,49 @@ public class PrettyPrinter implements AirlineDumper<Airline> {
         int padding = width-toCenter.length();
         int start = toCenter.length()+padding/2;
         return String.format("%-"+width+"s",String.format("%"+start+"s",toCenter));
+    }
+
+    public void dump(Airline airline, String src, String dest) throws IllegalArgumentException{
+        PrintWriter pw = null;
+
+        if (airline == null)
+            throw new IllegalArgumentException("No Airline is available to pretty print");
+
+        if(writer == null && stream == null)
+            return;
+
+        try {
+            Iterator<Flight> toDump = airline.getFlights().iterator();
+            String name = airline.getName();
+            int maxAirportLen = maxAirportLength(airline)+6;
+            String divider = new String(new char[87+2*maxAirportLen]).replace('\0','-');
+            pw = (writer ==null ? new PrintWriter(stream): new PrintWriter(writer));
+            pw.print(name + " flight roster ");
+            if(src != null && dest != null)
+                pw.print("source: "+AirportNames.getName(src.toUpperCase())+" destination: "+AirportNames.getName(dest.toUpperCase())+" ");
+            pw.println("as of " + today(new Date()));
+            pw.println();
+            pw.flush();
+            pw.println(divider);
+            pw.printf("|%s|%s|%s|%s|%s|%s|\n",PrettyPrinter.centerString("Flight Number",15),
+                    PrettyPrinter.centerString("Source",maxAirportLen),
+                    PrettyPrinter.centerString("Departure",25),
+                    PrettyPrinter.centerString("Destination",maxAirportLen),
+                    PrettyPrinter.centerString("Arrival",25),
+                    PrettyPrinter.centerString("Length",15)
+            );
+            pw.println(divider);
+            while (toDump.hasNext()) {
+                pw.print(toDump.next().getPrettyDump(maxAirportLen));
+                pw.println(divider);
+                pw.flush();
+            }
+        }
+        finally {
+            if(writer != null)
+                pw.close();
+            else
+                pw.flush();;
+        }
     }
 }

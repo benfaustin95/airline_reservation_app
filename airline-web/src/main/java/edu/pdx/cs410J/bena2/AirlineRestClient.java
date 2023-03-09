@@ -6,6 +6,8 @@ import edu.pdx.cs410J.web.HttpRequestHelper;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.net.ConnectException;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,37 +44,70 @@ public class AirlineRestClient
     }
 
     public Airline getAirline(String airline) throws IOException, ParserException, RestException{
-        Response response = http.get(Map.of(AirlineServlet.AIRLINE_PARAMETER, airline));
-        return getAirline(response);
-    }
+        try{
+            Response response = http.get(Map.of(AirlineServlet.AIRLINE_PARAMETER, airline));
+            return getAirline(response);
+        }catch (UnknownHostException ex)
+        {
+            throw new IOException("unknown host "+ex.getMessage());
+        }
+        catch (ConnectException ex){
+            throw new IOException(ex.getMessage()+" invalid port");
+        }
+
+}
     public Airline getAirline(String airline, String src, String dst) throws IOException, ParserException, RestException{
-        Response response = http.get(Map.of(AirlineServlet.AIRLINE_PARAMETER, airline, AirlineServlet.SRC_PARAMETER,
-                src, AirlineServlet.DST_PARAMETER, dst));
-        return getAirline(response);
+        try{
+            Response response = http.get(Map.of(AirlineServlet.AIRLINE_PARAMETER, airline, AirlineServlet.SRC_PARAMETER,
+                    src, AirlineServlet.DST_PARAMETER, dst));
+            return getAirline(response);
+        }catch (UnknownHostException ex)
+        {
+            throw new IOException("unknown host "+ex.getMessage());
+        }
+        catch (ConnectException ex){
+            throw new IOException(ex.getMessage()+" invalid port");
+        }
+
     }
   /**
    * Returns the definition for the given word
    */
-  private Airline getAirline(Response response) throws ParserException , RestException{
-    throwExceptionIfNotOkayHttpStatus(response);
-    String content = response.getContent();
+  private Airline getAirline(Response response) throws IOException, ParserException , RestException{
+          throwExceptionIfNotOkayHttpStatus(response);
+          String content = response.getContent();
 
-    XMLParser parser = new XMLParser(new StringReader(content));
-    return parser.parse();
-
+          XMLParser parser = new XMLParser(new StringReader(content));
+          return parser.parse();
   }
 
   public void addFlight(String aName, Flight flight) throws IOException, RestException{
-      Map<String, String> map = new HashMap<>();
-      map.put(AirlineServlet.AIRLINE_PARAMETER, aName);
-      flight.put(map);
-      Response response = http.post(map);
-      throwExceptionIfNotOkayHttpStatus(response);
+      try{
+          Map<String, String> map = new HashMap<>();
+          map.put(AirlineServlet.AIRLINE_PARAMETER, aName);
+          flight.put(map);
+          Response response = http.post(map);
+          throwExceptionIfNotOkayHttpStatus(response);
+      }catch (UnknownHostException ex)
+      {
+          throw new IOException("unknown host "+ex.getMessage());
+      }
+      catch (ConnectException ex){
+          throw new IOException(ex.getMessage()+" invalid port");
+      }
   }
 
-  public void removeAllDictionaryEntries() throws IOException, RestException{
-    Response response = http.delete(Map.of());
-    throwExceptionIfNotOkayHttpStatus(response);
+  public void removeAllAirlines() throws IOException, RestException{
+      try {
+          Response response = http.delete(Map.of());
+          throwExceptionIfNotOkayHttpStatus(response);
+      }catch (UnknownHostException ex)
+      {
+          throw new IOException("unknown host "+ex.getMessage());
+      }
+      catch (ConnectException ex){
+          throw new IOException(ex.getMessage()+" invalid port");
+      }
   }
 
   private void throwExceptionIfNotOkayHttpStatus(Response response) throws RestException{

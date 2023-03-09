@@ -2,6 +2,7 @@ package edu.pdx.cs410J.bena2;
 
 import edu.pdx.cs410J.AirlineDumper;
 import edu.pdx.cs410J.AirlineParser;
+import edu.pdx.cs410J.AirportNames;
 import edu.pdx.cs410J.ParserException;
 
 import java.io.*;
@@ -45,7 +46,7 @@ public class CommandLineParser {
         Flight toAdd = new Flight(flightData.get(1), flightData.get(2),flightData.get(6),
                 flightData.get(3), flightData.get(4),flightData.get(5), flightData.get(8),
                 flightData.get(7), flightData.get(9));
-
+        Airline airline = new Airline(flightData.get(0), toAdd);
         return toAdd;
     }
 
@@ -183,10 +184,13 @@ public class CommandLineParser {
      * @throws IOException thrown if the file can not be written to.
      * @throws IllegalArgumentException thrown if the airline is null.
      */
-   protected void prettyPrintFile() throws IOException, IllegalArgumentException {
-           PrettyPrinter printer = new PrettyPrinter(System.out);
-           printer.dump(airline);
-           return;
+   protected void prettyPrintFile(String src, String dest) throws IllegalArgumentException {
+       if(airline.getFlights().size()==0)
+           throw new IllegalArgumentException(String.format("%s contains no direct flights " +
+                   "between %s(%s) and %s(%s)",airline.getName(), src, AirportNames.getName(src.toUpperCase()),
+                   dest, AirportNames.getName(dest.toUpperCase())));
+       PrettyPrinter printer = new PrettyPrinter(System.out);
+       printer.dump(airline,src, dest);
    }
 
     /**
@@ -201,11 +205,11 @@ public class CommandLineParser {
 
         for(int i = 0; i<args.length; ++i) {
             if (((args[i].equals(operations[2])) || args[i].equals(operations[3]))) {
-                String toReturn = null;
                 if (i + 1 < args.length && !args[i + 1].startsWith("-")) {
-                    toReturn = args[++i];
+                    optionsList.put(args[i++], args[i]);
                 }
-                optionsList.put(args[i], toReturn);
+                else
+                    optionsList.put(args[i], null);
                 continue;
             }
             if (args[i].startsWith("-"))
@@ -219,11 +223,17 @@ public class CommandLineParser {
         int size = argsList.size();
 
         if(size == 0)
-            throw new IllegalArgumentException("No arguments provided for search option");
+            throw new IllegalArgumentException("No -search arguments provided for search option");
         if(size == 2)
-            throw  new IllegalArgumentException("Search arguments missing: Destination");
+            throw  new IllegalArgumentException("-search argument missing: Destination");
         if(size>3)
             throw new IllegalArgumentException(toManyArguments(argsList, 3));
-        return true;
+        if(size == 1)
+            return true;
+
+        Flight.validateLocation(argsList.get(1),0);
+        Flight.validateLocation(argsList.get(2),1);
+
+        return false;
     }
 }

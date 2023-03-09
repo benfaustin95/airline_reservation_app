@@ -2,16 +2,14 @@ package edu.pdx.cs410J.bena2;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 
-import java.io.File;
 import java.util.*;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class Project4Test {
+public class Project5Test {
 
     @Test
     public void testSplitOptionsAndArgsValid() {
@@ -20,7 +18,7 @@ public class Project4Test {
         ArrayList<String> args = new ArrayList<>();
         String[] name;
 
-        Project4.splitOptionsAndArgs(test, args, options);
+        Project5.splitOptionsAndArgs(test, args, options);
 
         assertThat(options.get("-host"), equalTo("host"));
         assertThat(options.get("-port"), equalTo("8080"));
@@ -34,7 +32,7 @@ public class Project4Test {
         HashMap<String,String> options = new HashMap<>();
         ArrayList<String> args = new ArrayList<>();
 
-        Project4.splitOptionsAndArgs(test,args,options);
+        Project5.splitOptionsAndArgs(test,args,options);
         assertNull(options.get("-readme"));
 
     }
@@ -45,7 +43,7 @@ public class Project4Test {
         HashMap<String,String> options = new HashMap<>();
         ArrayList<String> args = new ArrayList<>();
 
-        Project4.splitOptionsAndArgs(test, args, options);
+        Project5.splitOptionsAndArgs(test, args, options);
 
         assertThat(options.get("-README"), equalTo(null));
         assertThat(options.size(), equalTo(2));
@@ -59,7 +57,7 @@ public class Project4Test {
         HashMap<String,String> options = new HashMap<>();
         ArrayList<String> args = new ArrayList<>();
 
-        Project4.splitOptionsAndArgs(test, args, options);
+        Project5.splitOptionsAndArgs(test, args, options);
 
         assertThat(options.get("-README"), equalTo(null));
         assertThat(options.size(), equalTo(1));
@@ -70,7 +68,7 @@ public class Project4Test {
     @Test
     public void testAddFlight()
     {
-        Project4 test = new Project4();
+        Project5 test = new Project5();
 
         Flight one = test.createAirlineAndFlight(CommandLineParserTest.getValidFlightData());
         Flight two = test.createAirlineAndFlight(CommandLineParserTest.getValidFlightData());
@@ -81,10 +79,11 @@ public class Project4Test {
     @Disabled
     public void testAddFlightWrongAirline()
     {
-        Project4 test = new Project4();
+        Project5 test = new Project5();
 
         test.createAirlineAndFlight(CommandLineParserTest.getValidFlightData());
-        assertThrows(IllegalArgumentException.class,
+        Exception testerr= assertThrows(IllegalArgumentException.class,
                 ()->test.createAirlineAndFlight(CommandLineParserTest.getInvalidFlightData()));
+        System.out.println(testerr.getMessage());
     }
 }

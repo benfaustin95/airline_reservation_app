@@ -38,11 +38,25 @@ public class AirlineRestClient
         this(new HttpRequestHelper(String.format("http://%s:%d/%s/%s", hostName, port, WEB_APP, SERVLET)));
     }
 
+    /**
+     * Called by the above constructor, sets instance HttpRequestHelper reference.
+     * @param http the HttpRequestHelper the instance reference should point to.
+     */
     @VisibleForTesting
     AirlineRestClient(HttpRequestHelper http) {
       this.http = http;
     }
 
+    /**
+     * getAirline called when search is executed with just an airline name.
+     * @param airline a String referencing the Airline to be returned
+     * @return  the Airline found.
+     * @throws IOException thrown if connection to server can not be established
+     * @throws ParserException not thrown by method, but rather thrown by calling routine
+     *                         and not caught.
+     * @throws RestException   not thrown by method, but rather thrown by calling routine
+     *                         and not caught.
+     */
     public Airline getAirline(String airline) throws IOException, ParserException, RestException{
         try{
             Response response = http.get(Map.of(AirlineServlet.AIRLINE_PARAMETER, airline));
@@ -55,7 +69,20 @@ public class AirlineRestClient
             throw new IOException(ex.getMessage()+" invalid port");
         }
 
-}
+    }
+
+    /**
+     * getAirline called when search is executed with an airline name, source, and destination.
+     * @param airline a String referencing the Airline to be returned
+     * @param  src    a String referencing the Source airport.
+     * @param  dst    a String referencing the Destination airport.
+     * @return  the Airline found.
+     * @throws IOException thrown if connection to server can not be established
+     * @throws ParserException not thrown by method, but rather thrown by calling routine
+     *                         and not caught.
+     * @throws RestException   not thrown by method, but rather thrown by calling routine
+     *                         and not caught.
+     */
     public Airline getAirline(String airline, String src, String dst) throws IOException, ParserException, RestException{
         try{
             Response response = http.get(Map.of(AirlineServlet.AIRLINE_PARAMETER, airline, AirlineServlet.SRC_PARAMETER,
@@ -71,7 +98,14 @@ public class AirlineRestClient
 
     }
   /**
-   * Returns the definition for the given word
+   * getAirline is called by the previous definitions of getAirline, extracts and parses the content
+   * returned from the get request.
+   * @param response the Response returned from the get request.
+   * @return  the Airline parsed.
+   * @throws ParserException not thrown by method, but rather thrown by calling routine
+   *                         and not caught.
+   * @throws RestException   not thrown by method, but rather thrown by calling routine
+   *                         and not caught.
    */
   private Airline getAirline(Response response) throws IOException, ParserException , RestException{
           throwExceptionIfNotOkayHttpStatus(response);
@@ -81,6 +115,15 @@ public class AirlineRestClient
           return parser.parse();
   }
 
+    /**
+     *  addFlight builds and sends the post request to add the given flight to the airline with the
+     *  given name.
+     * @param aName          the name of the airline
+     * @param flight         the Flight to be added.
+     * @throws IOException   thrown if connection to server can not be established
+     * @throws RestException not thrown by method, but rather thrown by calling routine
+     *                       and not caught.
+     */
   public void addFlight(String aName, Flight flight) throws IOException, RestException{
       try{
           Map<String, String> map = new HashMap<>();
@@ -97,6 +140,12 @@ public class AirlineRestClient
       }
   }
 
+    /**
+     * removeAllAirlines deletes all airlines from server.
+     * @throws IOException Thrown if connection to the server can not be established
+     * @throws RestException not thrown by method, by rather thrown by the calling routine and not
+     *                       caught.
+     */
   public void removeAllAirlines() throws IOException, RestException{
       try {
           Response response = http.delete(Map.of());
@@ -110,6 +159,11 @@ public class AirlineRestClient
       }
   }
 
+    /**
+     * throwExecptionIfNotOkayHttpStatus throws RestException if HttpStatus is not 2xx.
+     * @param response the Response holding content and HttpStatus.
+     * @throws RestException thrown if the error message and code if the HttpStatus is not 2xx.
+     */
   private void throwExceptionIfNotOkayHttpStatus(Response response) throws RestException{
     int code = response.getHttpStatusCode();
     if (code != HTTP_OK) {

@@ -75,15 +75,4 @@ public class Project5Test {
 
         assertThat(one, equalTo(two));
     }
-    @Test
-    @Disabled
-    public void testAddFlightWrongAirline()
-    {
-        Project5 test = new Project5();
-
-        test.createAirlineAndFlight(CommandLineParserTest.getValidFlightData());
-        Exception testerr= assertThrows(IllegalArgumentException.class,
-                ()->test.createAirlineAndFlight(CommandLineParserTest.getInvalidFlightData()));
-        System.out.println(testerr.getMessage());
-    }
 }

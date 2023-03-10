@@ -1,6 +1,7 @@
 package edu.pdx.cs410J.bena2;
 
 import com.google.common.annotations.VisibleForTesting;
+import edu.pdx.cs410J.AirportNames;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -58,6 +59,11 @@ public class AirlineServlet extends HttpServlet {
       return;
   }
 
+    /**
+     * Writes all airlines in "airport" to response.
+     * @param response the HttpServletResponse to be written too.
+     * @throws IOException thrown if an error with Server.
+     */
     protected void writeAllAirlines(HttpServletResponse response) throws IOException {
 
       if(airport.isEmpty()) {
@@ -72,23 +78,50 @@ public class AirlineServlet extends HttpServlet {
 
     }
 
+    /**
+     * dumps desired airline to response writer.
+     * @param response the HttpServletResponse to be written too.
+     * @param i the type of execution.
+     * @param strings the search arguments.
+     * @throws IOException thrown if an error with Server.
+     */
     private void writeFlights(HttpServletResponse response, int i, String ... strings) throws IOException {
-      XMLDumper dumper = new XMLDumper(response.getWriter());
-      Airline airline = airport.get(strings[0]);
+        XMLDumper dumper = new XMLDumper(response.getWriter());
+        Airline airline = airport.get(strings[0]);
 
-      if(airline == null) {
-          response.sendError(HttpServletResponse.SC_NOT_FOUND, "Airline "+strings[0]+" does not " +
-                  "exist");
-          return;
-      }
-      if(i == 1)
-          dumper.dump(airline);
-      else
-          dumper.dump(new Airline(airline, strings[1], strings[2]));
+        if(airline == null) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Airline "+strings[0]+" does not " +
+                    "exist");
+            return;
+        }
 
-      response.setStatus(HttpServletResponse.SC_OK);
+        if(i == 1){
+            dumper.dump(airline);
+            response.setStatus(HttpServletResponse.SC_OK);
+            return;
+        }
+
+        airline = new Airline(airline, strings[1], strings[2]);
+
+        if(airline.getFlights().size() == 0) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND,String.format("%s contains no direct flights " +
+                            "between %s(%s) and %s(%s)",airline.getName(), strings[1], AirportNames.getName(strings[1].toUpperCase()),
+                    strings[2], AirportNames.getName(strings[2].toUpperCase())));
+            return;
+        }
+        dumper.dump(airline);
+        response.setStatus(HttpServletResponse.SC_OK);
     }
 
+    /**
+     * validates that the provided get parameters are valid.
+     * @param airline the airline name.
+     * @param src     the desired source.
+     * @param dst     the desired destination.
+     * @param response the response error should be sent to if encoountered.
+     * @return         returns int holding execution type as determined by arguments.
+     * @throws IOException thrown if an error with Server.
+     */
     protected int validateGetParameters(String airline, String src, String dst, HttpServletResponse response) throws IOException{
 
       if(airline == null && src == null && dst == null) return 4;
@@ -117,9 +150,10 @@ public class AirlineServlet extends HttpServlet {
     }
 
     /**
-   * Handles an HTTP POST request by storing the dictionary entry for the
-   * "word" and "definition" request parameters.  It writes the dictionary
-   * entry to the HTTP response.
+   * Handles an HTTP POST request by building flight from parameters and either adding to existing
+     * airline or creating new airline.
+     * @param response the response to be written to.
+     * @param request  the request to be read from.
    */
   @Override
   protected void doPost( HttpServletRequest request, HttpServletResponse response ) throws IOException
@@ -151,9 +185,10 @@ public class AirlineServlet extends HttpServlet {
   }
 
   /**
-   * Handles an HTTP DELETE request by removing all dictionary entries.  This
-   * behavior is exposed for testing purposes only.  It's probably not
-   * something that you'd want a real application to expose.
+   * Handles an HTTP DELETE request by removing all airlines .  This
+   * behavior is exposed for testing purposes only.
+   * @param request  the request to be read from.
+   * @param response the response to be written to.
    */
   @Override
   protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -170,7 +205,6 @@ public class AirlineServlet extends HttpServlet {
 
   /**
    * Writes an error message about a missing parameter to the HTTP response.
-   *
    * The text of the error message is created by {@link Messages#missingRequiredParameter(String)}
    */
   private void missingRequiredParameter( HttpServletResponse response, String parameterName )

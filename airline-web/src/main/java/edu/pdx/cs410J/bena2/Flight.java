@@ -114,6 +114,17 @@ public class Flight extends AbstractFlight implements Cloneable, Comparable<Flig
 
   }
 
+  /**
+   * Flight serves as a constrcutor for the Flight class, allows the client to instantiate
+   * a flight object using a single string for Date and Time.
+   * @param fnumber A String holding the flight number
+   * @param src     A String holding the three letter source location identifier.
+   * @param dst     A String holding the three letter destination location identifier.
+   * @param depart  A String holding the departure date and time.
+   * @param arrive  A String holding the departure date and tine.
+   * @throws IllegalArgumentException Not thrown by the constructor but rather by methods called by
+   *                                  the constructor and not caught.
+   */
   public Flight(String fnumber, String src, String dst, String depart, String arrive) throws IllegalArgumentException{
     this(fnumber, src, dst, validateDate(depart, 0),validateDate(arrive,1));
   }
@@ -325,6 +336,15 @@ public class Flight extends AbstractFlight implements Cloneable, Comparable<Flig
     return rdate;
   }
 
+  /**
+   * validateDateAndTime validates that the String passed in is a valid Date and Time representation.
+   * The Date must be in the following format: MM/dd/YYYY
+   * The time must be in the following format: hh:mm aa (12 hour time)
+   * the am/pm marker must be either am or pm
+   * @param date A String holding the date and time to be tested.
+   * @return A reference to a Date object containing the valid date and time.
+   * @throws IllegalArgumentException Thrown if the date passed in is not valid.
+   */
   public static Date validateDate(String date, int type) {
     String time, marker;
     if (date == null)
@@ -336,7 +356,7 @@ public class Flight extends AbstractFlight implements Cloneable, Comparable<Flig
 
     if(rDate.countTokens() != 3)
       throw new IllegalArgumentException((type == 0 ? "Departure ": "Arrival ") +"date and time "+
-              date + " is invalid, date must be in format MM/dd/yyyy hh:mm aa" +
+              date + " is invalid, date must be in format MM/dd/yyyy hh:mm aa " +
               "and exist");
 
     date = rDate.nextToken();
@@ -469,6 +489,10 @@ public class Flight extends AbstractFlight implements Cloneable, Comparable<Flig
     return String.valueOf(TimeUnit.MINUTES.convert(duration,TimeUnit.MILLISECONDS))+" minutes";
   }
 
+  /**
+   * put adds the instance fields to the map object passed in.
+   * @param map the Map to which the fields should be added.
+   */
   public void put(Map<String, String> map) {
     map.put(AirlineServlet.FNUMBER_PARAMETER, String.valueOf(flightNumber));
     map.put(AirlineServlet.SRC_PARAMETER, source);

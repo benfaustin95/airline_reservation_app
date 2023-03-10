@@ -9,7 +9,7 @@ Overview:
     the program allows the user to read/write airline contents via HTTP requests.
     Furthermore, the user can print all flights from a specific airline, as well
     as flights that have a user specified source and destination. Airline contents
-    is returned in XML form when request is via URL, and is returned in Pretty
+    is returned in XML form when request is via URL, contents are returned in Pretty
     Printer form when the request is via the command line. Please note, multiple
     airlines are supported concurrently.
 
@@ -28,6 +28,8 @@ Please enter the following to execute the program.
                                      be ignored
 
             -print                  -Print most recently added flight
+                                    -"-search" and "-print" can not be asserted
+                                     in conjunction. j
 
             -host hostname          -Host computer on which the server runs.
                                     -Please note it is an error to specify a

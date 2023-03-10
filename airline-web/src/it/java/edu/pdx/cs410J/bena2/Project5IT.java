@@ -260,51 +260,63 @@ class Project5IT extends InvokeMainTestCase {
     @Test
     void test20HostPortNoValue(){
         MainMethodResult result = invokeMain("-host","-port");
-        assertThat(result.getTextWrittenToStandardError(), equalTo("Command Line Error: host can not be specified without a port and vice versa\n"));
+        assertThat(result.getTextWrittenToStandardError(), equalTo("Command Line Error: -host option was asserted with no argument" +
+                "\nPlease see README for further instructions on valid command line options\n"));
 
         result = invokeMain("-host","-port","-print", "airline name", "1", "s1f", "1/31/2023", "10:39","am", "SEA","1/1/2023","4:23", "pm");
-        assertThat(result.getTextWrittenToStandardError(), equalTo("Command Line Error: host can not be specified without a port and vice versa\n"));
+        assertThat(result.getTextWrittenToStandardError(), equalTo("Command Line Error: -host option was asserted with no argument" +
+                "\nPlease see README for further instructions on valid command line options\n"));
 
         result = invokeMain("-host","host", "-port");
-        assertThat(result.getTextWrittenToStandardError(), equalTo("Command Line Error: host can not be specified without a port and vice versa\n"));
+        assertThat(result.getTextWrittenToStandardError(), equalTo("Command Line Error: -port option was asserted with no argument" +
+                "\nPlease see README for further instructions on valid command line options\n"));
 
         result = invokeMain("-host","host","-port","-print", "airline name", "1", "s1f", "1/31/2023", "10:39","am", "SEA","1/1/2023","4:23", "pm");
-        assertThat(result.getTextWrittenToStandardError(), equalTo("Command Line Error: host can not be specified without a port and vice versa\n"));
+        assertThat(result.getTextWrittenToStandardError(), equalTo("Command Line Error: -port option was asserted with no argument" +
+                "\nPlease see README for further instructions on valid command line options\n"));
 
         result = invokeMain("-host", "-port", "host");
-        assertThat(result.getTextWrittenToStandardError(), equalTo("Command Line Error: host can not be specified without a port and vice versa\n"));
+        assertThat(result.getTextWrittenToStandardError(), equalTo("Command Line Error: -host option was asserted with no argument" +
+                "\nPlease see README for further instructions on valid command line options\n"));
 
         result = invokeMain("-host", "-port","port","-print", "airline name", "1", "s1f", "1/31/2023", "10:39","am", "SEA","1/1/2023","4:23", "pm");
-        assertThat(result.getTextWrittenToStandardError(), equalTo("Command Line Error: host can not be specified without a port and vice versa\n"));
+        assertThat(result.getTextWrittenToStandardError(), equalTo("Command Line Error: -host option was asserted with no argument" +
+                "\nPlease see README for further instructions on valid command line options\n"));
 
         result = invokeMain("-host");
-        assertThat(result.getTextWrittenToStandardError(), equalTo("Command Line Error: host can not be specified without a port and vice versa\n"));
+        assertThat(result.getTextWrittenToStandardError(), equalTo("Command Line error: -host can not be asserted without -port\n" +
+                "Please see README for further instructions on valid command line options\n"));
 
         result = invokeMain("-port","-print", "airline name", "1", "s1f", "1/31/2023", "10:39","am", "SEA","1/1/2023","4:23", "pm");
-        assertThat(result.getTextWrittenToStandardError(), equalTo("Command Line Error: host can not be specified without a port and vice versa\n"));
+        assertThat(result.getTextWrittenToStandardError(), equalTo("Command Line error: -port can not be asserted without -host\n" +
+                "Please see README for further instructions on valid command line options\n"));
 
         result = invokeMain("-host","host");
-        assertThat(result.getTextWrittenToStandardError(), equalTo("Command Line Error: host can not be specified without a port and vice versa\n"));
+        assertThat(result.getTextWrittenToStandardError(), equalTo("Command Line error: -host can not be asserted without -port\n" +
+                "Please see README for further instructions on valid command line options\n"));
 
         result = invokeMain("-host","host","-print", "airline name", "1", "s1f", "1/31/2023", "10:39","am", "SEA","1/1/2023","4:23", "pm");
-        assertThat(result.getTextWrittenToStandardError(), equalTo("Command Line Error: host can not be specified without a port and vice versa\n"));
+        assertThat(result.getTextWrittenToStandardError(), equalTo("Command Line error: -host can not be asserted without -port\n" +
+                "Please see README for further instructions on valid command line options\n"));
 
         result = invokeMain("-port", "host");
-        assertThat(result.getTextWrittenToStandardError(), equalTo("Command Line Error: host can not be specified without a port and vice versa\n"));
+        assertThat(result.getTextWrittenToStandardError(), equalTo("Command Line error: -port can not be asserted without -host\n" +
+                "Please see README for further instructions on valid command line options\n"));
 
         result = invokeMain("-port","port","-print", "airline name", "1", "s1f", "1/31/2023", "10:39","am", "SEA","1/1/2023","4:23", "pm");
-        assertThat(result.getTextWrittenToStandardError(), equalTo("Command Line Error: host can not be specified without a port and vice versa\n"));
+        assertThat(result.getTextWrittenToStandardError(), equalTo("Command Line error: -port can not be asserted without -host\n" +
+                "Please see README for further instructions on valid command line options\n"));
     }
     @Test
     void test21InvalidPort() {
         MainMethodResult result = invokeMain("-host", "host", "-port", "abs");
-        assertThat(result.getTextWrittenToStandardError(), equalTo("Command Line Error: abs is not a valid integer\n"));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Command Line Error: abs is not a valid integer\n"));
     }
 
     @Test
     void test22InvalidSearch(){
         MainMethodResult result = invokeMain("-search","-print", "airline name", "1", "s1f", "1/31/2023", "10:39","am", "SEA","1/1/2023","4:23", "pm");
-        assertThat(result.getTextWrittenToStandardError(), equalTo("Command Line Error: -print and -search can not be asserted together\n"));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Command Line Error: -print and -search can not be asserted together\n"));
 
         result = invokeMain("-host", "host", "-port", "8080","-search");
         assertThat(result.getTextWrittenToStandardError(), equalTo("Error Command Line: No -search arguments provided for search option\nPlease see README for further instructions.\n"));
@@ -323,30 +335,30 @@ class Project5IT extends InvokeMainTestCase {
     @Test
     void test23NoAirportGet(){
         MainMethodResult result = invokeMain("-host", HOSTNAME, "-port", PORT, "-search", "no Airline");
-        assertThat(result.getTextWrittenToStandardError(), equalTo("Error Server: Airline no Airline does not exist\n"));
+        assertThat(result.getTextWrittenToStandardError(), equalTo("Error Server: Airline no Airline does not exist\nPlease see README for further instructions\n"));
 
          result = invokeMain("-host", HOSTNAME, "-port", PORT, "-search", "no Airline","PDX", "SEA");
-        assertThat(result.getTextWrittenToStandardError(), equalTo("Error Server: Airline no Airline does not exist\n"));
+        assertThat(result.getTextWrittenToStandardError(), equalTo("Error Server: Airline no Airline does not exist\nPlease see README for further instructions\n"));
     }
     @Test
     void test24InvalidHostAndPort(){
         MainMethodResult result = invokeMain("-host", "testing", "-port", PORT, "-search", "no Airline");
-        assertThat(result.getTextWrittenToStandardError(), equalTo("Error Server: unknown host testing\n"));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Error Server: unknown host testing\n"));
 
         result = invokeMain("-host", HOSTNAME, "-port", "1111", "-search", "no Airline");
-        assertThat(result.getTextWrittenToStandardError(), equalTo("Error Server: Connection refused invalid port\n"));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Error Server: Connection refused invalid port\n"));
 
         result = invokeMain("-host", HOSTNAME, "-port", "1111", "-search", "no Airline","PDX", "SEA");
-        assertThat(result.getTextWrittenToStandardError(), equalTo("Error Server: Connection refused invalid port\n"));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Error Server: Connection refused invalid port\n"));
 
         result = invokeMain("-host", "testing", "-port", PORT, "-search", "no Airline","PDX", "SEA");
-        assertThat(result.getTextWrittenToStandardError(), equalTo("Error Server: unknown host testing\n"));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Error Server: unknown host testing\n"));
 
         result = invokeMain("-host","testing","-port",PORT, "Airline One", "1", "PDX", "1/1/2023", "10:39","pm", "SEA", "1/1/2023", "11:49","pm");
-        assertThat(result.getTextWrittenToStandardError(), equalTo("Error Server: unknown host testing\n"));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Error Server: unknown host testing\n"));
 
         result = invokeMain("-host",HOSTNAME,"-port","1111", "Airline One", "1", "PDX", "1/1/2023", "10:39","pm", "SEA", "1/1/2023", "11:49","pm");
-        assertThat(result.getTextWrittenToStandardError(), equalTo("Error Server: Connection refused invalid port\n"));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Error Server: Connection refused invalid port\n"));
     }
     @Test
     void test25addValidAirline(){
@@ -426,9 +438,9 @@ class Project5IT extends InvokeMainTestCase {
     void test31SearchEmptyAirlineReturned(){
         MainMethodResult result = invokeMain("-host", HOSTNAME, "-port", PORT,"-search", "Airline Two", "sea","ama");
         assertThat(result.getTextWrittenToStandardOut(),equalTo(""));
-        assertThat(result.getTextWrittenToStandardError(), equalTo("Error Command Line: " +
+        assertThat(result.getTextWrittenToStandardError(), equalTo("Error Server: " +
                 "Airline Two contains no direct flights between sea(Seattle, WA) and ama(Amarillo, TX)" +
-                "\nPlease see README for further instructions.\n"));
+                "\nPlease see README for further instructions\n"));
     }
 
     @Test

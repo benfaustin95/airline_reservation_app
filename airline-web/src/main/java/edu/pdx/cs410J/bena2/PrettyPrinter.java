@@ -47,9 +47,8 @@ public class PrettyPrinter implements AirlineDumper<Airline> {
     }
 
     /**
-     * dump Dumps the airline and flight data to the stream referenced by the writer
-     * in an easy-to-read textual format. The method serves as the class's implementation of the
-     * AirlineDumper class.
+     * dump Dumps allows the real dump function to be called via the method expected given the
+     * implementation of the AirlineDumper.
      * @param airline the Airline object to be written out.
      * @throws IllegalArgumentException Thrown if the airline is null.
      */
@@ -106,6 +105,15 @@ public class PrettyPrinter implements AirlineDumper<Airline> {
         return String.format("%-"+width+"s",String.format("%"+start+"s",toCenter));
     }
 
+    /**
+     * dump Dumps the airline and flight data to the stream referenced by the writer
+     * in an easy-to-read textual format. The method serves as the class's implementation of the
+     * AirlineDumper class.
+     * @param airline the Airline object to be written out.
+     * @param src     the String holding the point of origination
+     * @param dest    the String holding the point of termination
+     * @throws IllegalArgumentException Thrown if the airline is null.
+     */
     public void dump(Airline airline, String src, String dest) throws IllegalArgumentException{
         PrintWriter pw = null;
 
@@ -146,7 +154,7 @@ public class PrettyPrinter implements AirlineDumper<Airline> {
             if(writer != null)
                 pw.close();
             else
-                pw.flush();;
+                pw.flush();
         }
     }
 }

@@ -120,7 +120,7 @@ public class CommandLineParser {
     }
 
     /**
-     * Project1 serves as the default constructor for the Project1 class, sets the airline field to
+     * CommandLineParser serves as the default constructor for the Project1 class, sets the airline field to
      * null.
      */
     public CommandLineParser()
@@ -219,6 +219,14 @@ public class CommandLineParser {
         }
     }
 
+    /**
+     * validateSearchArguments validates that the number of arguments provided is correct and that
+     * the source and destination codes are valid.
+     * @param argsList the ArrayList<String> holding the arguments
+     * @return returns true if the search path includes only an airline name, false if the path
+     * includes an airline name and valid destination/source.
+     * @throws IllegalArgumentException
+     */
     protected static boolean validateSearchArguments(ArrayList<String> argsList) throws IllegalArgumentException{
         int size = argsList.size();
 

@@ -251,7 +251,8 @@ class AirlineServletTest {
          PrintWriter pw = new PrintWriter(sw)) {
       HttpServletResponse rep = buildMockServlet(5, "test2", "JFK", "JFk", pw);
       String out = sw.toString();
-      assertThat(new XMLParser(new StringReader(out)).parse().getFlights().size(), equalTo(0));
+      verify(rep).sendError(404,  "test2 contains no direct flights between JFK(New York, NY (Kennedy)) and JFk(New York, NY (Kennedy))");
+      assertThat(out, equalTo(""));
     } catch (Exception ex) {
       fail(ex.getMessage());
     }
@@ -340,8 +341,8 @@ class AirlineServletTest {
       rep = getMockResponse(new PrintWriter(sw2));
       test.doGet(request, rep);
 
-      verify(rep, times(1)).setStatus(HttpServletResponse.SC_OK);
-      assertThat(new XMLParser(new StringReader(sw2.toString())).parse().getFlights().size(),equalTo(0));
+      verify(rep).sendError(404,  "test1 contains no direct flights between JFK(New York, NY (Kennedy)) and SEA(Seattle, WA)");
+      assertThat(sw2.toString(), equalTo(""));
     } catch (Exception ex) {
       fail(ex.getMessage());
     }

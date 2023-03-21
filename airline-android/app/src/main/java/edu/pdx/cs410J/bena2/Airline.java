@@ -221,4 +221,24 @@ public class Airline extends AbstractAirline<Flight> implements Cloneable{
         }
         return false;
     }
+
+    protected void addFlights(Collection<Flight> flights) {
+        try {
+            for (Flight flight : flights) {
+                this.addFlight(flight);
+            }
+        }catch (IllegalArgumentException | NullPointerException ignored){
+
+        }
+    }
+
+    public Airline(Airline airline, String string, String string1) {
+        this(airline.name);
+        for(Flight flight: airline.getFlights())
+        {
+            if(flight.getDestination().equalsIgnoreCase(string1) &&
+                    flight.getSource().equalsIgnoreCase(string))
+                this.addFlight(new Flight(flight));
+        }
+    }
 }

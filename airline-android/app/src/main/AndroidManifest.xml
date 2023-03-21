@@ -12,6 +12,21 @@
         android:theme="@style/Theme.Airline"
         tools:targetApi="31">
         <activity
+            android:name=".OutputAirport"
+            android:exported="false" />
+        <activity
+            android:name=".OutputAirline"
+            android:exported="false" />
+        <activity
+            android:name=".DisplayFlights"
+            android:exported="false" />
+        <activity
+            android:name=".AddFlight"
+            android:exported="false" />
+        <activity
+            android:name=".AddAirline"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

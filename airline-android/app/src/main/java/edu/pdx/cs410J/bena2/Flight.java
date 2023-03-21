@@ -443,4 +443,12 @@ public class Flight extends AbstractFlight implements Cloneable, Comparable<Flig
     long duration = arrival.getTime()-departure.getTime();
     return String.valueOf(TimeUnit.MINUTES.convert(duration,TimeUnit.MILLISECONDS))+" minutes";
   }
+
+    public String getFullSource() {
+      return AirportNames.getName(source);
+    }
+
+  public String getFullDestination() {
+    return AirportNames.getName(destination);
+  }
 }

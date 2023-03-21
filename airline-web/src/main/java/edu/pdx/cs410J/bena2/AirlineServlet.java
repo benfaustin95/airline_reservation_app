@@ -122,32 +122,7 @@ public class AirlineServlet extends HttpServlet {
      * @return         returns int holding execution type as determined by arguments.
      * @throws IOException thrown if an error with Server.
      */
-    protected int validateGetParameters(String airline, String src, String dst, HttpServletResponse response) throws IOException{
 
-      if(airline == null && src == null && dst == null) return 4;
-
-      if(airline == null) {
-          missingRequiredParameter(response, AIRLINE_PARAMETER);
-          return 3;
-      }
-
-      if(src == null && dst == null) return 1;
-
-      if(src == null || dst == null) {
-          missingRequiredParameter(response, (src == null ? SRC_PARAMETER : DST_PARAMETER));
-          return 3;
-      }
-
-      try{
-          Flight.validateLocation(src, 0);
-          Flight.validateLocation(dst, 1);
-
-      }catch (IllegalArgumentException ex){
-          response.sendError(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage());
-          return 3;
-      }
-      return 2;
-    }
 
     /**
    * Handles an HTTP POST request by building flight from parameters and either adding to existing

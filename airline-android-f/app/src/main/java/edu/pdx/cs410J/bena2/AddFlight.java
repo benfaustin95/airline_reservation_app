@@ -1,10 +1,6 @@
 package edu.pdx.cs410J.bena2;
 
 import static edu.pdx.cs410J.bena2.AddAirline.makePopUp;
-import static edu.pdx.cs410J.bena2.CardAdapter.setTextView;
-import static edu.pdx.cs410J.bena2.MainActivity.AIRPORT;
-import static edu.pdx.cs410J.bena2.MainActivity.DATA_ADDED;
-import static edu.pdx.cs410J.bena2.MainActivity.FAILURE;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,10 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -30,9 +23,6 @@ public class AddFlight extends AppCompatActivity {
     Airline toReturn = null;
     DatePickerDialog datePickerDialog;
     DatePickerDialog datePickerDialog2;
-
-    TimePickerDialog timePickerDialog;
-    TimePickerDialog timePickerDialog2;
     Button timeButtondep;
     Button timeButtonarr;
     Button dateButtondest;
@@ -145,20 +135,17 @@ public class AddFlight extends AppCompatActivity {
     }
 
     public void openTimeArrPicker(View view) {
-        TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker timePicker, int i, int i1) {
+        TimePickerDialog.OnTimeSetListener timeSetListener = (timePicker, i, i1) -> {
 
 
-                hour = i;
-                if(i>=12) period = "PM";
-                else period = "AM";
-                if(hour == 0) hour = 12;
-                if(hour>12) hour = (i%13)+1;
-                min = i1;
+            hour = i;
+            if(i>=12) period = "PM";
+            else period = "AM";
+            if(hour == 0) hour = 12;
+            if(hour>12) hour = (i%13)+1;
+            min = i1;
 
-                timeButtonarr.setText(makeTime());
-            }
+            timeButtonarr.setText(makeTime());
         };
 
         TimePickerDialog toReturn = new TimePickerDialog(this, timeSetListener,hour, min, false);
@@ -168,20 +155,17 @@ public class AddFlight extends AppCompatActivity {
 
     public void openTimeDepPicker(View view) {
 
-        TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker timePicker, int i, int i1) {
+        TimePickerDialog.OnTimeSetListener timeSetListener = (timePicker, i, i1) -> {
 
 
-                hour = i;
-                if(i>=12) period = "PM";
-                else period = "AM";
-                if(hour == 0) hour = 12;
-                if(hour>12) hour = (i%13)+1;
-                min = i1;
+            hour = i;
+            if(i>=12) period = "PM";
+            else period = "AM";
+            if(hour == 0) hour = 12;
+            if(hour>12) hour = (i%13)+1;
+            min = i1;
 
-                timeButtondep.setText(makeTime());
-            }
+            timeButtondep.setText(makeTime());
         };
 
         TimePickerDialog toReturn = new TimePickerDialog(this, timeSetListener,hour, min, false);
@@ -191,16 +175,13 @@ public class AddFlight extends AppCompatActivity {
 
     //Date Logic
     private DatePickerDialog initDatePicker(int type) {
-        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                i1+=1;
-                String date = makeDateString(i2,i1,i);
-                if(type == 1)
-                    dateButtonarr.setText(date);
-                else
-                    dateButtondest.setText(date);
-            }
+        DatePickerDialog.OnDateSetListener dateSetListener = (datePicker, i, i1, i2) -> {
+            i1+=1;
+            String date = makeDateString(i2,i1,i);
+            if(type == 1)
+                dateButtonarr.setText(date);
+            else
+                dateButtondest.setText(date);
         };
 
         Calendar cal = Calendar.getInstance();

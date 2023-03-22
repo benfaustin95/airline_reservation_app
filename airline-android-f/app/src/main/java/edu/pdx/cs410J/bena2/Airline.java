@@ -1,15 +1,11 @@
 package edu.pdx.cs410J.bena2;
 
 import edu.pdx.cs410J.AbstractAirline;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 
 /**
  * The Airline class holds the data related to an airline instance, including the airline name and
@@ -124,7 +120,7 @@ public class Airline extends AbstractAirline<Flight> implements Cloneable{
      * @throws IllegalArgumentException Thrown if the string is not a valid name.
      */
     public static String validateName(String name) throws IllegalArgumentException{
-        if(name == null || name.isEmpty() || name.isBlank())
+        if(name == null || name.isEmpty())
             throw new IllegalArgumentException("Name " +name + " is invalid, must not be empty.");
         return name.trim();
     }
@@ -148,9 +144,8 @@ public class Airline extends AbstractAirline<Flight> implements Cloneable{
                 clone.roster.add(flight.clone());
             }
         }
-        catch (CloneNotSupportedException ex)
+        catch (CloneNotSupportedException ignored)
         {
-            ex.printStackTrace();
         }
 
         return clone;
@@ -174,29 +169,6 @@ public class Airline extends AbstractAirline<Flight> implements Cloneable{
         return this.name.equals(((Airline)object).name);
     }
 
-    /**
-     * equals overloads the equals method to take a String to determine equality based on the unique
-     * airline name.
-     * @param toCompare the String representation of the name to compare.
-     * @return true if the airline name matches the supplied argument and false if not.
-     */
-    public boolean equals(String toCompare)
-    {
-        return toCompare.equals(name);
-    }
-
-    /**
-     * removeFlight removes a flight from the airlines roster
-     * @param flight the flight object to be removed
-     * @return true if the object exists and was removed and false if the object does not exist.
-     */
-    public boolean removeFlight(Flight flight)
-    {
-        if(flight == null)
-            return false;
-
-        return roster.remove(flight);
-    }
 
     /**
      * hashCode utilizes the toString method to calculate a unique hashcode for the Airline. The
@@ -207,21 +179,6 @@ public class Airline extends AbstractAirline<Flight> implements Cloneable{
     public int hashCode()
     {
         return toString().hashCode();
-    }
-
-    /**
-     * containsAirport determines whether an airport is within the airlines flight roster.
-     * @param s a String referencing the name of the airport to be checked.
-     * @return true if the airport is present false if not.
-     */
-    public boolean containsAirport(String s) {
-
-        for(Flight flight: roster)
-        {
-            if(flight.getSource().equalsIgnoreCase(s)||flight.getDestination().equalsIgnoreCase(s))
-                return true;
-        }
-        return false;
     }
 
     protected void addFlights(Collection<Flight> flights) {

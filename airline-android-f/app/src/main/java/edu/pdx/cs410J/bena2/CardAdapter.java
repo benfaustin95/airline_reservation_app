@@ -4,15 +4,9 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-
-import org.w3c.dom.Text;
-
-import java.util.Collection;
 import java.util.List;
 
 public class CardAdapter extends ArrayAdapter {

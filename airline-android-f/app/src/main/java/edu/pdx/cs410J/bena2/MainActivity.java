@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -29,8 +28,6 @@ public class MainActivity extends AppCompatActivity {
     static final int GET_AIRLINE = 42;
     static final int GET_FLIGHT = 43 ;
     static final int FAILURE = 404;
-    static  final int DISPLAY_AIRPORT = 44;
-    static final int DISPLAY_AIRLINE = 45;
     HashMap<String, Airline> airport;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +86,9 @@ public class MainActivity extends AppCompatActivity {
                 for(Airline airline: airport.values()){
                     os.writeObject(airline);
                 }
-            } catch (IOException e) {
+            } catch (IOException ex) {
+                makePopUp(this.findViewById(R.id.content),
+                        "Error While Saving: "+ex.getMessage(), Snackbar.LENGTH_LONG);
             }
         }
     }
@@ -102,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
                 airport.put(toAdd.getName(), toAdd);
             else
                 airport.get(toAdd.getName()).addFlights(toAdd.getFlights());
-        }catch (ClassCastException ex)
+        }catch (ClassCastException | NullPointerException ex)
         {
             makePopUp(findViewById(R.id.content), "Error saving Flight and/or Airline", Snackbar.LENGTH_SHORT);
         }

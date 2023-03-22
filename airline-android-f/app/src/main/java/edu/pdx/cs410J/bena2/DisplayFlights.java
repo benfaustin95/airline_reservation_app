@@ -1,18 +1,13 @@
 package edu.pdx.cs410J.bena2;
 
 import static edu.pdx.cs410J.bena2.AddAirline.makePopUp;
-import static edu.pdx.cs410J.bena2.MainActivity.AIRPORT;
-import static edu.pdx.cs410J.bena2.MainActivity.DISPLAY_AIRLINE;
-import static edu.pdx.cs410J.bena2.MainActivity.DISPLAY_AIRPORT;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.icu.util.Output;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -43,7 +38,6 @@ public class DisplayFlights extends AppCompatActivity {
         String aName = getStringInput(R.id.aNameControl2);
         String source = getStringInput(R.id.sourceControl2);
         String dest = getStringInput(R.id.destControl2);
-        Airline toDisplay = null;
        try {
            switch (validateGetParameters(aName, source, dest)) {
                case 1:
@@ -75,7 +69,7 @@ public class DisplayFlights extends AppCompatActivity {
 
         if(src == null || dst == null)
             throw new ParserException((src==null?"Destination":"Source")+" " +
-                    "provided with no "+(src==null?"Source":"Destinantion"));
+                    "provided with no "+(src==null?"Source":"Destination"));
 
         try{
             Flight.validateLocation(src, 0);

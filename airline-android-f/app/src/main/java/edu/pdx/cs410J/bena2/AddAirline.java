@@ -1,24 +1,18 @@
 package edu.pdx.cs410J.bena2;
 
-import static edu.pdx.cs410J.bena2.MainActivity.AIRPORT;
-import static edu.pdx.cs410J.bena2.MainActivity.DATA_ADDED;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.HashMap;
 
 public class AddAirline extends AppCompatActivity {
-    String name = null;
     HashMap<String, Airline> airport;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,9 +20,13 @@ public class AddAirline extends AppCompatActivity {
         setContentView(R.layout.activity_add_airline);
 
         Intent received = getIntent();
-        airport = (HashMap<String, Airline>) received.getSerializableExtra(MainActivity.AIRPORT);
-        if(airport == null)
+        try {
+            airport = (HashMap<String, Airline>) received.getSerializableExtra(MainActivity.AIRPORT);
+            if (airport == null)
+                throw new ClassCastException();
+        }catch (ClassCastException ignored){
             airport = new HashMap<>();
+        }
     }
 
     public void addAirline(View view){

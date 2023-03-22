@@ -10,15 +10,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.StringReader;
-import java.util.stream.Collectors;
 
 public class ReadMe extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         StringBuilder rMe = new StringBuilder();
-        String line = "";
+        String line;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_read_me);
 

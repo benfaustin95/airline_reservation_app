@@ -1,14 +1,11 @@
 package edu.pdx.cs410J.bena2;
 
-import static edu.pdx.cs410J.bena2.DisplayFlights.AIRLINE;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.StackView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -29,7 +26,8 @@ public class OutputAirline extends AppCompatActivity {
         List<Flight> toPrint;
         Integer type = intent.getSerializableExtra(DisplayFlights.REQUEST, Integer.class);
 
-        if(type.equals(12)) {
+        try{
+        if(type.equals(DisplayFlights.SINGLE_AIRLINE)) {
             airline = getIntent().getSerializableExtra(DisplayFlights.AIRLINE, Airline.class);
             toPrint = (List<Flight>) airline.getFlights();
         }
@@ -37,8 +35,11 @@ public class OutputAirline extends AppCompatActivity {
             airport = ((HashMap<String,Airline>) getIntent().getSerializableExtra(MainActivity.AIRPORT)).values();
             toPrint = createFlightBundle(airport);
         }
+        }catch (ClassCastException ex){
+            toPrint = new ArrayList<>();
+        }
 
-        if(toPrint == null  && airport == null)
+        if(toPrint.isEmpty())
         {
             Toast.makeText(this, "No Airline available to print", Toast.LENGTH_SHORT).show();
             finish();
@@ -47,7 +48,6 @@ public class OutputAirline extends AppCompatActivity {
         CardAdapter print = new CardAdapter(toPrint, R.layout.flight_card,
                 OutputAirline.this);
         prettyPrint.setAdapter(print);
-
     }
 
     private List<Flight> createFlightBundle(Collection<Airline> airport) {

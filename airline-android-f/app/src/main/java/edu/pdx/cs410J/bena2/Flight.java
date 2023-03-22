@@ -2,9 +2,6 @@ package edu.pdx.cs410J.bena2;
 
 import edu.pdx.cs410J.AbstractFlight;
 import edu.pdx.cs410J.AirportNames;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -377,9 +374,8 @@ public class Flight extends AbstractFlight implements Cloneable, Comparable<Flig
       clone.departure = new Date(departure.getTime());
       clone.arrival = new Date(arrival.getTime());
     }
-    catch (CloneNotSupportedException ex)
+    catch (CloneNotSupportedException ignored)
     {
-      ex.printStackTrace();
     }
     return clone;
   }

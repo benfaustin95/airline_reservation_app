@@ -5,6 +5,7 @@ import static edu.pdx.cs410J.bena2.DisplayFlights.AIRLINE;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.StackView;
 import android.widget.Toast;
@@ -20,7 +21,7 @@ public class OutputAirline extends AppCompatActivity {
         setContentView(R.layout.activity_output_airline2);
 
 
-        toPrint = getIntent().getSerializableExtra(AIRLINE, Airline.class);
+        toPrint = getIntent().getSerializableExtra(DisplayFlights.AIRLINE, Airline.class);
 
         if(toPrint == null)
         {
@@ -33,5 +34,10 @@ public class OutputAirline extends AppCompatActivity {
         CardAdapter print = new CardAdapter(toPrint.getFlights(), R.layout.flight_card,
                 OutputAirline.this);
         prettyPrint.setAdapter(print);
+    }
+
+
+    public void returnToDisplayFlights(View view) {
+        finish();
     }
 }

@@ -22,7 +22,7 @@ public class AddAirline extends AppCompatActivity {
         setContentView(R.layout.activity_add_airline);
 
         Intent received = getIntent();
-        airport = (HashMap<String, Airline>) received.getSerializableExtra(AIRPORT);
+        airport = (HashMap<String, Airline>) received.getSerializableExtra(MainActivity.AIRPORT);
         if(airport == null)
             airport = new HashMap<>();
     }
@@ -46,8 +46,8 @@ public class AddAirline extends AppCompatActivity {
 
     public void returnToMain(View view){
         Intent toReturn = new Intent();
-        toReturn.putExtra(AIRPORT, airport);
-        setResult(DATA_ADDED, toReturn);
+        toReturn.putExtra(MainActivity.AIRPORT, airport);
+        setResult(MainActivity.DATA_ADDED, toReturn);
         finish();
     }
 }

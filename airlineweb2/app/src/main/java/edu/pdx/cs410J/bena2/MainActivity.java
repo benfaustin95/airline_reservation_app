@@ -8,6 +8,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,7 +31,27 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        airport = new HashMap<>();
+            try{
+                readFromStorage();
+            }catch (IOException ex){
+                if(!(ex.getClass() == FileNotFoundException.class))
+                    Toast.makeText(this,"While loading from storage: "+ex.getMessage(), Toast.LENGTH_LONG).show();
+                airport = new HashMap<>();
+            }
+    }
+
+    private void readFromStorage() throws IOException{
+        File toRead = getStorage();
+
+        try(FileInputStream fi = new FileInputStream(toRead);
+            ObjectInputStream os = new ObjectInputStream(fi)){
+
+            airport = (HashMap<String, Airline>) os.readObject();
+        } catch(FileNotFoundException ignored) {
+            airport = new HashMap<>();
+        }catch(IOException | ClassNotFoundException | ClassCastException e) {
+            throw new IOException(e.getMessage());
+        }
     }
 
 
@@ -81,5 +108,27 @@ public class MainActivity extends AppCompatActivity {
         Intent toSend = new Intent(this, DisplayFlights.class);
         toSend.putExtra(AIRPORT, this.airport);
         startActivity(toSend);
+    }
+
+    public void helpMe(View view) {
+        startActivity(new Intent(this, ReadMe.class));
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        File toSave = getStorage();
+        if(!airport.isEmpty()){
+            try(FileOutputStream fo = new FileOutputStream(toSave);
+                ObjectOutputStream os = new ObjectOutputStream(fo)){
+                os.writeObject(airport);
+            } catch (IOException e) {
+            }
+        }
+    }
+
+    protected File getStorage(){
+        File temp = getFilesDir();
+        return new File(temp, "airline.xml");
     }
 }

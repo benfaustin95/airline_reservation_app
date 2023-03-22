@@ -2,7 +2,7 @@
     <string name="app_name">Airline</string>
     <string name="hello">Welcome to the Airline Management Application!</string>
     <string name="title_activity_output_airline">OutputAirline</string>
-    <string name="large_text">
+    <string name="READ_ME">
         "Material is the metaphor.\n\n"
 
         "A material metaphor is the unifying theory of a rationalized space and a system of motion."
@@ -95,4 +95,8 @@
     <string name="title_activity_output_airport">OutputAirport</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
+    <string name="display_flights">Display Flights</string>
+    <string name="add_airline">Add Airline</string>
+    <string name="add_flight">Add Flight</string>
+    <string name="help">Help</string>
 </resources>

@@ -10,6 +10,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.StringTokenizer;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -450,5 +451,26 @@ public class Flight extends AbstractFlight implements Cloneable, Comparable<Flig
 
   public String getFullDestination() {
     return AirportNames.getName(destination);
+  }
+
+  public static Date validateDate(String date, int type) {
+    String time, marker;
+    if (date == null)
+      throw new IllegalArgumentException("Null arguments are not accepted");
+
+    date = date.trim();
+
+    StringTokenizer rDate = new StringTokenizer(date, " ");
+
+    if(rDate.countTokens() != 3)
+      throw new IllegalArgumentException((type == 0 ? "Departure ": "Arrival ") +"date and time "+
+              date + " is invalid, date must be in format MM/dd/yyyy hh:mm aa " +
+              "and exist");
+
+    date = rDate.nextToken();
+    time = rDate.nextToken();
+    marker = rDate.nextToken();
+
+    return validateDateAndTime(date, time, marker, type);
   }
 }

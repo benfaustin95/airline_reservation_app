@@ -28,7 +28,7 @@ public class DisplayFlights extends AppCompatActivity {
         setContentView(R.layout.activity_display_flights);
 
         Intent received = getIntent();
-        airport = (HashMap<String, Airline>) received.getSerializableExtra(AIRPORT);
+        airport = (HashMap<String, Airline>) received.getSerializableExtra(MainActivity.AIRPORT);
         if(airport == null)
             airport = new HashMap<>();
     }
@@ -86,7 +86,7 @@ public class DisplayFlights extends AppCompatActivity {
         if(airport.isEmpty())
             throw new IllegalArgumentException("No Airlines currently stored in program");
         Intent toSend = new Intent(this, OutputAirport.class);
-        toSend.putExtra(AIRPORT, airport);
+        toSend.putExtra(MainActivity.AIRPORT, airport);
         startActivity(toSend);
     }
 
@@ -111,7 +111,7 @@ public class DisplayFlights extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void returnToDisplayFlights(View view){
+    public void returnToMain(View view){
         finish();
     }
     private String getStringInput(int id){

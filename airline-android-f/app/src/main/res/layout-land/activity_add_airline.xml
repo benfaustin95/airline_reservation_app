@@ -27,12 +27,11 @@
                 android:id="@+id/textView2"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:gravity="center_vertical"
+                android:gravity="center"
                 android:layout_weight="1"
                 android:contentDescription="Airline name"
                 android:labelFor="@+id/aName"
                 android:text="Add Airline"
-                android:textAlignment="center"
                 android:textSize="30sp" />
 
             <LinearLayout
@@ -69,14 +68,15 @@
                 android:weightSum="3">
 
                 <Button
-                    android:id="@+id/pushAirline"
+                    android:id="@+id/helpMeButton"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:backgroundTint="@android:color/holo_blue_dark"
-                    android:onClick="addAirline"
+                    android:onClick="helpMe"
+                    android:text="@string/help"
                     android:layout_margin="10dp"
-                    android:text="Create Airline" />
+                    android:textSize="20sp" />
 
                 <Button
                     android:id="@+id/returnMainButton"
@@ -89,15 +89,14 @@
                     android:text="Return to Main" />
 
                 <Button
-                    android:id="@+id/helpMeButton"
+                    android:id="@+id/pushAirline"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:backgroundTint="@android:color/holo_blue_dark"
-                    android:onClick="helpMe"
-                    android:text="@string/help"
+                    android:onClick="addAirline"
                     android:layout_margin="10dp"
-                    android:textSize="20sp" />
+                    android:text="Create Airline" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

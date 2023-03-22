@@ -26,8 +26,7 @@
                 android:text="Add Airline"
                 android:contentDescription="Airline name"
                 android:labelFor="@+id/aName"
-                android:gravity="center_vertical"
-                android:textAlignment="center"
+                android:gravity="center"
                 android:textSize="30sp"
                 />
 
@@ -60,10 +59,10 @@
 
             <Button
                 android:id="@+id/pushAirline"
-                android:layout_width="201dp"
+                android:layout_width="180dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_height="0dp"
-                android:layout_weight=".7"
+                android:layout_weight=".6"
                 android:backgroundTint="@android:color/holo_blue_dark"
                 android:onClick="addAirline"
                 android:text="Create Airline"
@@ -71,10 +70,10 @@
 
             <Button
                 android:id="@+id/returnMainButton"
-                android:layout_width="201dp"
+                android:layout_width="180dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_height="0dp"
-                android:layout_weight=".7"
+                android:layout_weight=".6"
                 android:backgroundTint="@android:color/holo_blue_dark"
                 android:onClick="returnToMain"
                 android:text="Return to Main"
@@ -82,10 +81,10 @@
 
             <Button
                 android:id="@+id/helpMeButton"
-                android:layout_width="201dp"
+                android:layout_width="180dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_height="0dp"
-                android:layout_weight=".7"
+                android:layout_weight=".6"
                 android:backgroundTint="@android:color/holo_blue_dark"
                 android:onClick="helpMe"
                 android:text="@string/help"

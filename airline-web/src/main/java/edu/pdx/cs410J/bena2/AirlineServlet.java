@@ -104,9 +104,7 @@ public class AirlineServlet extends HttpServlet {
         airline = new Airline(airline, strings[1], strings[2]);
 
         if(airline.getFlights().size() == 0) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND,String.format("%s contains no direct flights " +
-                            "between %s(%s) and %s(%s)",airline.getName(), strings[1], AirportNames.getName(strings[1].toUpperCase()),
-                    strings[2], AirportNames.getName(strings[2].toUpperCase())));
+            response.sendError(HttpServletResponse.SC_NOT_FOUND,S
             return;
         }
         dumper.dump(airline);

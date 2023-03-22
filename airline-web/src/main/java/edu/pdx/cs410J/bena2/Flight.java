@@ -345,26 +345,7 @@ public class Flight extends AbstractFlight implements Cloneable, Comparable<Flig
    * @return A reference to a Date object containing the valid date and time.
    * @throws IllegalArgumentException Thrown if the date passed in is not valid.
    */
-  public static Date validateDate(String date, int type) {
-    String time, marker;
-    if (date == null)
-      throw new IllegalArgumentException("Null arguments are not accepted");
 
-    date = date.trim();
-
-    StringTokenizer rDate = new StringTokenizer(date, " ");
-
-    if(rDate.countTokens() != 3)
-      throw new IllegalArgumentException((type == 0 ? "Departure ": "Arrival ") +"date and time "+
-              date + " is invalid, date must be in format MM/dd/yyyy hh:mm aa " +
-              "and exist");
-
-    date = rDate.nextToken();
-    time = rDate.nextToken();
-    marker = rDate.nextToken();
-
-    return validateDateAndTime(date, time, marker, type);
-  }
   /**
    * validateOrder ensures that the departure date occurs before the arrival date.
    * @param departure the Date representation of departure
@@ -499,5 +480,12 @@ public class Flight extends AbstractFlight implements Cloneable, Comparable<Flig
     map.put(AirlineServlet.DST_PARAMETER, destination);
     map.put(AirlineServlet.ARRIVE_PARAMETER, getArrivalString());
     map.put(AirlineServlet.DEPART_PARAMETER, getDepartureString());
+  }
+}  public String getFullSource() {
+  return AirportNames.getName(source);
+}
+
+  public String getFullDestination() {
+    return AirportNames.getName(destination);
   }
 }

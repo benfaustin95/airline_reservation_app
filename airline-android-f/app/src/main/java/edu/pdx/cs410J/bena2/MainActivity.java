@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
                 if(!(ex.getClass() == FileNotFoundException.class))
                     makePopUp(findViewById(R.id.content),"While loading from storage: "+ex.getMessage(), Snackbar.LENGTH_SHORT);
             }
-        this.setTitle("Airline Home");
     }
 
     private void readFromStorage() throws IOException{

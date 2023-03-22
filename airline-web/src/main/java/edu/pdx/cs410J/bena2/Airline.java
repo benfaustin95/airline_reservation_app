@@ -76,15 +76,7 @@ public class Airline extends AbstractAirline<Flight> implements Cloneable{
         addFlight(flight);
     }
 
-    public Airline(Airline airline, String string, String string1) {
-        this(airline.name);
-        for(Flight flight: airline.getFlights())
-        {
-            if(flight.getDestination().equalsIgnoreCase(string1) &&
-                    flight.getSource().equalsIgnoreCase(string))
-                this.addFlight(new Flight(flight));
-        }
-    }
+
 
     /**
      * getName overrides the get name method in the AbstractAirline class, returns a reference to the

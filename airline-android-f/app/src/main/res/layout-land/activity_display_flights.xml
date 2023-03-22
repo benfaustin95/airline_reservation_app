@@ -46,7 +46,7 @@
                     android:id="@+id/aNameLabel2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight=".75"
                     android:text="Airline Name: "
                     android:textAlignment="textEnd"
                     android:paddingEnd="10dp"
@@ -56,7 +56,7 @@
                     android:id="@+id/aNameControl2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight=".75"
                     android:inputType="textPersonName" />
             </LinearLayout>
 
@@ -74,7 +74,7 @@
                     android:id="@+id/sourceLabel2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight=".75"
                     android:text="Source:\n(Airport Code)"
                     android:textAlignment="textEnd"
                     android:paddingEnd="10dp"
@@ -84,7 +84,7 @@
                     android:id="@+id/sourceControl2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight=".75"
                     android:ems="10"
                     android:inputType="textPersonName"
                     android:singleLine="false" />
@@ -98,13 +98,14 @@
                 android:weightSum="2"
                 android:paddingHorizontal="10dp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginBottom="5dp">
 
                 <TextView
                     android:id="@+id/destLabel2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight=".75"
                     android:text="Source:\n(Airport Code)"
                     android:textAlignment="textEnd"
                     android:padding="10dp"
@@ -115,7 +116,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:paddingEnd="10dp"
-                    android:layout_weight="1"
+                    android:layout_weight=".75"
                     android:ems="10"
                     android:inputType="textPersonName"
                     android:singleLine="false" />
@@ -126,7 +127,7 @@
                 android:id="@+id/linearLayout10"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_weight=".75"
                 android:weightSum="3"
                 android:paddingHorizontal="10dp"
                 android:gravity="center_vertical"
@@ -135,8 +136,8 @@
                 <Button
                     android:id="@+id/helpMeButton"
                     android:layout_width="0dp"
-                    android:layout_height="78dp"
-                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".7"
                     android:backgroundTint="@android:color/holo_blue_dark"
                     android:onClick="helpMe"
                     android:text="@string/help"
@@ -144,8 +145,8 @@
                 <Button
                     android:id="@+id/returnMainButton"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="78dp"
+                    android:layout_weight=".7"
+                    android:layout_height="match_parent"
                     android:insetLeft="5dp"
                     android:insetTop="5dp"
                     android:insetRight="5dp"
@@ -157,8 +158,8 @@
                 <Button
                     android:id="@+id/DisplayFlightsButton"
                     android:layout_width="0dp"
-                    android:layout_height="78dp"
-                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.6"
                     android:backgroundTint="@android:color/holo_blue_dark"
                     android:insetLeft="5dp"
                     android:insetTop="5dp"

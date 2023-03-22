@@ -2,13 +2,14 @@ Ben Austin, CS410J-001, 03/22/2023, bena2@pdx.edu
 Program 6: Airline Android App
 
 Overview:
-Program Six's android app allows the user to create and print multiple airlines as well as associated flight(s) from the application. Furthermore, the user can print all flights from a specific airline, as well as flights that have a user specified source and destination. Airline contents contents are returned in Pretty Printer form when the requested. Please note airlines are supported concurrently.
+Program Six's android app allows the user to create and print multiple airlines as well as associated flight(s) from the application. Furthermore, the user can print all flights from a specific airline, as well as flights that have a user specified source and destination. Airline contents contents are returned in Pretty Printer form upon request. Please note multiple airlines are supported concurrently.
 
 Please see the below execution instructions.
 
 Provided Interface:
 
 Options:
+
     HELP:
        -Print README (current document)
 

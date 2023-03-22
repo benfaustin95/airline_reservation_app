@@ -13,23 +13,46 @@ import java.io.InputStreamReader;
 
 public class ReadMe extends AppCompatActivity {
 
+    StringBuilder rMe;
+    TextView out;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        StringBuilder rMe = new StringBuilder();
-        String line;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_read_me);
+        out = findViewById(R.id.about_text_view);
+    }
 
-        TextView out = findViewById(R.id.about_text_view);
+    public void readMe(View view){
+
+        String line;
+        rMe = new StringBuilder();
         try(InputStream is = this.getResources().openRawResource(R.raw.read_me)){
-           if(is == null)
-               throw new IOException();
+            if(is == null)
+                throw new IOException();
             BufferedReader sr = new BufferedReader(new InputStreamReader(is));
             while((line = sr.readLine())!=null){
                 rMe.append(line).append("\n");
             }
         } catch (IOException e) {
             rMe.append("Read Me Not Available");
+        }
+        out.setText(rMe.toString());
+    }
+
+
+    public void ussage(View view){
+
+        String line;
+        rMe = new StringBuilder();
+        try(InputStream is = this.getResources().openRawResource(R.raw.ussage)){
+            if(is == null)
+                throw new IOException();
+            BufferedReader sr = new BufferedReader(new InputStreamReader(is));
+            while((line = sr.readLine())!=null){
+                rMe.append(line).append("\n");
+            }
+        } catch (IOException e) {
+            rMe.append("Ussage Not Available");
         }
         out.setText(rMe.toString());
     }

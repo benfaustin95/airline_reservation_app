@@ -1,0 +1,17 @@
+
+arguments:
+-airline: The name of the airline
+-flightNumber: The flight number
+-source: Three-letter code of departure airport
+-departure: Departure date and time (12-hour time)
+-destination: Three-letter code of arrival airport
+-arrival: Arrival date and time (12-hour time)
+
+options:
+-Add Airline     Adds airline to airport
+-Add Flights     Adds flight and/or airline
+-Help            Prints a README and/or Usage
+-search          Search for an airline's flights
+
+Date and time should be in the format: mm/dd/yyyy
+hh:mm aa (12 hour format)

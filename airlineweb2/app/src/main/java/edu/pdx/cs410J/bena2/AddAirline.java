@@ -5,11 +5,15 @@ import static edu.pdx.cs410J.bena2.MainActivity.DATA_ADDED;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.HashMap;
 
@@ -35,15 +39,19 @@ public class AddAirline extends AppCompatActivity {
                 throw new IllegalArgumentException("Airline: "+aName+" already exists");
             else {
                 airport.put(aName, new Airline(aName));
-                Toast.makeText(this, "Airline: "+aName+" has been added", Toast.LENGTH_SHORT).show();
                 airlineName.getText().clear();
+                makePopUp(view, "Airline: "+aName+" has been added", Snackbar.LENGTH_SHORT);
             }
         } catch(IllegalArgumentException ex){
-            Toast.makeText(this,ex.getMessage(),
-                    Toast.LENGTH_LONG).show();
+            makePopUp(view, ex.getMessage(), Snackbar.LENGTH_SHORT);
         }
     }
 
+    public static void makePopUp(View view, String message, int length){
+            Snackbar.make(view, message, length).show();
+    }
+    public void helpMe(View view) { startActivity(new Intent(this, ReadMe.class));
+    }
     public void returnToMain(View view){
         Intent toReturn = new Intent();
         toReturn.putExtra(MainActivity.AIRPORT, airport);

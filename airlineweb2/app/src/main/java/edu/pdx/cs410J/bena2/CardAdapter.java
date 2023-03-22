@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import org.w3c.dom.Text;
+
 import java.util.Collection;
 import java.util.List;
 
@@ -18,9 +20,9 @@ public class CardAdapter extends ArrayAdapter {
     Context context;
     int item;
 
-    public CardAdapter(Collection<Flight> toPrint, int resource, Context context) {
-        super(context, resource, (List) toPrint);
-        this.toPrint = (List) toPrint;
+    public CardAdapter(List<Flight> toPrint, int resource, Context context) {
+        super(context, resource, toPrint);
+        this.toPrint = toPrint;
         this.item = resource;
         this.context = context;
     }
@@ -43,12 +45,18 @@ public class CardAdapter extends ArrayAdapter {
         }
 
         Flight flight = toPrint.get(position);
-
+        if(flight.getClass() == OutputAirline.FlightBundle.class){
+            View temp = convertView.findViewById(R.id.linearLayoutAName);
+            temp.setVisibility(TextView.VISIBLE);
+            setTextView(((OutputAirline.FlightBundle) flight).getAirlineName(),
+                    convertView.findViewById(R.id.airlineName));
+        }
         setTextView(String.valueOf(flight.getNumber()), convertView.findViewById(R.id.FNumber));
         setTextView(flight.getFullSource(), convertView.findViewById(R.id.Source));
         setTextView(flight.getDepartureString(), convertView.findViewById(R.id.Departure));
         setTextView(flight.getFullDestination(), convertView.findViewById(R.id.Destination));
         setTextView(flight.getArrivalString(), convertView.findViewById(R.id.Arrival));
+        setTextView(flight.getTimeDiffMin(flight.departure, flight.arrival), convertView.findViewById(R.id.Length));
 
         return convertView;
     }

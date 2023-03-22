@@ -9,6 +9,7 @@ import org.w3c.dom.NodeList;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 
 /**
  * The Airline class holds the data related to an airline instance, including the airline name and
@@ -23,6 +24,7 @@ import java.util.Collections;
 public class Airline extends AbstractAirline<Flight> implements Cloneable{
     // The name of the airline
     private String name;
+    private static final long serialVersionUID = 7526471155622776147L;
     // The roster of flights belonging to the airline
     ArrayList<Flight>  roster;
 

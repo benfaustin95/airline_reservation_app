@@ -9,13 +9,10 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Airline"
+        android:theme="@style/Theme.Airline.NoActionBar"
         tools:targetApi="31">
         <activity
             android:name=".ReadMe"
-            android:exported="false" />
-        <activity
-            android:name=".OutputAirport"
             android:exported="false" />
         <activity
             android:name=".OutputAirline"

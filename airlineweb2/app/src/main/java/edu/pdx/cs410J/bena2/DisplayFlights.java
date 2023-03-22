@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.bena2;
 
+import static edu.pdx.cs410J.bena2.AddAirline.makePopUp;
 import static edu.pdx.cs410J.bena2.MainActivity.AIRPORT;
 import static edu.pdx.cs410J.bena2.MainActivity.DISPLAY_AIRLINE;
 import static edu.pdx.cs410J.bena2.MainActivity.DISPLAY_AIRPORT;
@@ -13,6 +14,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.HashMap;
 
 import edu.pdx.cs410J.AirportNames;
@@ -21,6 +24,9 @@ import edu.pdx.cs410J.ParserException;
 public class DisplayFlights extends AppCompatActivity {
 
     static final String AIRLINE = "airline";
+    static final String REQUEST = "request";
+    static final Integer ALL_FLIGHTS = 13;
+    static final Integer SINGLE_AIRLINE = 12;
     HashMap<String, Airline> airport;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +57,7 @@ public class DisplayFlights extends AppCompatActivity {
                default: break;
            }
        }catch (ParserException | IllegalArgumentException ex){
-           Toast.makeText(this,"Error: "+ex.getMessage(), Toast.LENGTH_SHORT).show();
+           makePopUp(view,"Error: "+ex.getMessage(), Snackbar.LENGTH_SHORT);
        }
     }
     public void returnToMain(){
@@ -85,8 +91,9 @@ public class DisplayFlights extends AppCompatActivity {
     protected void writeAllFlights() throws IllegalArgumentException{
         if(airport.isEmpty())
             throw new IllegalArgumentException("No Airlines currently stored in program");
-        Intent toSend = new Intent(this, OutputAirport.class);
+        Intent toSend = new Intent(this, OutputAirline.class);
         toSend.putExtra(MainActivity.AIRPORT, airport);
+        toSend.putExtra(REQUEST, ALL_FLIGHTS);
         startActivity(toSend);
     }
 
@@ -108,7 +115,11 @@ public class DisplayFlights extends AppCompatActivity {
         }
 
         intent.putExtra(AIRLINE, toDisplay);
+        intent.putExtra(REQUEST, SINGLE_AIRLINE);
         startActivity(intent);
+    }
+
+    public void helpMe(View view) { startActivity(new Intent(this, ReadMe.class));
     }
 
     public void returnToMain(View view){

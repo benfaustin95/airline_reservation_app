@@ -1,5 +1,7 @@
 package edu.pdx.cs410J.bena2;
 
+import static edu.pdx.cs410J.bena2.AddAirline.makePopUp;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +10,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
+
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -31,25 +36,26 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-            try{
+        airport = new HashMap<>();
+        try{
                 readFromStorage();
             }catch (IOException ex){
                 if(!(ex.getClass() == FileNotFoundException.class))
-                    Toast.makeText(this,"While loading from storage: "+ex.getMessage(), Toast.LENGTH_LONG).show();
-                airport = new HashMap<>();
+                    makePopUp(findViewById(R.id.content),"While loading from storage: "+ex.getMessage(), Snackbar.LENGTH_SHORT);
             }
+        this.setTitle("Airline Home");
     }
 
     private void readFromStorage() throws IOException{
         File toRead = getStorage();
-
         try(FileInputStream fi = new FileInputStream(toRead);
             ObjectInputStream os = new ObjectInputStream(fi)){
-
-            airport = (HashMap<String, Airline>) os.readObject();
-        } catch(FileNotFoundException ignored) {
-            airport = new HashMap<>();
-        }catch(IOException | ClassNotFoundException | ClassCastException e) {
+            while(true){
+                Airline temp = (Airline) os.readObject();
+                airport.put(temp.getName(), temp);
+            }
+        } catch (EOFException | ClassCastException | FileNotFoundException ignored){
+        } catch(IOException | ClassNotFoundException e) {
             throw new IOException(e.getMessage());
         }
     }
@@ -58,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
     public void launchAddAirline(View view){
         Intent toSend = new Intent(this, AddAirline.class);
         toSend.putExtra(AIRPORT,this.airport);
-        startActivityForResult( toSend, GET_AIRLINE);
+        startActivityForResult(toSend, GET_AIRLINE);
     }
 
 
@@ -72,7 +78,21 @@ public class MainActivity extends AppCompatActivity {
             mergeAirport(data);
         else if(result == DATA_ADDED && request == GET_FLIGHT)
             addAirline(data);
+        saveAirport();
 
+    }
+
+    private void saveAirport() {
+        File toSave = getStorage();
+        if(!airport.isEmpty()){
+            try(FileOutputStream fo = new FileOutputStream(toSave);
+                ObjectOutputStream os = new ObjectOutputStream(fo)){
+                for(Airline airline: airport.values()){
+                    os.writeObject(airline);
+                }
+            } catch (IOException e) {
+            }
+        }
     }
 
     protected void addAirline(Intent data) {
@@ -85,8 +105,7 @@ public class MainActivity extends AppCompatActivity {
                 airport.get(toAdd.getName()).addFlights(toAdd.getFlights());
         }catch (ClassCastException ex)
         {
-            Toast.makeText(this, "Error saving Flight and/or Airline",
-                    Toast.LENGTH_SHORT).show();
+            makePopUp(findViewById(R.id.content), "Error saving Flight and/or Airline", Snackbar.LENGTH_SHORT);
         }
     }
 
@@ -96,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
             airport = (HashMap<String, Airline>) temp;
         }catch(ClassCastException ex)
         {
-            Toast.makeText(this, "Error saving Airline", Toast.LENGTH_SHORT).show();
+            makePopUp(findViewById(R.id.content), "Error saving Airline", Snackbar.LENGTH_SHORT);
         }
     }
 
@@ -117,14 +136,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
-        File toSave = getStorage();
-        if(!airport.isEmpty()){
-            try(FileOutputStream fo = new FileOutputStream(toSave);
-                ObjectOutputStream os = new ObjectOutputStream(fo)){
-                os.writeObject(airport);
-            } catch (IOException e) {
-            }
-        }
+        saveAirport();
     }
 
     protected File getStorage(){

@@ -6,30 +6,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AddAirline">
+
     <ScrollView
         android:id="@+id/scrollViewAddAirline"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:weightSum="5"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:weightSum="3">
 
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:gravity="center_vertical"
                 android:layout_weight="1"
-                android:text="Add Airline"
                 android:contentDescription="Airline name"
                 android:labelFor="@+id/aName"
-                android:gravity="center_vertical"
+                android:text="Add Airline"
                 android:textAlignment="center"
-                android:textSize="30sp"
-                />
+                android:textSize="30sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -41,7 +45,7 @@
                 <TextView
                     android:id="@+id/textView3"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="Airline Name: "
                     android:textAlignment="textEnd"
@@ -52,45 +56,50 @@
                     android:id="@+id/aName"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".9"
+                    android:layout_weight=".5"
                     android:inputType="textShortMessage" />
 
             </LinearLayout>
 
-
-            <Button
-                android:id="@+id/pushAirline"
-                android:layout_width="201dp"
-                android:layout_gravity="center_horizontal"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight=".7"
-                android:backgroundTint="@android:color/holo_blue_dark"
-                android:onClick="addAirline"
-                android:text="Create Airline"
-                />
+                android:orientation="horizontal"
+                android:weightSum="3">
 
-            <Button
-                android:id="@+id/returnMainButton"
-                android:layout_width="201dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_height="0dp"
-                android:layout_weight=".7"
-                android:backgroundTint="@android:color/holo_blue_dark"
-                android:onClick="returnToMain"
-                android:text="Return to Main"
-                />
+                <Button
+                    android:id="@+id/pushAirline"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:backgroundTint="@android:color/holo_blue_dark"
+                    android:onClick="addAirline"
+                    android:layout_margin="10dp"
+                    android:text="Create Airline" />
 
-            <Button
-                android:id="@+id/helpMeButton"
-                android:layout_width="201dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_height="0dp"
-                android:layout_weight=".7"
-                android:backgroundTint="@android:color/holo_blue_dark"
-                android:onClick="helpMe"
-                android:text="@string/help"
-                android:textSize="20sp"
-                />
+                <Button
+                    android:id="@+id/returnMainButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:backgroundTint="@android:color/holo_blue_dark"
+                    android:onClick="returnToMain"
+                    android:layout_margin="10dp"
+                    android:text="Return to Main" />
+
+                <Button
+                    android:id="@+id/helpMeButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:backgroundTint="@android:color/holo_blue_dark"
+                    android:onClick="helpMe"
+                    android:text="@string/help"
+                    android:layout_margin="10dp"
+                    android:textSize="20sp" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

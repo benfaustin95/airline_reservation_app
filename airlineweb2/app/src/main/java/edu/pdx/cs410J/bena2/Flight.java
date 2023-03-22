@@ -33,6 +33,7 @@ public class Flight extends AbstractFlight implements Cloneable, Comparable<Flig
   protected String destination;
   protected Date departure;
   protected Date arrival;
+  private static final long serialVersionUID = 7526471155622776148L;
 
   /**
    * Flight serves as the default constructor for the Flight class
@@ -418,20 +419,6 @@ public class Flight extends AbstractFlight implements Cloneable, Comparable<Flig
     return departure.compareTo(o.departure);
   }
 
-  /**
-   * getPrettyDump returns the formatted textual representation of the Flight object.
-   * @return A String containing the formatted Flight.
-   */
-  public String getPrettyDump(int max) {
-    SimpleDateFormat tf = new SimpleDateFormat("MMM',' dd yyyy hh:mm aa");
-    return String.format("|%s|%s|%s|%s|%s|%s|\n",
-            PrettyPrinter.centerString(String.valueOf(flightNumber),15),
-            PrettyPrinter.centerString(AirportNames.getName(source),max),
-            PrettyPrinter.centerString(tf.format(departure),25),
-            PrettyPrinter.centerString(AirportNames.getName(destination), max),
-            PrettyPrinter.centerString(tf.format(arrival),25),
-            PrettyPrinter.centerString(getTimeDiffMin(departure,arrival),15));
-  }
 
   /**
    * getTimeDiffMin utilizes the TimeUnit class as well as the Date class to calculate the difference
@@ -440,7 +427,7 @@ public class Flight extends AbstractFlight implements Cloneable, Comparable<Flig
    * @param arrival the Date holding the flight's arrival time
    * @return the long holding the difference in minutes.
    */
-  private String getTimeDiffMin(Date departure, Date arrival) {
+  protected String getTimeDiffMin(Date departure, Date arrival) {
     long duration = arrival.getTime()-departure.getTime();
     return String.valueOf(TimeUnit.MINUTES.convert(duration,TimeUnit.MILLISECONDS))+" minutes";
   }

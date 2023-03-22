@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.bena2;
 
+import static edu.pdx.cs410J.bena2.AddAirline.makePopUp;
 import static edu.pdx.cs410J.bena2.CardAdapter.setTextView;
 import static edu.pdx.cs410J.bena2.MainActivity.AIRPORT;
 import static edu.pdx.cs410J.bena2.MainActivity.DATA_ADDED;
@@ -18,6 +19,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -77,7 +80,7 @@ public class AddFlight extends AppCompatActivity {
             old.setVisibility(View.GONE);
             setSuccessScreen(toAdd);
         }catch (IllegalArgumentException ex){
-            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+            makePopUp(view, ex.getMessage(), Snackbar.LENGTH_SHORT);
         }
     }
 
@@ -104,6 +107,8 @@ public class AddFlight extends AppCompatActivity {
         finish();
     }
 
+    public void helpMe(View view) { startActivity(new Intent(this, ReadMe.class));
+    }
     public void returnToMain(View view){
         returnToMain();
     }

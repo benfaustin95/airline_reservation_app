@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DisplayFlights">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:weightSum="5"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/Message2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"
+                    android:textSize="30sp"
+                    android:text="Display Flights" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout9"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:weightSum="2"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/aNameLabel2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".75"
+                    android:text="Airline Name: "
+                    android:textAlignment="textEnd"
+                    android:paddingEnd="10dp"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/aNameControl2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".75"
+                    android:inputType="textPersonName" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout4"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:weightSum="2"
+                android:paddingHorizontal="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/sourceLabel2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".75"
+                    android:text="Source:\n(Airport Code)"
+                    android:textAlignment="textEnd"
+                    android:paddingEnd="10dp"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/sourceControl2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".75"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:singleLine="false" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout5"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:weightSum="2"
+                android:paddingHorizontal="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_marginBottom="5dp">
+
+                <TextView
+                    android:id="@+id/destLabel2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".75"
+                    android:text="Source:\n(Airport Code)"
+                    android:textAlignment="textEnd"
+                    android:padding="10dp"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/destControl2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:paddingEnd="10dp"
+                    android:layout_weight=".75"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:singleLine="false" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout10"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".75"
+                android:weightSum="3"
+                android:paddingHorizontal="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/helpMeButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".7"
+                    android:backgroundTint="@android:color/holo_blue_dark"
+                    android:onClick="helpMe"
+                    android:text="@string/help"
+                    android:textSize="20sp" />
+                <Button
+                    android:id="@+id/returnMainButton"
+                    android:layout_width="0dp"
+                    android:layout_weight=".7"
+                    android:layout_height="match_parent"
+                    android:insetLeft="5dp"
+                    android:insetTop="5dp"
+                    android:insetRight="5dp"
+                    android:insetBottom="5dp"
+                    android:onClick="returnToMain"
+                    android:backgroundTint="@android:color/holo_blue_dark"
+                    android:text="Return to Main" />
+
+                <Button
+                    android:id="@+id/DisplayFlightsButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.6"
+                    android:backgroundTint="@android:color/holo_blue_dark"
+                    android:insetLeft="5dp"
+                    android:insetTop="5dp"
+                    android:insetRight="5dp"
+                    android:insetBottom="5dp"
+                    android:onClick="makeDisplay"
+                    android:text="Display Flights" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

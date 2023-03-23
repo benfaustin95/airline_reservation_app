@@ -5,167 +5,167 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".DisplayFlights">
-
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="78dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
-        app:layout_constraintVertical_bias="0.17000002">
-
-        <Button
-            android:id="@+id/returnMainButton"
-            android:layout_width="201dp"
-            android:layout_height="match_parent"
-            android:insetLeft="5dp"
-            android:insetTop="5dp"
-            android:insetRight="5dp"
-            android:insetBottom="5dp"
-            android:onClick="returnToMain"
-            android:text="Return to Main" />
-
-        <Button
-            android:id="@+id/DisplayFlightsButton"
-            android:layout_width="189dp"
-            android:layout_height="match_parent"
-            android:insetLeft="5dp"
-            android:insetTop="5dp"
-            android:insetRight="5dp"
-            android:insetBottom="5dp"
-            android:onClick="makeDisplay"
-            android:text="Display Flights" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout9"
-        android:layout_width="392dp"
-        android:layout_height="47dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.23000002">
-
-        <TextView
-            android:id="@+id/aNameLabel2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Airline Name: "
-            android:textAlignment="center"
-            android:textSize="18sp" />
-
-        <EditText
-            android:id="@+id/aNameControl2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:inputType="textPersonName" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout4"
-        android:layout_width="match_parent"
-        android:layout_height="78dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout9"
-        app:layout_constraintVertical_bias="0.031">
-
+        android:layout_height="match_parent"
+        android:fillViewport="true">
         <LinearLayout
-            android:layout_width="133dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:weightSum="5"
+            >
 
-            <TextView
-                android:id="@+id/sourceLabel2"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Source:"
-                android:textAlignment="center"
-                android:textSize="18sp" />
+                android:layout_height="0dp"
+                android:layout_weight="1">
+                <TextView
+                    android:id="@+id/Message2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"
+                    android:textSize="30sp"
+                    android:text="Display Flights" />
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/sourceHint2"
+            <LinearLayout
+                android:id="@+id/linearLayout9"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="3 Letter Airport Code"
-                android:textAlignment="center" />
+                android:layout_height="0dp"
+                android:layout_weight=".7"
+                android:weightSum="2"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/aNameLabel2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Airline Name: "
+                    android:textAlignment="textEnd"
+                    android:paddingEnd="10dp"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/aNameControl2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:inputType="textPersonName" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout4"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".7"
+                android:weightSum="2"
+                android:paddingHorizontal="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/sourceLabel2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Source:\n(Airport Code)"
+                    android:textAlignment="textEnd"
+                    android:paddingEnd="10dp"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/sourceControl2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:singleLine="false" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout5"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".7"
+                android:weightSum="2"
+                android:paddingHorizontal="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/destLabel2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Source:\n(Airport Code)"
+                    android:textAlignment="textEnd"
+                    android:padding="10dp"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/destControl2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:paddingEnd="10dp"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:singleLine="false" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout10"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1.5"
+                android:weightSum="2.1"
+                android:paddingHorizontal="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/helpMeButton"
+                    android:layout_width="0dp"
+                    android:layout_height="78dp"
+                    android:layout_weight=".5"
+                    android:text="@string/help"
+                    android:textSize="20sp"
+                    android:backgroundTint="@android:color/holo_blue_dark"
+                    android:onClick="helpMe"/>
+                <Button
+                    android:id="@+id/returnMainButton"
+                    android:layout_width="0dp"
+                    android:layout_weight=".6"
+                    android:layout_height="78dp"
+                    android:insetLeft="5dp"
+                    android:insetTop="5dp"
+                    android:insetRight="5dp"
+                    android:insetBottom="5dp"
+                    android:onClick="returnToMain"
+                    android:backgroundTint="@android:color/holo_blue_dark"
+                    android:text="Return to Main" />
+
+                <Button
+                    android:id="@+id/DisplayFlightsButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="78dp"
+                    android:insetLeft="5dp"
+                    android:insetTop="5dp"
+                    android:insetRight="5dp"
+                    android:insetBottom="5dp"
+                    android:onClick="makeDisplay"
+                    android:backgroundTint="@android:color/holo_blue_dark"
+                    android:text="Display Flights" />
+
+            </LinearLayout>
         </LinearLayout>
-
-        <EditText
-            android:id="@+id/sourceControl2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:singleLine="false" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout5"
-        android:layout_width="match_parent"
-        android:layout_height="78dp"
-        android:layout_weight="1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
-        app:layout_constraintVertical_bias="0.058">
-
-        <LinearLayout
-            android:layout_width="133dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/destLabel2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Destination:"
-                android:textAlignment="center"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/destHint2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="3 Letter Airport Code"
-                android:textAlignment="center" />
-        </LinearLayout>
-
-        <EditText
-            android:id="@+id/destControl2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:singleLine="false" />
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/Message2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Display Flights"
-        tools:layout_editor_absoluteX="164dp"
-        tools:layout_editor_absoluteY="16dp" />
-
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,6 +11,33 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:weightSum="2"
+        android:id="@+id/linearLayoutAName"
+        android:visibility="gone"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/airlineNameLabel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingRight="10dp"
+            android:text="Airline:"
+            android:textAlignment="textEnd"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/airlineName"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="TextView" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="2"
         android:orientation="horizontal">
 
         <TextView
@@ -120,6 +147,29 @@
 
         <TextView
             android:id="@+id/Arrival"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="TextView" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="2"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/TimeLabel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingRight="10dp"
+            android:text="Length: "
+            android:textStyle="bold"
+            android:textAlignment="textEnd" />
+
+        <TextView
+            android:id="@+id/Length"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
